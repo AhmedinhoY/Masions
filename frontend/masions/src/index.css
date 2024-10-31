@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Geist-Light'; /* Font weight 300 */
+  src: url('./assets/fonts/Geist-Light.woff2') format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Geist'; /* Font weight 500 */
+  src: url('./assets/fonts/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Geist-Bold'; /* Font weight 700 */
+  src: url('./assets/fonts/Geist-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+/* CSS Variables */
+:root {
+  --bg-color: #f9f9f9;
+  --nav-color: #F9F9F9;
+  --blue-12: #1e3a8a;
+  --gray-11: #646464;
+  --gray-6: #D9D9D9;
+  --gray-3: #F0F0F0;
+  --blue-10: #3b82f6;
+  --gray-12: #202020;
+
+  /* Global font settings */
+  --font-family: 'Geist', sans-serif;
+  --font-family-bold: 'Geist-Bold', sans-serif;
+  --font-family-light:'Geist-Light', sans-serif;
+
+  --container-padding: 15px;
+
+  
+  font-size: 16px;
+  line-height: 24px;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  /* Background color */
+  background-color: var(--primary-bg);
+  color: var(--secondary-color);
+}
+
+/* General styles */
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-family);
+  color: var(--blue-12);
+  background-color: var(--bg-color);
+}
+
+section {
+  margin-bottom: 2.5rem;
+}
+
+h1{
+  font-family: 'Geist-Bold', sans-serif;
+  margin-bottom: 20px;
+  @apply text-2xl tracking-tight;
+}
+
+h2{
+  @apply text-xl mt-4 text-base;
+  
+}
+
+h3{
+  @apply mt-auto text-sm;
+  color: var(--description-color);
+}
+
+p {
+  margin-bottom: 1.5rem;
+
+}
+
+
+.container {
+  @apply mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 sm:justify-center lg:max-w-7xl lg:px-8;
+}
+
+
+.primary-btn {
+  background-color: var(--primary);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+	width:100%;
+	margin: 4px;
+	padding: 4px 12px;
+  display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.primary-btn-sm {
+  background-color: var(--primary);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 0.9rem;
+  line-height: 1;
+	width:80%;
+	margin: 4px;
+	padding: 4px 12px;
+
+  display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+
+
+/* Color palette using 60-30-10 rule */
+:root {
+  --primary-bg: var(--bg-color); /* 60% */
+  --primary: var(--blue-12); /* 30% */
+  --secondary: var(--blue-10); /* 10% */
+  --text-color: var(--gray-12);
+  --description-color: var(--gray-11);
+  --border-seperator-color: var(--gray-6);
+  --hover-color: var(--gray-3);
+
+  --border-radius-card: 12px;
+  --border-radius-btn: 8px;
+  --border-radius-img: 8px;
+  --border-radius-input: 3px;
+
+  --box-shadow: oklab(0.834362 -0.000609 -0.018261 / 0.294118) 0px 0px 0px 1px inset,
+  rgba(0, 0, 0, 0.05) 0px 8px 40px 0px,
+  rgba(0, 0, 51, 0.06) 0px 12px 32px -16px;
+}
+
+/* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); */
