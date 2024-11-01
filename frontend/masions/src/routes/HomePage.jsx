@@ -1,5 +1,3 @@
-import LoginForm from "../components/AuthenticationForms/LoginForm";
-import RegisterForm from "../components/AuthenticationForms/RegisterForm";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
 export default function HomePage() {
@@ -52,16 +50,6 @@ export default function HomePage() {
 
   return (
     <div className="container">
-      <section className="flex justify-evenly">
-        <div>
-          <h1>Log in form</h1>
-          <LoginForm />
-        </div>
-        <div>
-          <h1>Register form</h1>
-          <RegisterForm />
-        </div>
-      </section>
       <section>
         <h1>Houses for Sale</h1>
         <PropertiesList propertyType={houses} />{" "}

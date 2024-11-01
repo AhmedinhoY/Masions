@@ -34,7 +34,7 @@ const LoginForm = () => (
     </Form.Field>
     <Form.Submit asChild>
       <div className="flex justify-center">
-        <button className="primary-btn-sm my-3">Log in</button>
+        <button className="primary-btn my-3">Log in</button>
       </div>
     </Form.Submit>
   </Form.Root>
