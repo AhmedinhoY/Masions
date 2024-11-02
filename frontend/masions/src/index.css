@@ -104,8 +104,8 @@ p {
   background-color: var(--primary);
   color: white;
   border-radius: var(--border-radius-btn);
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1.1rem;
+  line-height: 1.25rem;
 	width:100%;
 	margin: 4px;
 	padding: 4px 12px;
@@ -130,8 +130,6 @@ p {
 }
 
 
-
-
 /* Color palette using 60-30-10 rule */
 :root {
   --primary-bg: var(--bg-color); /* 60% */
@@ -141,6 +139,7 @@ p {
   --description-color: var(--gray-11);
   --border-seperator-color: var(--gray-6);
   --hover-color: var(--gray-3);
+  --overlay-color: rgba(0, 0, 0, 0.15);
 
   --border-radius-card: 12px;
   --border-radius-btn: 8px;

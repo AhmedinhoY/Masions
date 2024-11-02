@@ -73,7 +73,7 @@ const RegisterForm = () => (
 
     <Form.Submit asChild>
       <div className="flex justify-center">
-        <button className="primary-btn-sm my-3">Register</button>
+        <button className="primary-btn my-3">Register</button>
       </div>
     </Form.Submit>
   </Form.Root>

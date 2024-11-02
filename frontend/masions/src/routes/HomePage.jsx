@@ -1,12 +1,31 @@
-import LoginForm from "../components/AuthenticationForms/LoginForm";
-import RegisterForm from "../components/AuthenticationForms/RegisterForm";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
 export default function HomePage() {
   const houses = [
     {
       id: 1,
-      img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      img: [
+        {
+          imgNo: 1,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 2,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 3,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 4,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+      ],
       city: "Manama ",
       type: "House",
       bedrooms: 4,
@@ -17,7 +36,28 @@ export default function HomePage() {
     },
     {
       id: 2,
-      img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      img: [
+        {
+          imgNo: 1,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 2,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 3,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 4,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+      ],
       city: "Sitra",
       type: "Villa",
       bedrooms: 4,
@@ -28,7 +68,28 @@ export default function HomePage() {
     },
     {
       id: 3,
-      img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      img: [
+        {
+          imgNo: 1,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 2,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 3,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 4,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+      ],
       city: "Muharraq ",
       type: "Villa",
       bedrooms: 3,
@@ -39,7 +100,28 @@ export default function HomePage() {
     },
     {
       id: 4,
-      img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      img: [
+        {
+          imgNo: 1,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 2,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 3,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+        {
+          imgNo: 4,
+          imgSrc:
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        },
+      ],
       city: "Sanabis",
       type: "House",
       bedrooms: 5,
@@ -52,16 +134,6 @@ export default function HomePage() {
 
   return (
     <div className="container">
-      <section className="flex justify-evenly">
-        <div>
-          <h1>Log in form</h1>
-          <LoginForm />
-        </div>
-        <div>
-          <h1>Register form</h1>
-          <RegisterForm />
-        </div>
-      </section>
       <section>
         <h1>Houses for Sale</h1>
         <PropertiesList propertyType={houses} />{" "}

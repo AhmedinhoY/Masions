@@ -1,12 +1,16 @@
+import { ImageSlider } from "../ImageSlider/ImageSlider";
 import "./PropertiesList.css";
 
 const PropertiesList = ({ propertyType } = props) => {
   return (
     <div className="products-grid">
       {propertyType.map((property) => (
-        <a key={property.id} href="#" className="group">
+        <div key={property.id} className="group">
           <div className="product-img-container">
-            <img src={property.img} />
+            <ImageSlider
+              imgCollection={property.img}
+              propertyID={property.id}
+            />
           </div>
           <h2>{property.city}</h2>
           <h3>{property.type} for Sale</h3>
@@ -14,7 +18,7 @@ const PropertiesList = ({ propertyType } = props) => {
             {property.area} m<sup>2</sup> - {property.bedrooms} bedrooms
           </h3>
           <p className="mt-1">{property.price.toLocaleString()} BD</p>
-        </a>
+        </div>
       ))}
     </div>
   );
