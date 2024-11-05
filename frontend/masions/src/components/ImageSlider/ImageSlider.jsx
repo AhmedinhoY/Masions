@@ -5,7 +5,7 @@ export function ImageSlider({ imgCollection, propertyID }) {
     <Carousel
       className="rounded-xl"
       navigation={({ setActiveIndex, activeIndex }) => (
-        <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+        <div className="absolute bottom-4 left-2/4 z-1 flex -translate-x-2/4 gap-2">
           {new Array(imgCollection.length).fill("").map((_, i) => (
             <span
               key={i}
