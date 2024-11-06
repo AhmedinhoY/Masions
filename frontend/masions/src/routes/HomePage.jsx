@@ -31,7 +31,7 @@ export default function HomePage() {
       bedrooms: 4,
       bathrooms: 4,
       area: 403,
-      zipcode: 85255,
+      location: "Block 605, Road 587",
       price: 86500,
     },
     {
@@ -63,7 +63,7 @@ export default function HomePage() {
       bedrooms: 4,
       bathrooms: 3,
       area: 333,
-      zipcode: 36372,
+      location: "Block 605, Road 587",
       price: 86200,
     },
     {
@@ -95,7 +95,7 @@ export default function HomePage() {
       bedrooms: 3,
       bathrooms: 4,
       area: 393,
-      zipcode: 85266,
+      location: "Block 605, Road 587",
       price: 88000,
     },
     {
@@ -127,7 +127,7 @@ export default function HomePage() {
       bedrooms: 5,
       bathrooms: 5,
       area: 402,
-      zipcode: 85262,
+      location: "Block 605, Road 587",
       price: 91000,
     },
   ];
@@ -135,8 +135,8 @@ export default function HomePage() {
   return (
     <div className="container">
       <section>
-        <h1>Houses for Sale</h1>
-        <PropertiesList propertyType={houses} />{" "}
+        <h1 className="container-header">Houses for Sale</h1>
+        <PropertiesList propertyType={houses} />
       </section>
     </div>
   );

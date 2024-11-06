@@ -3,31 +3,36 @@ import PropTypes from "prop-types";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import classNames from "classnames";
 import { CaretDownIcon } from "@radix-ui/react-icons";
-import "./NavBar.css";
+import styles from "./NavBar.module.css"; // Import styles as a module
 import DropDownMenu from "../DropdownMenu/DropDownMenu";
-import { HeartIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { HeartIcon } from "@radix-ui/react-icons";
+import { MapIcon } from "@heroicons/react/24/outline";
 
 export const NavBar = () => {
   return (
-    <NavigationMenu.Root className="NavigationMenuRoot">
-      <NavigationMenu.List className="NavigationMenuList w-screen">
+    <NavigationMenu.Root className={styles.NavigationMenuRoot}>
+      <NavigationMenu.List className={`${styles.NavigationMenuList} w-screen`}>
         <div className="w-full flex flex-row justify-around">
           <NavigationMenu.Item className="">
             <NavigationMenu.Link
-              className="NavigationMenuLink"
-              style={{ fontSize: "1.5rem", lineHeight: "1.75rem" }}
-              href="#"
+              className={styles.NavigationMenuLink}
+              style={{
+                fontSize: "1.5rem",
+                lineHeight: "1.75rem",
+                color: "var(--primary)",
+              }}
+              href="/"
             >
               <h1>Maisons</h1>
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <div className="flex items-baseline">
             <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="NavigationMenuTrigger">
-                Buy <CaretDownIcon className="CaretDown" aria-hidden />
+              <NavigationMenu.Trigger className={styles.NavigationMenuTrigger}>
+                Buy <CaretDownIcon className={styles.CaretDown} aria-hidden />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="NavigationMenuContent">
-                <ul className="List one block">
+              <NavigationMenu.Content className={styles.NavigationMenuContent}>
+                <ul className={`${styles.List} ${styles.one} block`}>
                   <ListItem href="#" title="Houses for sale"></ListItem>
                   <ListItem href="#" title="Apartments for sale"></ListItem>
                   <ListItem href="#" title="Lands for sale"></ListItem>
@@ -36,11 +41,11 @@ export const NavBar = () => {
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="NavigationMenuTrigger">
-                Rent <CaretDownIcon className="CaretDown" aria-hidden />
+              <NavigationMenu.Trigger className={styles.NavigationMenuTrigger}>
+                Rent <CaretDownIcon className={styles.CaretDown} aria-hidden />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="NavigationMenuContent">
-                <ul className="List two block">
+              <NavigationMenu.Content className={styles.NavigationMenuContent}>
+                <ul className={`${styles.List} ${styles.two} block`}>
                   <ListItem href="#" title="Houses for rent"></ListItem>
                   <ListItem href="#" title="Apartments for rent"></ListItem>
                 </ul>
@@ -48,18 +53,21 @@ export const NavBar = () => {
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
-              <NavigationMenu.Link className="NavigationMenuLink" href="#">
+              <NavigationMenu.Link
+                className={styles.NavigationMenuLink}
+                href="#"
+              >
                 Agents
               </NavigationMenu.Link>
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
-              <NavigationMenu.Trigger className="NavigationMenuTrigger">
+              <NavigationMenu.Trigger className={styles.NavigationMenuTrigger}>
                 Maisons Premium
-                <CaretDownIcon className="CaretDown" aria-hidden />
+                <CaretDownIcon className={styles.CaretDown} aria-hidden />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className="NavigationMenuContent">
-                <ul className="List three block">
+              <NavigationMenu.Content className={styles.NavigationMenuContent}>
+                <ul className={`${styles.List} ${styles.three} block`}>
                   <ListItem href="#" title="Analysis">
                     No more guess games! <br /> Gain real-time insights with
                     data science technologies, helping you make confident
@@ -81,10 +89,16 @@ export const NavBar = () => {
           </div>
           <div className="flex flex-row items-center">
             <NavigationMenu.Item>
-              <button className="IconButton" aria-label="Customise options">
-                <MagnifyingGlassIcon className="h-7 w-7 rounded-full" />
+              <button
+                className={styles.IconButton}
+                aria-label="Customise options"
+              >
+                <MapIcon className="h-7 w-7 rounded-full" />
               </button>
-              <button className="IconButton" aria-label="Customise options">
+              <button
+                className={styles.IconButton}
+                aria-label="Customise options"
+              >
                 <HeartIcon className="h-7 w-7 rounded-full" />
               </button>
             </NavigationMenu.Item>
@@ -95,13 +109,13 @@ export const NavBar = () => {
           </div>
         </div>
 
-        <NavigationMenu.Indicator className="NavigationMenuIndicator">
-          <div className="Arrow" />
+        <NavigationMenu.Indicator className={styles.NavigationMenuIndicator}>
+          <div className={styles.Arrow} />
         </NavigationMenu.Indicator>
       </NavigationMenu.List>
 
-      <div className="ViewportPosition">
-        <NavigationMenu.Viewport className="NavigationMenuViewport" />
+      <div className={styles.ViewportPosition}>
+        <NavigationMenu.Viewport className={styles.NavigationMenuViewport} />
       </div>
     </NavigationMenu.Root>
   );
@@ -112,12 +126,12 @@ const ListItem = React.forwardRef(
     <li>
       <NavigationMenu.Link asChild>
         <a
-          className={classNames("ListItemLink", className)}
+          className={classNames(styles.ListItemLink, className)}
           {...props}
           ref={forwardedRef}
         >
-          <div className="ListItemHeading">{title}</div>
-          <p className="ListItemText">{children}</p>
+          <div className={styles.ListItemHeading}>{title}</div>
+          <p className={styles.ListItemText}>{children}</p>
         </a>
       </NavigationMenu.Link>
     </li>
@@ -126,7 +140,7 @@ const ListItem = React.forwardRef(
 
 ListItem.displayName = "ListItem";
 ListItem.propTypes = {
-  className: PropTypes.string, // className should be a string
-  children: PropTypes.node, // children can be any renderable React node
-  title: PropTypes.string.isRequired, // title is required and should be a string
+  className: PropTypes.string,
+  children: PropTypes.node,
+  title: PropTypes.string.isRequired,
 };

@@ -5,12 +5,18 @@ import RootLayout from "./routes/RootLayout";
 
 import "./index.css";
 import HomePage from "./routes/HomePage";
+import PostDetails from "./components/PostDetails/PostDetails";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [{ path: "/", element: <HomePage /> }],
+  },
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [{ path: "/post-details", element: <PostDetails /> }],
   },
 ]);
 

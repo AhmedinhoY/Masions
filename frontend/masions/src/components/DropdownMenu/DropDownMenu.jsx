@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AvatarIcon } from "@radix-ui/react-icons";
 import "./DropDownMenu.css";

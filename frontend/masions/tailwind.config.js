@@ -14,6 +14,9 @@ module.exports = withMT({
         fontFamily: {
           sans: ['var(--font-geist-sans)'],
         },
+        gridTemplateRows: {
+          '[auto,auto,1fr]': 'auto auto 1fr',
+        },
     },
   },
   plugins: [
