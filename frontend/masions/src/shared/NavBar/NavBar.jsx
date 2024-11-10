@@ -4,7 +4,7 @@ import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import classNames from "classnames";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import styles from "./NavBar.module.css"; // Import styles as a module
-import DropDownMenu from "../DropdownMenu/DropDownMenu";
+import DropDownMenu from "../../components/DropdownMenu/DropDownMenu";
 import { HeartIcon } from "@radix-ui/react-icons";
 import { MapIcon } from "@heroicons/react/24/outline";
 

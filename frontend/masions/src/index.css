@@ -28,6 +28,7 @@
 /* CSS Variables */
 :root {
   --bg-color: #f9f9f9;
+  --secondary-bg: #FCFCFC;
   --nav-color: #F9F9F9;
   --blue-12: #1e3a8a;
   --gray-11: #646464;
@@ -65,7 +66,6 @@ html {
 body {
   min-height: 100vh;
   font-family: var(--font-family);
-  color: var(--blue-12);
   background-color: var(--bg-color);
 }
 
@@ -75,13 +75,12 @@ section {
 
 h1{
   font-family: 'Geist-Bold', sans-serif;
-  margin-bottom: 20px;
   @apply text-2xl tracking-tight;
 }
 
 h2{
-  @apply text-xl mt-4 text-base;
-  
+  @apply text-xl mt-4;
+  font-weight: 700;
 }
 
 h3{
@@ -91,12 +90,16 @@ h3{
 
 p {
   margin-bottom: 1.5rem;
-
+  color: var(--text-color);
 }
 
 
 .container {
   @apply mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 sm:justify-center lg:max-w-7xl lg:px-8;
+}
+
+.container-header {
+  margin-bottom: 20px;
 }
 
 
@@ -129,6 +132,45 @@ p {
 	justify-content: center;
 }
 
+.horizontal-list {
+  background-color: var(--secondary-bg);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow);
+  height: 5rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.list-item {
+  width: calc(100%/3);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-right: 1px solid var(--border-seperator-color); /* Add separator */
+  margin: 0;
+}
+
+.list-item:last-child {
+  border-right: none; /* Remove border on the last item */
+  
+}
+
+.item-heading {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-family: var(--font-family-bold);
+}
+
+.item-text {
+  margin: 0;
+  line-height: 1.5rem;
+  color: var(--text-color);
+
+}
 
 /* Color palette using 60-30-10 rule */
 :root {
