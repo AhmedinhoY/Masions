@@ -22,7 +22,7 @@ export function ImageSlider({ imgCollection, propertyID }) {
       )}
     >
       {imgCollection.map((img) => (
-        <a key={img.imgNo} href="#">
+        <a key={img.imgNo} href="post-details">
           {/*href={propertyID} */}
           <img
             src={img.imgSrc}
