@@ -8,6 +8,8 @@ import DropDownMenu from "../../components/DropdownMenu/DropDownMenu";
 import { HeartIcon } from "@radix-ui/react-icons";
 import { MapIcon } from "@heroicons/react/24/outline";
 
+import { Link } from "react-router-dom";
+
 export const NavBar = () => {
   return (
     <NavigationMenu.Root className={styles.NavigationMenuRoot}>
@@ -21,9 +23,11 @@ export const NavBar = () => {
                 lineHeight: "1.75rem",
                 color: "var(--primary)",
               }}
-              href="/"
+              asChild
             >
-              <h1>Maisons</h1>
+              <Link to="/">
+                <h1>Maisons</h1>
+              </Link>
             </NavigationMenu.Link>
           </NavigationMenu.Item>
           <div className="flex items-baseline">
@@ -33,9 +37,18 @@ export const NavBar = () => {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className={styles.NavigationMenuContent}>
                 <ul className={`${styles.List} ${styles.one} block`}>
-                  <ListItem href="#" title="Houses for sale"></ListItem>
-                  <ListItem href="#" title="Apartments for sale"></ListItem>
-                  <ListItem href="#" title="Lands for sale"></ListItem>
+                  <ListItem
+                    to="houses-for-sale"
+                    title="Houses for sale"
+                  ></ListItem>
+                  <ListItem
+                    to="apartments-for-sale"
+                    title="Apartments for sale"
+                  ></ListItem>
+                  <ListItem
+                    to="lands-for-sale"
+                    title="Lands for sale"
+                  ></ListItem>
                 </ul>
               </NavigationMenu.Content>
             </NavigationMenu.Item>
@@ -46,18 +59,24 @@ export const NavBar = () => {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className={styles.NavigationMenuContent}>
                 <ul className={`${styles.List} ${styles.two} block`}>
-                  <ListItem href="#" title="Houses for rent"></ListItem>
-                  <ListItem href="#" title="Apartments for rent"></ListItem>
+                  <ListItem
+                    to="houses-for-rent"
+                    title="Houses for rent"
+                  ></ListItem>
+                  <ListItem
+                    to="apartments-for-rent"
+                    title="Apartments for rent"
+                  ></ListItem>
                 </ul>
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
               <NavigationMenu.Link
+                asChild
                 className={styles.NavigationMenuLink}
-                href="#"
               >
-                Agents
+                <Link to="agents"> Agents</Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>
 
@@ -68,17 +87,17 @@ export const NavBar = () => {
               </NavigationMenu.Trigger>
               <NavigationMenu.Content className={styles.NavigationMenuContent}>
                 <ul className={`${styles.List} ${styles.three} block`}>
-                  <ListItem href="#" title="Analysis">
+                  <ListItem to="#" title="Analysis">
                     No more guess games! <br /> Gain real-time insights with
                     data science technologies, helping you make confident
                     investments decisions!
                   </ListItem>
-                  <ListItem href="#" title="Al-Muthammen">
+                  <ListItem to="#" title="Al-Muthammen">
                     Know the true value! <br /> Instantly get accurate,
                     AI-driven property price estimates based on real-time market
                     data.
                   </ListItem>
-                  <ListItem href="#" title="Al-Mustashar">
+                  <ListItem to="#" title="Al-Mustashar">
                     Your 24/7 AI assistant! <br />
                     Get instant answers, personalized property suggestions, and
                     seamless support, anytime you need it!
@@ -89,18 +108,20 @@ export const NavBar = () => {
           </div>
           <div className="flex flex-row items-center">
             <NavigationMenu.Item>
-              <button
+              <Link
                 className={styles.IconButton}
                 aria-label="Customise options"
+                to="explore"
               >
                 <MapIcon className="h-7 w-7 rounded-full" />
-              </button>
-              <button
+              </Link>
+              <Link
                 className={styles.IconButton}
                 aria-label="Customise options"
+                to="wishlist"
               >
                 <HeartIcon className="h-7 w-7 rounded-full" />
-              </button>
+              </Link>
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
@@ -122,17 +143,18 @@ export const NavBar = () => {
 };
 
 const ListItem = React.forwardRef(
-  ({ className, children, title, ...props }, forwardedRef) => (
+  ({ className, children, title, to, ...props }, forwardedRef) => (
     <li>
       <NavigationMenu.Link asChild>
-        <a
+        <Link
+          to={to}
           className={classNames(styles.ListItemLink, className)}
           {...props}
           ref={forwardedRef}
         >
           <div className={styles.ListItemHeading}>{title}</div>
           <p className={styles.ListItemText}>{children}</p>
-        </a>
+        </Link>
       </NavigationMenu.Link>
     </li>
   )
@@ -143,4 +165,5 @@ ListItem.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
 };

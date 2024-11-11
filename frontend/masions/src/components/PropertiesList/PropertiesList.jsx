@@ -1,4 +1,4 @@
-import { ImageSlider } from "../../components/ImageSlider/ImageSlider";
+import { ImageSlider } from "../ImageSlider/ImageSlider";
 import "./PropertiesList.css";
 
 const PropertiesList = ({ propertyType, limit }) => {
