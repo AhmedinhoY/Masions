@@ -1,4 +1,4 @@
-import PropertiesList from "../components/PropertiesList/PropertiesList";
+import PropertiesList from "../routes/PropertiesList/PropertiesList";
 
 export default function HomePage() {
   const houses = [

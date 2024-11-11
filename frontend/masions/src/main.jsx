@@ -5,7 +5,7 @@ import RootLayout from "./routes/RootLayout";
 
 import "./index.css";
 import HomePage from "./routes/HomePage";
-import PostDetails from "./components/PostDetails/PostDetails";
+import PostDetails from "./routes/PostDetails/PostDetails";
 import Places from "./routes/Places/Places";
 import { PlaceDetail } from "./routes/Places/PlaceDetails";
 import { EditPlace } from "./routes/Places/EditPlace";
