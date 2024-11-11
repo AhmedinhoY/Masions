@@ -1,7 +1,5 @@
-import styles from "./PostDetails.module.css";
-import classNames from "classnames";
-import Card from "../../components/Card/Card";
-import PropertiesList from "../PropertiesList/PropertiesList";
+import Card from "../components/Card/Card";
+import PropertiesList from "../components/PropertiesList/PropertiesList";
 
 const houses = [
   {
@@ -146,7 +144,7 @@ const agents = [
   },
 ];
 
-export default function Example() {
+export default function PostDetails() {
   return (
     <div className="">
       <div className="pt-6">
@@ -184,14 +182,10 @@ export default function Example() {
           {/* Post Header */}
           <div className="lg:col-span-2 lg:pr-8">
             <div className="flex justify-between">
-              <h1 className={classNames(styles.postHeader, "sm:text-3xl")}>
-                Villa for Sale in Manama
-              </h1>
-              <h1 className={classNames(styles.postHeader, "sm:text-3xl")}>
-                {houses[0].price} BD
-              </h1>
+              <h1 className="sm:text-3xl">Villa for Sale in Manama</h1>
+              <h1 className="sm:text-3xl">{houses[0].price} BD</h1>
             </div>
-            <h3 className={styles.post_subheader}>{houses[0].location}</h3>
+            <h3>{houses[0].location}</h3>
           </div>
         </div>
 
