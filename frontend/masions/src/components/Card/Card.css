@@ -1,0 +1,44 @@
+.card {
+  background-color: var(--secondary-bg);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--box-shadow);
+  height: auto;
+  @apply mx-auto max-w-2xl px-6 sm:py-12 sm:justify-center lg:max-w-7xl  lg:py-8;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.card-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-family: var(--font-family-bold);
+  text-align: center;
+}
+
+
+.card-subtitle {
+  margin-top: -0.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-family: var(--font-family);
+  text-align: center;
+}
+
+
+.card-text {
+
+}
+
+.card-img {
+  height:fit-content;
+  width: fit-content;
+  border-radius: var(--border-radius-img);
+  margin-bottom: 1.25rem;
+}
+

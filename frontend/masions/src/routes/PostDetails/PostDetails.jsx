@@ -1,58 +1,7 @@
 import styles from "./PostDetails.module.css";
 import classNames from "classnames";
+import Card from "../../components/Card/Card";
 
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/plus/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: false },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "2XL", inStock: true },
-    { name: "3XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
 const houses = [
   {
     id: 1,
@@ -74,13 +23,16 @@ const houses = [
         imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       },
     ],
-    city: "Manama ",
+    city: "Manama",
     type: "House",
     bedrooms: 4,
     bathrooms: 4,
     area: 403,
     location: "Block 605, Road 587",
     price: 86500,
+    features: ["Garden", "Garage", "Swimming Pool", "Central Heating"],
+    description:
+      "A spacious 4-bedroom house located in the heart of Manama with modern amenities and close to shopping centers.",
   },
   {
     id: 2,
@@ -109,6 +61,9 @@ const houses = [
     area: 333,
     location: "Block 605, Road 587",
     price: 86200,
+    features: ["Private Garden", "Balcony", "Solar Panels", "Outdoor Parking"],
+    description:
+      "A luxurious villa in Sitra with a private garden, ideal for families. Well-connected to local amenities.",
   },
   {
     id: 3,
@@ -130,13 +85,21 @@ const houses = [
         imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       },
     ],
-    city: "Muharraq ",
+    city: "Muharraq",
     type: "Villa",
     bedrooms: 3,
     bathrooms: 4,
     area: 393,
     location: "Block 605, Road 587",
     price: 88000,
+    features: [
+      "Gym Room",
+      "Home Theater",
+      "Security System",
+      "Backup Generator",
+    ],
+    description:
+      "Modern 3-bedroom villa with top-notch security and entertainment amenities. Located in a quiet area in Muharraq.",
   },
   {
     id: 4,
@@ -165,6 +128,20 @@ const houses = [
     area: 402,
     location: "Block 605, Road 587",
     price: 91000,
+    features: ["Rooftop Terrace", "Indoor Pool", "Guest House", "Fireplace"],
+    description:
+      "An elegant 5-bedroom house in Sanabis with a rooftop terrace and an indoor pool, perfect for luxurious living.",
+  },
+];
+
+const agents = [
+  {
+    name: "Dries Vincent",
+    email: "dries.vincent@example.com",
+    agency: "Grnata",
+    imageUrl:
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+    phoneNumber: 36728829,
   },
 ];
 
@@ -202,10 +179,9 @@ export default function Example() {
           </div>
         </div>
 
-        {/* Post info */}
-        <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+        <div className="mx-auto max-w-2xl px-4  pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8  lg:pt-16">
           {/* Post Header */}
-          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+          <div className="lg:col-span-2 lg:pr-8">
             <div className="flex justify-between">
               <h1 className={classNames(styles.postHeader, "sm:text-3xl")}>
                 Villa for Sale in Manama
@@ -216,19 +192,11 @@ export default function Example() {
             </div>
             <h3 className={styles.post_subheader}>{houses[0].location}</h3>
           </div>
+        </div>
 
-          {/* column */}
-          <div className="mt-4 lg:row-span-3 lg:mt-0">
-            <h2 className="sr-only">Product information</h2>
-
-            {/* Reviews */}
-            <div className="mt-6">
-              <h2 className="not-sr-only">Agent</h2>
-              <div className="flex items-center">
-                <div className="flex items-center"></div>
-              </div>
-            </div>
-          </div>
+        {/* Post info */}
+        <div className="mx-auto max-w-2xl px-4 pb-16 pt-2 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-4">
+          {/* columns */}
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             {/* Overview */}
@@ -252,13 +220,13 @@ export default function Example() {
             </div>
 
             <div className="mt-10">
-              <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
+              <h2 className="">Features</h2>
 
               <div className="mt-4">
-                <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  {product.highlights.map((highlight) => (
-                    <li key={highlight} className="text-gray-400">
-                      <span className="text-gray-600">{highlight}</span>
+                <ul role="list" className="list-disc space-y-2 pl-4">
+                  {houses[0].features.map((feature) => (
+                    <li key={feature}>
+                      <p>{feature}</p>
                     </li>
                   ))}
                 </ul>
@@ -266,11 +234,26 @@ export default function Example() {
             </div>
 
             <div className="mt-10">
-              <h2 className="text-sm font-medium text-gray-900">Details</h2>
+              <h2 className="">Description</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="text-sm text-gray-600">{product.details}</p>
+                <p className="">{houses[0].description}</p>
               </div>
+            </div>
+          </div>
+
+          <div className="lg:row-span-3 lg:mt-0">
+            <div className="">
+              <Card
+                title={agents[0].name}
+                subtitle={agents[0].agency}
+                imageUrl={agents[0].imageUrl}
+                buttons={[
+                  { label: "Call", onclick: "" },
+                  { label: "Message", onclick: "" },
+                  { label: "Whatsapp", onclick: "" },
+                ]}
+              />
             </div>
           </div>
         </div>
