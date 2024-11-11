@@ -1,6 +1,7 @@
 import styles from "./PostDetails.module.css";
 import classNames from "classnames";
 import Card from "../../components/Card/Card";
+import PropertiesList from "../PropertiesList/PropertiesList";
 
 const houses = [
   {
@@ -238,6 +239,13 @@ export default function Example() {
 
               <div className="mt-4 space-y-6">
                 <p className="">{houses[0].description}</p>
+              </div>
+            </div>
+
+            <div className="mt-10">
+              <h2 className="">Similar Properties</h2>
+              <div className="mt-4 space-y-6">
+                <PropertiesList propertyType={houses} limit={3} />
               </div>
             </div>
           </div>
