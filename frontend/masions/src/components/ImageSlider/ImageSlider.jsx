@@ -1,4 +1,6 @@
+/* eslint-disable react/prop-types */
 import { Carousel } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 export function ImageSlider({ imgCollection, propertyID }) {
   return (
@@ -22,14 +24,14 @@ export function ImageSlider({ imgCollection, propertyID }) {
       )}
     >
       {imgCollection.map((img) => (
-        <a key={img.imgNo} href="post-details">
-          {/*href={propertyID} */}
+        // changed this item from <a> to <div>
+        <Link key={img.imgNo} to={`/${propertyID}/post-details`}>
           <img
             src={img.imgSrc}
             alt={img.imgNo}
             className="h-full w-full object-cover"
           />
-        </a>
+        </Link>
       ))}
     </Carousel>
   );

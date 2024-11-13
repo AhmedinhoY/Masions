@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import { useLoaderData } from "react-router-dom";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
 const HousesForSale = [
@@ -112,16 +114,42 @@ const HousesForSale = [
     area: 402,
     location: "Block 605, Road 587",
     price: 91000,
+    propertyType: 'sale'
   },
 ];
 
 export const SaleHouses = () => {
+  const properties = useLoaderData();
+  const propertyHoueses_sale = properties.filter((property) => {
+    return (property.type == 'house' && property.propertyStatus == 'sale')
+  });
+
+
+
   return (
-    <div className="container">
-      <section>
-        <h1 className="container-header">Houses For Sale</h1>
-        <PropertiesList propertyType={HousesForSale} />
-      </section>
-    </div>
+    <>
+      {propertyHoueses_sale.length === 0 && (
+        <main className=" w-full min-h-[70vh]  flex items-center justify-center">
+          <h1
+            className="font-serif font-bold capitalize text-[5vh] drop-shadow-xl "
+          > no items here please add one</h1>
+        </main>
+      )}
+
+
+      {
+        propertyHoueses_sale.length > 0 && (
+
+          <div className="container">
+            <section>
+              <h1 className="container-header">Houses For Sale</h1>
+              <PropertiesList propertyType={propertyHoueses_sale} />
+            </section>
+          </div>
+        )
+
+
+      }
+    </>
   );
 };

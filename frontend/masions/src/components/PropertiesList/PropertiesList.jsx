@@ -1,42 +1,27 @@
-import { ImageSlider } from "../ImageSlider/ImageSlider";
+/* eslint-disable react/prop-types */
+
 import "./PropertiesList.css";
+import { PropertyItem } from "./PropertyItem";
 
 const PropertiesList = ({ propertyType, limit }) => {
   return (
     <div className="products-grid">
       {limit
         ? propertyType.slice(0, limit).map((property) => (
-            <div key={property.id} className="group">
-              <div className="product-img-container">
-                <ImageSlider
-                  imgCollection={property.img}
-                  propertyID={property.id}
-                />
-              </div>
-              <h2>{property.city}</h2>
-              <h3>{property.type} for Sale</h3>
-              <h3>
-                {property.area} m<sup>2</sup> - {property.bedrooms} bedrooms
-              </h3>
-              <p className="mt-1">{property.price.toLocaleString()} BD</p>
-            </div>
-          ))
+          // Property Item - renders a single property 
+          <PropertyItem
+            key={property.id}
+            property={property}
+
+          />
+        ))
         : propertyType.map((property) => (
-            <div key={property.id} className="group">
-              <div className="product-img-container">
-                <ImageSlider
-                  imgCollection={property.img}
-                  propertyID={property.id}
-                />
-              </div>
-              <h2>{property.city}</h2>
-              <h3>{property.type} for Sale</h3>
-              <h3>
-                {property.area} m<sup>2</sup> - {property.bedrooms} bedrooms
-              </h3>
-              <p className="mt-1">{property.price.toLocaleString()} BD</p>
-            </div>
-          ))}
+          <PropertyItem
+            key={property.id}
+            property={property}
+
+          />
+        ))}
     </div>
   );
 };

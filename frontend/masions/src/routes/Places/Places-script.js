@@ -33,6 +33,7 @@ export async function loader(){
 
 
 
+
 // loader function for the place detail component
 
 export async function loadPlace({ params }) {

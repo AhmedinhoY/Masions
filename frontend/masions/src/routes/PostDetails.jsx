@@ -1,3 +1,4 @@
+import { Link, useLoaderData, useSubmit } from "react-router-dom";
 import Card from "../components/Card/Card";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
@@ -145,6 +146,22 @@ const agents = [
 ];
 
 export default function PostDetails() {
+  const chosenHouse = useLoaderData();
+  const Status =
+    chosenHouse.propertyStatus[0].toUpperCase() +
+    chosenHouse.propertyStatus.slice(1);
+  const propertyType =
+    chosenHouse.type[0].toUpperCase() + chosenHouse.type.slice(1);
+  const submit = useSubmit();
+
+  const onDeleteClicked = () => {
+    const proceed = window.confirm("Are you sure?");
+
+    if (proceed) {
+      submit(null, { method: "delete" });
+    }
+  };
+
   return (
     <div className="">
       <div className="pt-6">
@@ -152,27 +169,27 @@ export default function PostDetails() {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={houses[0].img[0].imgSrc}
+              src={chosenHouse.img[0].imgSrc}
               className="h-full w-full object-cover object-center"
             />
           </div>
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={houses[0].img[1].imgSrc}
+                src={chosenHouse.img[1].imgSrc}
                 className="h-full w-full object-cover object-center"
               />
             </div>
             <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
               <img
-                src={houses[0].img[2].imgSrc}
+                src={chosenHouse.img[2].imgSrc}
                 className="h-full w-full object-cover object-center"
               />
             </div>
           </div>
           <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
             <img
-              src={houses[0].img[3].imgSrc}
+              src={chosenHouse.img[3].imgSrc}
               className="h-full w-full object-cover object-center"
             />
           </div>
@@ -180,12 +197,15 @@ export default function PostDetails() {
 
         <div className="mx-auto max-w-2xl px-4  pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8  lg:pt-16">
           {/* Post Header */}
-          <div className="lg:col-span-2 lg:pr-8">
+          <div className="lg:col-span-2 lg:pr-8 ">
             <div className="flex justify-between">
-              <h1 className="sm:text-3xl">Villa for Sale in Manama</h1>
-              <h1 className="sm:text-3xl">{houses[0].price} BD</h1>
+              <h1 className="sm:text-3xl">
+                {chosenHouse.type == "house" ? "Villa" : propertyType} for{" "}
+                {Status} in {chosenHouse.city}
+              </h1>
+              <h1 className="sm:text-3xl">{chosenHouse.price} BD</h1>
             </div>
-            <h3>{houses[0].location}</h3>
+            <h3>{chosenHouse.address}</h3>
           </div>
         </div>
 
@@ -201,15 +221,15 @@ export default function PostDetails() {
               <ul className="horizontal-list">
                 <li className="list-item">
                   <h2 className="item-heading">Size</h2>
-                  <p className="item-text">{houses[0].area} sqm</p>
+                  <p className="item-text">{chosenHouse.area} sqm</p>
                 </li>
                 <li className="list-item">
                   <h2 className="item-heading">Bedrooms</h2>
-                  <p className="item-text"> {houses[0].bedrooms}</p>
+                  <p className="item-text"> {chosenHouse.bedrooms}</p>
                 </li>
                 <li className="list-item">
                   <h2 className="item-heading">Bathrooms</h2>
-                  <p className="item-text"> {houses[0].bathrooms}</p>
+                  <p className="item-text"> {chosenHouse.bathrooms}</p>
                 </li>
               </ul>
             </div>
@@ -219,7 +239,7 @@ export default function PostDetails() {
 
               <div className="mt-4">
                 <ul role="list" className="list-disc space-y-2 pl-4">
-                  {houses[0].features.map((feature) => (
+                  {chosenHouse.features.map((feature) => (
                     <li key={feature}>
                       <p>{feature}</p>
                     </li>
@@ -232,7 +252,7 @@ export default function PostDetails() {
               <h2 className="">Description</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="">{houses[0].description}</p>
+                <p className="">{chosenHouse.description}</p>
               </div>
             </div>
 
@@ -256,6 +276,23 @@ export default function PostDetails() {
                   { label: "Whatsapp", onclick: "" },
                 ]}
               />
+            </div>
+            {/* only displayed if the logged in user == creator of the post */}
+            <div className="  mt-4 flex items-center justify-center gap-6">
+              <Link
+                to={`/${chosenHouse.id}/edit`}
+                className="px-8 py-2 rounded-md text-white bg-gray-700 hover:bg-gray-500"
+              >
+                {" "}
+                Edit{" "}
+              </Link>
+              <button
+                className="px-8 py-2 rounded-md text-white bg-red-700  hover:bg-red-500"
+                onClick={onDeleteClicked}
+              >
+                {" "}
+                Delete{" "}
+              </button>
             </div>
           </div>
         </div>

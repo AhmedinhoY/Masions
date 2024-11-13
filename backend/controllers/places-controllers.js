@@ -79,28 +79,70 @@ exports.createPlace = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
+    console.log(errors);
     return next(new HttpError('invalid input, please check your input', 422));
   }
 
 
-  const { title, description, address, creator } = req.body;
+  const {
+    city,
+    type,
+    propertyStatus,
+    bedrooms,
+    bathrooms,
+    area,
+    address,
+    price,
+    features,
+    description,
+    creator,
+
+  } = req.body;
 
   let coordinates;
   try {
 
-    coordinates = await getCoordinates(address); //{}
+    coordinates = await getCoordinates(address); //{ lat : ... , lng : ...}
 
   } catch (error) {
     return next(error);
   }
 
+  // trim the recieved data, and clean it from the backend
+  // clean the data where it matters 
+
   const createdPlace = new Place({
-    title,
     description,
     address,
     location: coordinates,
     creator,
-    image: 'https://bahrainfinder.bh/wp-content/uploads/2023/02/Bahrainfinder_2023-02-27-7-26-PM_03-758x564.jpg'
+    city,
+    type,
+    propertyStatus,
+    bedrooms,
+    bathrooms,
+    area,
+    price,
+    features,
+    img: [
+      {
+        imgNo: 1,
+        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      },
+      {
+        imgNo: 2,
+        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      },
+      {
+        imgNo: 3,
+        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      },
+      {
+        imgNo: 4,
+        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+      },
+    ],
+
 
   });
 
@@ -148,6 +190,8 @@ exports.createPlace = async (req, res, next) => {
 
 }
 
+
+// change this function later on 
 exports.updatePlaceById = async (req, res, next) => {
 
   const errors = validationResult(req);
@@ -158,7 +202,17 @@ exports.updatePlaceById = async (req, res, next) => {
   }
 
   const pid = req.params.pid;
-  const { title, description } = req.body;
+  const {
+    city,
+    type,
+    propertyStatus,
+    bedrooms,
+    bathrooms,
+    area,
+    price,
+    features,
+    description,
+    address } = req.body;
 
   let place;
 
@@ -173,8 +227,17 @@ exports.updatePlaceById = async (req, res, next) => {
   }
 
 
-  place.title = title;
+  place.city = city;
+  place.type = type;
+  place.propertyStatus = propertyStatus;
+  place.bedrooms = bedrooms;
+  place.bathrooms = bathrooms;
+  place.area = area;
+  place.price = price;
+  place.features = features;
   place.description = description;
+  place.address = address;
+
 
 
   try {
