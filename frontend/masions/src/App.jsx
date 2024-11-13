@@ -1,4 +1,3 @@
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 
@@ -28,38 +27,56 @@ import { EditPost } from "./routes/EditPost";
 import { AddPost } from "./routes/AddPost";
 
 import { action as formAction } from "./components/AddPostForm/form-script";
-import { loadPlaces, loadProperty , deleteProperty} from "./routes/property-script";
+import {
+  loadPlaces,
+  loadProperty,
+  deleteProperty,
+} from "./routes/property-script";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage />,loader: loadPlaces },
+      { index: true, element: <HomePage />, loader: loadPlaces },
       {
-        path: '/houses', children: [
+        path: "/houses",
+        children: [
           { path: "for-sale", element: <SaleHouses />, loader: loadPlaces },
           { path: "for-rent", element: <RentHouses />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: 'apartments', children: [
+        path: "apartments",
+        children: [
           { path: "for-sale", element: <SaleApartments />, loader: loadPlaces },
           { path: "for-rent", element: <RentApartments />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: 'lands', children: [
+        path: "lands",
+        children: [
           { path: "for-sale", element: <SaleLands />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: ':id', children: [
-          { path: "post-details", element: <PostDetails />, loader: loadProperty, action: deleteProperty }, // general post details for: apartments, houses, lands
-          { path: 'edit', element: <EditPost />, loader: loadProperty, action: formAction }
-        ]
+        path: ":id",
+        children: [
+          {
+            path: "post-details",
+            element: <PostDetails />,
+            loader: loadProperty,
+            action: deleteProperty,
+          }, // general post details for: apartments, houses, lands
+          {
+            path: "edit",
+            element: <EditPost />,
+            loader: loadProperty,
+            action: formAction,
+          },
+        ],
       },
-      { path: '/add-post', element: <AddPost />, action: formAction },
+      { path: "/add-post", element: <AddPost />, action: formAction },
       { path: "/wishlist", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
@@ -86,11 +103,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-
-
-
 export const App = () => {
-
   return <RouterProvider router={router} />;
-
-}
+};

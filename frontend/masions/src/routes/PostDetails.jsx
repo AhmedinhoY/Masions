@@ -146,19 +146,21 @@ const agents = [
 ];
 
 export default function PostDetails() {
-
   const chosenHouse = useLoaderData();
-  const Status = chosenHouse.propertyStatus[0].toUpperCase() + chosenHouse.propertyStatus.slice(1);
-  const propertyType = chosenHouse.type[0].toUpperCase() + chosenHouse.type.slice(1);
+  const Status =
+    chosenHouse.propertyStatus[0].toUpperCase() +
+    chosenHouse.propertyStatus.slice(1);
+  const propertyType =
+    chosenHouse.type[0].toUpperCase() + chosenHouse.type.slice(1);
   const submit = useSubmit();
 
-  const onDeleteClicked =  () => {
-    const proceed =  window.confirm('Are you sure?');
+  const onDeleteClicked = () => {
+    const proceed = window.confirm("Are you sure?");
 
     if (proceed) {
-      submit(null, { method: 'delete' });
+      submit(null, { method: "delete" });
     }
-  }
+  };
 
   return (
     <div className="">
@@ -197,7 +199,10 @@ export default function PostDetails() {
           {/* Post Header */}
           <div className="lg:col-span-2 lg:pr-8 ">
             <div className="flex justify-between">
-              <h1 className="sm:text-3xl">{chosenHouse.type == 'house' ? 'Villa' : propertyType} for {Status} in {chosenHouse.city}</h1>
+              <h1 className="sm:text-3xl">
+                {chosenHouse.type == "house" ? "Villa" : propertyType} for{" "}
+                {Status} in {chosenHouse.city}
+              </h1>
               <h1 className="sm:text-3xl">{chosenHouse.price} BD</h1>
             </div>
             <h3>{chosenHouse.address}</h3>
@@ -251,15 +256,6 @@ export default function PostDetails() {
               </div>
             </div>
 
-            {/* only displayed if the logged in user == creator of the post */}
-            <div className="  mt-4 flex items-center justify-end gap-6">
-              <Link to={`/${chosenHouse.id}/edit`} className="px-8 py-2 rounded-md hover:bg-gray-400"> Edit </Link>
-              <button
-                className="px-8 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-900"
-                onClick={ onDeleteClicked }
-              > Delete </button>
-            </div>
-
             <div className="mt-10">
               <h2 className="">Similar Properties</h2>
               <div className="mt-4 space-y-6">
@@ -280,6 +276,23 @@ export default function PostDetails() {
                   { label: "Whatsapp", onclick: "" },
                 ]}
               />
+            </div>
+            {/* only displayed if the logged in user == creator of the post */}
+            <div className="  mt-4 flex items-center justify-center gap-6">
+              <Link
+                to={`/${chosenHouse.id}/edit`}
+                className="px-8 py-2 rounded-md text-white bg-gray-700 hover:bg-gray-500"
+              >
+                {" "}
+                Edit{" "}
+              </Link>
+              <button
+                className="px-8 py-2 rounded-md text-white bg-red-700  hover:bg-red-500"
+                onClick={onDeleteClicked}
+              >
+                {" "}
+                Delete{" "}
+              </button>
             </div>
           </div>
         </div>
