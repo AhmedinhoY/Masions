@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Link, useSubmit } from "react-router-dom";
+import { Link, redirect, useSubmit } from "react-router-dom";
 import { Modal } from "../../shared/Modal";
 import { useRef, useState } from "react";
 
@@ -18,7 +18,7 @@ export const PlaceDetailsItem = ({ place }) => {
     const proceed = window.confirm("Are you sure?");
     if (proceed) {
       submit(null, { method: "delete" });
-      console.log("deleted");
+      
     }
   };
 

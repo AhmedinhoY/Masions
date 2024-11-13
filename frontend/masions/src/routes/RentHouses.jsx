@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import { useLoaderData } from "react-router-dom";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
 const HousesForRent = [
@@ -21,7 +23,7 @@ const HousesForRent = [
         imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       },
     ],
-    city: "Manama ",
+    city: "Manama",
     type: "House",
     bedrooms: 4,
     bathrooms: 4,
@@ -116,12 +118,33 @@ const HousesForRent = [
 ];
 
 export const RentHouses = () => {
+
+  const properties = useLoaderData();
+  const propertyHoueses_rent = properties.filter((property) => {
+    return (property.type == 'house' && property.propertyStatus == 'rent')
+  });
+
   return (
-    <div className="container">
-      <section>
-        <h1 className="container-header">Houses For Rent</h1>
-        <PropertiesList propertyType={HousesForRent} />
-      </section>
-    </div>
+    <>
+      {propertyHoueses_rent.length === 0 && (
+        <main className=" w-full min-h-[70vh]  flex items-center justify-center">
+          <h1
+            className="font-serif font-bold capitalize text-[5vh] drop-shadow-xl "
+          > no items here please add one</h1>
+        </main>
+      )}
+
+
+      {propertyHoueses_rent.length > 0 && (
+
+        <div className="container">
+          <section>
+            <h1 className="container-header">Houses For Rent</h1>
+            <PropertiesList propertyType={propertyHoueses_rent} />
+          </section>
+        </div>
+      )}
+
+    </>
   );
 };

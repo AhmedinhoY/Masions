@@ -38,15 +38,15 @@ export const NavBar = () => {
               <NavigationMenu.Content className={styles.NavigationMenuContent}>
                 <ul className={`${styles.List} ${styles.one} block`}>
                   <ListItem
-                    to="houses-for-sale"
+                    to="houses/for-sale"
                     title="Houses for sale"
                   ></ListItem>
                   <ListItem
-                    to="apartments-for-sale"
+                    to="apartments/for-sale"
                     title="Apartments for sale"
                   ></ListItem>
                   <ListItem
-                    to="lands-for-sale"
+                    to="lands/for-sale"
                     title="Lands for sale"
                   ></ListItem>
                 </ul>
@@ -60,11 +60,11 @@ export const NavBar = () => {
               <NavigationMenu.Content className={styles.NavigationMenuContent}>
                 <ul className={`${styles.List} ${styles.two} block`}>
                   <ListItem
-                    to="houses-for-rent"
+                    to="houses/for-rent"
                     title="Houses for rent"
                   ></ListItem>
                   <ListItem
-                    to="apartments-for-rent"
+                    to="apartments/for-rent"
                     title="Apartments for rent"
                   ></ListItem>
                 </ul>
@@ -105,6 +105,19 @@ export const NavBar = () => {
                 </ul>
               </NavigationMenu.Content>
             </NavigationMenu.Item>
+
+            <NavigationMenu.Item>
+              <NavigationMenu.Link
+                asChild
+                className={styles.NavigationMenuLink}
+              >
+                <Link to="/add-post"> Add Post </Link>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>
+
+
+
+
           </div>
           <div className="flex flex-row items-center">
             <NavigationMenu.Item>

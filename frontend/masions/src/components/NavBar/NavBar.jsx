@@ -66,7 +66,7 @@ export const NavBar = () => {
                 Maisons Premium
                 <CaretDownIcon className={styles.CaretDown} aria-hidden />
               </NavigationMenu.Trigger>
-              <NavigationMenu.Content className={styles.NavigationMenuContent}>
+              <NavigationMenu.Content className={styles.NavigationMenuContent }>
                 <ul className={`${styles.List} ${styles.three} block`}>
                   <ListItem href="#" title="Analysis">
                     No more guess games! <br /> Gain real-time insights with

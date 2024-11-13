@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { Carousel } from "@material-tailwind/react";
 
-export function ImageSlider({ imgCollection, propertyID }) {
+export function ImageSlider({ imgCollection }) {
   return (
     <Carousel
       className="rounded-xl"
@@ -9,9 +10,8 @@ export function ImageSlider({ imgCollection, propertyID }) {
           {new Array(imgCollection.length).fill("").map((_, i) => (
             <span
               key={i}
-              className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
-              }`}
+              className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                }`}
               onClick={(e) => {
                 e.preventDefault(); // Prevents scrolling to the top
                 setActiveIndex(i);
@@ -22,14 +22,14 @@ export function ImageSlider({ imgCollection, propertyID }) {
       )}
     >
       {imgCollection.map((img) => (
-        <a key={img.imgNo} href="post-details">
-          {/*href={propertyID} */}
+        // changed this item from <a> to <div>
+        <div className="h-[42.8vh] object-contain" key={img.imgNo} >
           <img
             src={img.imgSrc}
             alt={img.imgNo}
             className="h-full w-full object-cover"
           />
-        </a>
+        </div>
       ))}
     </Carousel>
   );
