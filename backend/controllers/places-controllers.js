@@ -78,10 +78,12 @@ exports.createPlace = async (req, res, next) => {
 
   const errors = validationResult(req);
 
+
   if (!errors.isEmpty()) {
     console.log(errors);
     return next(new HttpError('invalid input, please check your input', 422));
   }
+
 
 
   const {
@@ -96,8 +98,19 @@ exports.createPlace = async (req, res, next) => {
     features,
     description,
     creator,
+    image
 
   } = req.body;
+
+  console.log(image); // a string 
+  
+  if (req.file) {
+    console.log(req.file);
+  }
+
+  if (!req.file) {
+    console.log('file is undefined');
+  }
 
   let coordinates;
   try {
@@ -146,11 +159,12 @@ exports.createPlace = async (req, res, next) => {
 
   });
 
+
   let user;
   try {
     user = await User.findById(creator);
   } catch (err) {
-    const error = new HttpError('Creating Place Failed, please try again later',
+    const error = new HttpError('Creating Place Failed, please try again later ',
       500
     );
 

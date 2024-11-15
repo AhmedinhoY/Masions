@@ -6,6 +6,9 @@ export const ImageUpload = ({ name, extraClasses, pClass }) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
 
+
+
+
   useEffect(() => {
     if (!file) {
       return;
@@ -26,6 +29,7 @@ export const ImageUpload = ({ name, extraClasses, pClass }) => {
     if (event.target.files && event.target.files.length === 1) {
       pickedFile = event.target.files[0];
       setFile(pickedFile);
+
     }
   }
 

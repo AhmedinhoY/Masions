@@ -47,5 +47,5 @@ module.exports = mongoose.model('Place', placeSchema);
 
 
 // required = true 
-  // The required option in Mongoose is a schema validation rule that enforces 
-  // the presence of a particular field when creating or updating a document.
+// The required option in Mongoose is a schema validation rule that enforces
+// the presence of a particular field when creating or updating a document.

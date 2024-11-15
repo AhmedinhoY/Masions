@@ -37,6 +37,21 @@ export const AddPostForm = ({ method, property }) => {
         className="flex flex-col gap-6 items-center bg-white min-w-[50vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl "
         method={method}
       >
+         <p className={pCss}>
+          <label htmlFor="imagecity" className={labelCss}>
+          image city
+          </label>
+          <input
+            id="imagecity"
+            type="file"
+            name="imagecity"
+            required
+            className={inputCss}
+            defaultValue={property ? property.city : ''}
+
+          />
+        </p>
+
         <p className={pCss}>
           <label htmlFor="city" className={labelCss}>
             city
