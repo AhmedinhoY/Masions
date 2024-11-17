@@ -28,14 +28,17 @@ import { EditPost } from "./routes/EditPost";
 import { AddPost } from "./routes/AddPost";
 
 import { action as formAction } from "./components/AddPostForm/form-script";
-import { loadPlaces, loadProperty , deleteProperty} from "./routes/property-script";
+import { loadPlaces, loadProperty, deleteProperty } from "./routes/property-script";
+import { Auth } from "./routes/Users/auth";
+import { AuthContext } from "./shared/context/auth-context";
+import { useCallback, useState } from "react";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage />,loader: loadPlaces },
+      { index: true, element: <HomePage />, loader: loadPlaces },
       {
         path: '/houses', children: [
           { path: "for-sale", element: <SaleHouses />, loader: loadPlaces },
@@ -63,6 +66,8 @@ const router = createBrowserRouter([
       { path: "/wishlist", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
+      { path: "/auth", element: <Auth /> },
+
     ],
   },
   {
@@ -90,6 +95,36 @@ const router = createBrowserRouter([
 
 
 export const App = () => {
-  return <RouterProvider router={router} />;
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState();
+
+
+  // useCallback is so powerful to minimize the execution of the function 
+  // execute once and remember it, very very powerful
+  // use console.log and see the value of isLoggedIn to see to the useCallback power
+  const login = useCallback((uid) => {
+    setIsLoggedIn(true);
+    setUserId(uid);
+  }, []);
+
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+    setUserId(null);
+  }, []);
+
+  return (
+    <>
+      <AuthContext.Provider value={{
+        isLoggedIn: isLoggedIn,
+        uid: userId,
+        login: login,
+        logout: logout
+      }}>
+        <RouterProvider router={router} />
+      </AuthContext.Provider>
+    </>
+  );
 
 }

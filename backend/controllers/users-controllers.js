@@ -27,7 +27,7 @@ exports.getAllUsers = async (req, res, next) => {
 exports.signUp = async (req, res, next) => {
 
   const errors = validationResult(req);
-
+  console.log(errors);
   if (!errors.isEmpty()) {
     return next(new HttpError(
       'to signup  please provide something for the name, valid email, min password length 3',
@@ -103,7 +103,8 @@ exports.login = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: 'Logged In' });
+  res.status(200).json({ message: 'Logged In',
+     user: existingUser.toObject({ getters: true }) });
 }
 
 

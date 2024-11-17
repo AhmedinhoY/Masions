@@ -98,11 +98,10 @@ exports.createPlace = async (req, res, next) => {
     features,
     description,
     creator,
-    image
+    
 
   } = req.body;
 
-  console.log(image); // a string 
   
   if (req.file) {
     console.log(req.file);
@@ -140,7 +139,7 @@ exports.createPlace = async (req, res, next) => {
     img: [
       {
         imgNo: 1,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        imgSrc: req.file.path,
       },
       {
         imgNo: 2,

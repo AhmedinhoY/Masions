@@ -25,8 +25,8 @@ export function ImageSlider({ imgCollection }) {
         // changed this item from <a> to <div>
         <div className="h-[42.8vh] object-contain" key={img.imgNo} >
           <img
-            src={img.imgSrc}
-            alt={img.imgNo}
+            src={`http://localhost:3000/${img.imgSrc}`}
+            alt={img._id}
             className="h-full w-full object-cover"
           />
         </div>

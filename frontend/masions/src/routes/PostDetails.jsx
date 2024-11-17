@@ -1,6 +1,10 @@
-import { Link, useLoaderData, useSubmit } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import Card from "../components/Card/Card";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
+import { Button } from "../shared/Button";
+import { Modal } from "../shared/Modal";
+import { useContext, useRef } from "react";
+import { AuthContext } from "../shared/context/auth-context";
 
 const houses = [
   {
@@ -148,17 +152,24 @@ const agents = [
 export default function PostDetails() {
 
   const chosenHouse = useLoaderData();
+  const modal = useRef();
   const Status = chosenHouse.propertyStatus[0].toUpperCase() + chosenHouse.propertyStatus.slice(1);
   const propertyType = chosenHouse.type[0].toUpperCase() + chosenHouse.type.slice(1);
   const submit = useSubmit();
+  const auth = useContext(AuthContext);
 
-  const onDeleteClicked =  () => {
-    const proceed =  window.confirm('Are you sure?');
 
-    if (proceed) {
-      submit(null, { method: 'delete' });
-    }
+  const onDeleteClicked = () => {
+    modal.current.open();
   }
+
+  const deleteConfirmation = () => {
+    submit(null, { method: 'DELETE' });
+    console.log('Deleted!');
+
+  }
+
+
 
   return (
     <div className="">
@@ -167,7 +178,7 @@ export default function PostDetails() {
         <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
           <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
             <img
-              src={chosenHouse.img[0].imgSrc}
+              src={`http://localhost:3000/${chosenHouse.img[0].imgSrc}`}
               className="h-full w-full object-cover object-center"
             />
           </div>
@@ -247,19 +258,55 @@ export default function PostDetails() {
               <h2 className="">Description</h2>
 
               <div className="mt-4 space-y-6">
-                <p className="">{chosenHouse.description}</p>
+                <p className=" font-serif">{chosenHouse.description}</p>
               </div>
             </div>
 
-            {/* only displayed if the logged in user == creator of the post */}
-            <div className="  mt-4 flex items-center justify-end gap-6">
-              <Link to={`/${chosenHouse.id}/edit`} className="px-8 py-2 rounded-md hover:bg-gray-400"> Edit </Link>
-              <button
-                className="px-8 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-900"
-                onClick={ onDeleteClicked }
-              > Delete </button>
-            </div>
+            {/* Modal generation */}
+            <Modal
+              ref={modal}
+              className={' w-1/2 min-h-[15rem] drop-shadow-2xl rounded-md p-8'}
+              title={'Are you Sure? '}
+              titleClass={' font-bold font-serif w-full my-3 '}
+              contentClass={' w-full h-[5rem]  mb-2 flex items-center justify-center '}
+              footerClass={' flex items-center justify-end gap-3'}
+              footer={
+                <>
+                  <Button
+                    type={'submit'}
+                  > Cancel </Button>
+                  <Button
+                    danger
+                    type={'submit'}
+                    onClick={deleteConfirmation}
+                  >
+                    Confirm
+                  </Button>
+                </>
+              }
+            >
+              <p className=" capitalize font-serif font-semibold">
+                if you confirm the post is <span className=" uppercase text-red-900">deleted </span>forever.
+              </p>
 
+            </Modal>
+
+            {/* only displayed if the logged in user == creator of the post */}
+
+            {auth.isLoggedIn && auth.uid === chosenHouse.creator && <div className="  mt-4 flex items-center justify-end gap-6">
+              <Button
+                to={`/${chosenHouse.id}/edit`}
+
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={onDeleteClicked}
+                danger
+              > Delete
+              </Button>
+            </div>
+            }
             <div className="mt-10">
               <h2 className="">Similar Properties</h2>
               <div className="mt-4 space-y-6">

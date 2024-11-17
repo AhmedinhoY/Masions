@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import classNames from "classnames";
@@ -9,8 +9,16 @@ import { HeartIcon } from "@radix-ui/react-icons";
 import { MapIcon } from "@heroicons/react/24/outline";
 
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/auth-context";
 
 export const NavBar = () => {
+  const auth = useContext(AuthContext);
+
+  console.log(auth.uid);
+
+  console.log(` Login state in the header page: ${auth.isLoggedIn}`);
+
+
   return (
     <NavigationMenu.Root className={styles.NavigationMenuRoot}>
       <NavigationMenu.List className={`${styles.NavigationMenuList} w-screen`}>
@@ -106,14 +114,24 @@ export const NavBar = () => {
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
-            <NavigationMenu.Item>
+            { auth.isLoggedIn &&<NavigationMenu.Item>
               <NavigationMenu.Link
                 asChild
                 className={styles.NavigationMenuLink}
               >
                 <Link to="/add-post"> Add Post </Link>
               </NavigationMenu.Link>
-            </NavigationMenu.Item>
+            </NavigationMenu.Item>}
+
+            { !auth.isLoggedIn && <NavigationMenu.Item>
+              <NavigationMenu.Link
+                asChild
+                className={styles.NavigationMenuLink}
+              >
+                <Link to="/auth"> Login/SignUp </Link>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>}
+
 
 
 
