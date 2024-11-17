@@ -9,17 +9,17 @@ export default function AuthenticationForm() {
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
         <Tabs.List className="TabsList" aria-label="Manage your account">
           <Tabs.Trigger className="TabsTrigger" value="tab1">
-            Log-in
+            Register
           </Tabs.Trigger>
           <Tabs.Trigger className="TabsTrigger" value="tab2">
-            Register
+            Log-in
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content className="TabsContent" value="tab1">
-          <LoginForm />
+          <RegisterForm />
         </Tabs.Content>
         <Tabs.Content className="TabsContent" value="tab2">
-          <RegisterForm />
+          <LoginForm />
         </Tabs.Content>
       </Tabs.Root>
     </div>
