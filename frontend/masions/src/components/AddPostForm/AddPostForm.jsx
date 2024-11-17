@@ -1,17 +1,12 @@
-
 /* eslint-disable react/prop-types */
 
 import { Form, useNavigate, useNavigation } from "react-router-dom";
 import { ImageUpload } from "../../shared/ImageUpload";
-
-
-
-
+import { AddPost } from "./AddPost";
 
 export const AddPostForm = ({ method, property }) => {
-
   const navigation = useNavigation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // HERE we use let because we will add some styling to it
   // making the styles added to this project more adaptable to changes
@@ -20,19 +15,16 @@ export const AddPostForm = ({ method, property }) => {
   const pCss = " flex flex-col gap-1 min-w-full px-4 py-2";
   const labelCss = "text-sm font-bold uppercase text-gray-800";
 
-
-  const isSubmitting = navigation.state === 'submitting';
-
+  const isSubmitting = navigation.state === "submitting";
 
   const onCancelClick = () => {
-    navigate('/');
-  }
-
-
-
+    navigate("/");
+  };
 
   return (
     <>
+      <AddPost />
+
       <Form
         className="flex flex-col gap-6 items-center bg-white min-w-[50vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl "
         method={method}
@@ -47,8 +39,7 @@ export const AddPostForm = ({ method, property }) => {
             name="city"
             required
             className={inputCss}
-            defaultValue={property ? property.city : ''}
-
+            defaultValue={property ? property.city : ""}
           />
         </p>
 
@@ -56,12 +47,17 @@ export const AddPostForm = ({ method, property }) => {
           <label htmlFor="type" className={labelCss}>
             type
           </label>
-          <select id="type" name="type" required className={inputCss + ' text-blue-900'} defaultValue={property ? property.type : ''}>
+          <select
+            id="type"
+            name="type"
+            required
+            className={inputCss + " text-blue-900"}
+            defaultValue={property ? property.type : ""}
+          >
             <option value=""> Select Type </option>
             <option value="house"> House </option>
-            <option value="apartment" > Apartment</option>
-            <option value="land" > Land</option>
-
+            <option value="apartment"> Apartment</option>
+            <option value="land"> Land</option>
           </select>
         </p>
 
@@ -69,10 +65,16 @@ export const AddPostForm = ({ method, property }) => {
           <label htmlFor="propertyStatus" className={labelCss}>
             property Status
           </label>
-          <select id="propertyStatus" name="propertyStatus" required className={inputCss + ' text-blue-900'} defaultValue={property ? property.propertyStatus : ''} >
+          <select
+            id="propertyStatus"
+            name="propertyStatus"
+            required
+            className={inputCss + " text-blue-900"}
+            defaultValue={property ? property.propertyStatus : ""}
+          >
             <option value=""> Select Property Status </option>
             <option value="sale"> Sale </option>
-            <option value="rent" > Rent</option>
+            <option value="rent"> Rent</option>
           </select>
         </p>
 
@@ -86,8 +88,7 @@ export const AddPostForm = ({ method, property }) => {
             name="bedrooms"
             required
             className={inputCss}
-            defaultValue={property ? property.bedrooms : ''}
-
+            defaultValue={property ? property.bedrooms : ""}
           />
         </p>
 
@@ -101,9 +102,7 @@ export const AddPostForm = ({ method, property }) => {
             name="bathrooms"
             required
             className={inputCss}
-            defaultValue={property ? property.bathrooms : ''}
-
-
+            defaultValue={property ? property.bathrooms : ""}
           />
         </p>
 
@@ -117,14 +116,11 @@ export const AddPostForm = ({ method, property }) => {
             name="area"
             required
             className={inputCss}
-            defaultValue={property ? property.area : ''}
-
-
+            defaultValue={property ? property.area : ""}
           />
         </p>
 
         <p className={pCss}>
-
           <label htmlFor="price" className={labelCss}>
             price
           </label>
@@ -134,14 +130,11 @@ export const AddPostForm = ({ method, property }) => {
             name="price"
             required
             className={inputCss}
-            defaultValue={property ? property.price : ''}
-
+            defaultValue={property ? property.price : ""}
           />
-
         </p>
 
         <p className={pCss}>
-
           <label htmlFor="features" className={labelCss}>
             features
           </label>
@@ -152,13 +145,10 @@ export const AddPostForm = ({ method, property }) => {
             required
             className={inputCss}
             placeholder="Enter Features separated by commas (e.g., Garden, Garage, Swimming Pool )"
-            defaultValue={property ? property.features : ''}
-
+            defaultValue={property ? property.features : ""}
           />
           {/* add a small list showing the user how things will look like */}
-
         </p>
-
 
         <p className={pCss}>
           <label htmlFor="description" className={labelCss}>
@@ -170,9 +160,7 @@ export const AddPostForm = ({ method, property }) => {
             name="description"
             required
             className={inputCss + " h-[10vh]"}
-            defaultValue={property ? property.description : ''}
-
-
+            defaultValue={property ? property.description : ""}
           />
         </p>
 
@@ -187,14 +175,11 @@ export const AddPostForm = ({ method, property }) => {
             name="address"
             required
             className={inputCss}
-            defaultValue={property ? property.address : ''}
-
-
+            defaultValue={property ? property.address : ""}
           />
         </p>
 
         {/* add Image upload */}
-
 
         <ImageUpload name={"image"} extraClasses={inputCss} pClass={pCss} />
 
@@ -207,21 +192,15 @@ export const AddPostForm = ({ method, property }) => {
             Cancel
           </button>
           <button
-            className={` px-6 py-2 rounded-md text-gray-50  ${isSubmitting ? " bg-gray-400" : "bg-gray-900 hover:bg-gray-700"
-              }`}
+            className={` px-6 py-2 rounded-md text-gray-50  ${
+              isSubmitting ? " bg-gray-400" : "bg-gray-900 hover:bg-gray-700"
+            }`}
             disabled={isSubmitting}
           >
-
             {isSubmitting ? "Submitting..." : "Add"}
-
           </button>
         </div>
       </Form>
     </>
   );
-}
-
-
-
-
-
+};

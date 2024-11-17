@@ -63,6 +63,12 @@
 
 .FormRoot {
 	width: 100%;
+	flex-grow: 1;
+	padding: 20px;
+	background-color: white;
+	border-radius: var(--border-radius-card);
+
+	outline: none;
 }
 
 .FormField {
