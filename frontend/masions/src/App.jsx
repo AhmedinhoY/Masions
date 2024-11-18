@@ -32,6 +32,8 @@ import {
   loadProperty,
   deleteProperty,
 } from "./routes/property-script";
+import LoginForm from "./components/AuthenticationForms/LoginForm";
+import RegisterForm from "./components/AuthenticationForms/RegisterForm";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage />, loader: loadPlaces },
+      {
+        path: "/login",
+        element: <LoginForm />,
+      },
+      {
+        path: "/signUp",
+        element: <RegisterForm />,
+      },
       {
         path: "/houses",
         children: [

@@ -1,20 +1,52 @@
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const handleInputs = (event) => {
+  const navigate = useNavigate();
+
+  const handleError = (err) =>
+    toast.error(err, {
+      position: "bottom-left",
+    });
+  const handleSuccess = (msg) =>
+    toast.success(msg, {
+      position: "bottom-left",
+    });
+
+  const handleInputs = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-
-    /* The FormData API is a built-in JavaScript interface for working with form data, allowing you to collect, inspect, and submit form values easily. It's part of the Web API, so it’s available in modern web browsers without needing to install anything.
-    When you initialize FormData with a form element (like new FormData(event.target) in an onSubmit handler), it collects all input data from that form, such as text fields, checkboxes, radio buttons, and other input types. Each form field must have a name attribute for FormData to collect its value. */
 
     const data = {
       email: formData.get("email"),
       password: formData.get("password"),
     };
     console.log(data);
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:3000/api/users/login",
+
+        data,
+        { withCredentials: true }
+      );
+
+      const { success, message } = data;
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        handleError(message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
     event.target.reset(); //reset the input fields
   };
