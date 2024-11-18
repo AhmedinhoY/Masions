@@ -38,8 +38,9 @@ export const Input = (
     validators,
     errorText,
     onInput,
-    defaultValue, 
-    valid
+    defaultValue,
+    valid,
+    options
   }
 ) => {
 
@@ -87,7 +88,7 @@ export const Input = (
 
 
   // either renders an input or textarea
-  const element = elementType == 'input' ?
+  let element = elementType == 'input' ?
     <input
       name={id}
       id={id}
@@ -109,6 +110,26 @@ export const Input = (
       value={inputState.value}
     />;
 
+  if (elementType == 'select') {
+    element = <select
+      id={id}
+      name={id}
+      className={`${inputCss} ${!inputState.isValid && inputState.isTouched && ' border-red-500'}`}
+      onChange={changeHandler}
+      onBlur={touchHandler}
+      value={inputState.value}
+    >
+      <option value=""> Select Type </option>
+      {options && options.map(op => {
+        return <option
+          key={op.value}
+          value={op.value}
+        >{op.label}</option>
+      })}
+
+    </select>
+  }
+
 
 
   return (
@@ -118,7 +139,10 @@ export const Input = (
         className={`${labelCss} ${!inputState.isValid && inputState.isTouched && ' text-red-500'} `}
       >{label}</label>
       {element}
-      {!inputState.isValid && inputState.isTouched && (<p className={`${!inputState.isValid && inputState.isTouched && ' text-red-500'}`}> {errorText} </p>)}
+      {!inputState.isValid && inputState.isTouched &&
+        (<p className={`${!inputState.isValid && inputState.isTouched && ' text-red-500'}`}>
+          {errorText} </p>)
+      }
     </div>
   );
 }

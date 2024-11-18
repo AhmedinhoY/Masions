@@ -64,8 +64,10 @@ export const ImageUpload = (props, { name, extraClasses, pClass }) => {
         <div className=" flex flex-col gap-3 justify-center items-center">
           <div className=" h-[16vh] w-[16vh] border-2 flex items-center justify-center">
             {previewUrl &&
-              <img src={previewUrl} className=" h-[27vh] w-[27vh] object-contain" alt="Preview" />}
-            {!previewUrl && <p className="text-center">Please Pick an Image.</p>}
+              <img src={previewUrl} className=" h-[16vh] w-[16vh] object-contain" alt="Preview" />}
+            {!previewUrl && props.editImageUploaded &&
+              <img src={`http://localhost:3000/${props.editImageUploaded}`} className=" h-[16vh] w-[16vh] object-contain" alt="Preview" />}
+            {!previewUrl && !props.editImageUploaded && <p className="text-center">Please Pick an Image.</p>}
 
 
           </div>

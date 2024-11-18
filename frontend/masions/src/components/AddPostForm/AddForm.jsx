@@ -8,8 +8,7 @@ import { useContext, useRef } from "react";
 import { AuthContext } from "../../shared/context/auth-context";
 import { ErrorModal } from "../../shared/UI-Elements/ErrorModal";
 import { ImageUpload } from "../../shared/ImageUpload";
-
-
+import LoadingSpinner from '../../shared/UI-Elements/LoadingSpinner.jsx';
 
 
 export const AddForm = () => {
@@ -58,24 +57,35 @@ export const AddForm = () => {
       value: '',
       isValid: false
     },
-    image: {
+    image0: {
+      value: null,
+      isValid: false
+    },
+    image1: {
+      value: null,
+      isValid: false
+    },
+    image2: {
+      value: null,
+      isValid: false
+    },
+    image3: {
       value: null,
       isValid: false
     },
   }, false);
 
-  const { error, sendRequest, clearError } = useHttp();
+  const { error, sendRequest, clearError, isLoading } = useHttp();
 
 
 
 
   const { inputs } = formState;
-  console.log(formState.isValid);
 
   const handleSubmission = async (event) => {
     event.preventDefault();
 
-    const features = inputs.features.value;
+    let features = inputs.features.value;
     const featuresList = features.split(",").map(f => f.trim());
     const bedrooms = inputs.bedrooms.value;
     const bathrooms = inputs.bathrooms.value;
@@ -87,7 +97,11 @@ export const AddForm = () => {
     const address = inputs.address.value;
     const description = inputs.description.value;
     const creator = auth.uid;
-    const image = inputs.image.value;
+    const image0 = inputs.image0.value;
+    const image1 = inputs.image1.value;
+    const image2 = inputs.image2.value;
+    const image3 = inputs.image3.value;
+
 
     // const newPlace = {
     //   city: inputs.city.value,
@@ -115,9 +129,15 @@ export const AddForm = () => {
     formData.append('features', featuresList);
     formData.append('description', description);
     formData.append('creator', creator);
-    formData.append('image', image);
+    formData.append('image0', image0);
+    formData.append('image1', image1);
+    formData.append('image2', image2);
+    formData.append('image3', image3);
 
-    console.log(image);
+
+    console.log(image0);
+    console.log(featuresList);
+
     try {
       // create a place
       const responseData = await sendRequest('http://localhost:3000/api/places/',
@@ -146,6 +166,9 @@ export const AddForm = () => {
       rounded-md drop-shadow-2xl`}
         onSubmit={handleSubmission}
       >
+        {isLoading && <LoadingSpinner asOverlay />}
+
+
 
         <Input
           elementType={'input'}
@@ -157,25 +180,35 @@ export const AddForm = () => {
           onInput={inputHandler}
         />
 
+
         <Input
-          elementType={'input'}
-          type={'text'}
+          elementType={'select'}
           label={'type'}
           id={'type'}
           validators={[VALIDATOR_REQUIRE()]}
-          errorText={' Please enter a correct type'}
+          errorText={' Please select a property type'}
           onInput={inputHandler}
+          options={[
+            { value: 'house', label: 'House' },
+            { value: 'apartment', label: 'Apartment' },
+            { value: 'land', label: 'Land' },
+          ]}
         />
 
+
         <Input
-          elementType={'input'}
-          type={'text'}
+          elementType={'select'}
           label={'property Status'}
           id={'propertyStatus'}
           validators={[VALIDATOR_REQUIRE()]}
-          errorText={' Please enter a correct property Status'}
+          errorText={' Please select the property status'}
           onInput={inputHandler}
+          options={[
+            { value: 'sale', label: 'Sale' },
+            { value: 'rent', label: 'Rent' },
+          ]}
         />
+
 
         <Input
           elementType={'input'}
@@ -244,10 +277,10 @@ export const AddForm = () => {
         />
         <div className="flex w-full h-full items-center justify-center gap-2 ">
           {/* add the logic needed here and in the backend to handle the imageUpload */}
-          <ImageUpload name={'image0'} onInput={inputHandler}  />
+          <ImageUpload name={'image0'} onInput={inputHandler} />
           <ImageUpload name={'image1'} onInput={inputHandler} />
           <ImageUpload name={'image2'} onInput={inputHandler} />
-          <ImageUpload name={'image3'} onInput={inputHandler}  />
+          <ImageUpload name={'image3'} onInput={inputHandler} />
 
         </div>
 

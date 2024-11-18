@@ -5,8 +5,12 @@ import { useState, useCallback } from 'react';
 export const useHttp = () => {
 
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const sendRequest = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
+
+  const sendRequest = useCallback(
+    async (url, method = 'GET', body = null, headers = {}) => {
+      setIsLoading(true);
 
     try {
       const response = await fetch(url, {
@@ -21,7 +25,7 @@ export const useHttp = () => {
         throw new Error(respnseData.message);
       }
 
-
+      setIsLoading(false);
       return respnseData;
 
 
@@ -31,6 +35,7 @@ export const useHttp = () => {
       //  to work as intended inside other files
 
       setError(err.message);
+      setIsLoading(false);
       throw err;
     }
 
@@ -43,6 +48,6 @@ export const useHttp = () => {
   }
 
 
-  return { sendRequest, error, clearError };
+  return { sendRequest, error, clearError, isLoading };
 
 }

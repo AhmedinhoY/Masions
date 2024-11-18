@@ -10,7 +10,14 @@ router.get('/:pid', placesController.getPlaceById);
 router.get('/', placesController.getAllPlaces);
 
 router.post('/',
-  fileUpload.single('image'),
+
+
+  fileUpload.fields([
+    { name: 'image0', maxCount: 1 },
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 }
+  ]),
   [
     check('city').notEmpty(),
     check('type').trim().notEmpty(),
@@ -24,7 +31,15 @@ router.post('/',
   ], placesController.createPlace);
 
 router.patch('/:pid',
-   [
+  
+  fileUpload.fields([
+    { name: 'image0', maxCount: 1 },
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 }
+  ]),
+
+  [
     check('city').notEmpty(),
     check('type').trim().notEmpty(),
     check('propertyStatus').trim().notEmpty(),
@@ -36,6 +51,9 @@ router.patch('/:pid',
     check('address').notEmpty(),
   ], placesController.updatePlaceById);
 
+
+
+  
 router.delete('/:pid', placesController.deletePlaceById);
 
 

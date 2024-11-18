@@ -8,6 +8,8 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { useNavigate } from "react-router-dom";
 import { ErrorModal } from "../../shared/UI-Elements/ErrorModal";
 import { useHttp } from "../../shared/hooks/useHttp";
+import LoadingSpinner from "../../shared/UI-Elements/LoadingSpinner";
+import { ImageUpload } from "../../shared/ImageUpload";
 
 
 
@@ -17,7 +19,7 @@ import { useHttp } from "../../shared/hooks/useHttp";
 const AuthForm = () => {
 
   const auth = useContext(AuthContext);
- 
+
   const navigate = useNavigate();
 
 
@@ -36,7 +38,7 @@ const AuthForm = () => {
     },
   }, false);
 
-  const { sendRequest, error, clearError } = useHttp();
+  const { sendRequest, error, clearError, isLoading } = useHttp();
 
 
 
@@ -50,6 +52,7 @@ const AuthForm = () => {
       setFormData({
         ...formState.inputs,
         name: undefined,
+        image: undefined,
       },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -61,6 +64,10 @@ const AuthForm = () => {
           value: '',
           isValid: false
         },
+        image: {
+          value: null,
+          isValid: false
+        }
       }, false
       );
     }
@@ -74,9 +81,15 @@ const AuthForm = () => {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
+
+
+
+
+
     if (isLoginMode) {
       // Login
       try {
+        
         const responseData = await sendRequest('http://localhost:3000/api/users/login', 'POST',
 
           JSON.stringify({
@@ -99,17 +112,22 @@ const AuthForm = () => {
       // SignUp
       try {
 
+        const email = formState.inputs.email.value;
+        const password = formState.inputs.password.value;
+        const name = formState.inputs.name.value;
+        const image = formState.inputs.image.value;
+
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('name', name);
+        formData.append('image', image);
+
+
         const responseData = await sendRequest('http://localhost:3000/api/users/signup',
           'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-
-          }),
-          {
-            'Content-Type': 'application/json'
-          },);
+          formData,
+        );
 
         auth.login(responseData.user.id);
         navigate('/');
@@ -141,6 +159,7 @@ const AuthForm = () => {
       rounded-md drop-shadow-2xl`}
         onSubmit={handleSubmission}
       >
+        {isLoading && <LoadingSpinner asOverlay />}
 
         {!isLoginMode && <Input
           elementType={'input'}
@@ -171,6 +190,10 @@ const AuthForm = () => {
           errorText={' Please enter a password with min. length 6 characters'}
           onInput={inputHandler}
         />
+
+        {!isLoginMode &&
+          <ImageUpload name={'image'} onInput={inputHandler} />
+        }
 
 
 

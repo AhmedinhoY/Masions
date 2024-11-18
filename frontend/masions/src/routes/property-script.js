@@ -1,5 +1,5 @@
 
-import { json, redirect } from "react-router-dom";
+import { defer, json, redirect } from "react-router-dom";
 
 
 
@@ -20,9 +20,8 @@ export async function loadPlaces() {
 
 
 
-export async function loadProperty({ params }) {
+export async function loadProperty(id) {
 
-  const id = params.id;
   const response = await fetch('http://localhost:3000/api/places/' + id);
 
   if (!response.ok) {
@@ -31,6 +30,16 @@ export async function loadProperty({ params }) {
     const resData = await response.json();
     return resData.place;
   }
+}
+
+
+export async function loadBoth ({params}){
+  const id = params.id;
+  return defer({
+    property: loadProperty(id),
+    places: loadPlaces(),
+  })
+
 }
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import "./Card.css";
 
 const Card = ({ imageUrl, title, subtitle, text, buttons }) => {

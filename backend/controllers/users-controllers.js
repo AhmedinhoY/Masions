@@ -37,6 +37,9 @@ exports.signUp = async (req, res, next) => {
 
   const { name, email, password } = req.body;
 
+  console.log(req.file); // check if the image is there correctly
+
+
   let existingUser;
 
   try {
@@ -64,7 +67,7 @@ exports.signUp = async (req, res, next) => {
     email,
     password,
     places: [],
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbdspcRNHvZL8uU406KbxA0otzbKbU9WWNzg&s'
+    image: req.file.path
   });
 
   try {
@@ -103,8 +106,10 @@ exports.login = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: 'Logged In',
-     user: existingUser.toObject({ getters: true }) });
+  res.status(200).json({
+    message: 'Logged In',
+    user: existingUser.toObject({ getters: true })
+  });
 }
 
 

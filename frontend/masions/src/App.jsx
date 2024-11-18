@@ -28,7 +28,7 @@ import { EditPost } from "./routes/EditPost";
 import { AddPost } from "./routes/AddPost";
 
 import { action as formAction } from "./components/AddPostForm/form-script";
-import { loadPlaces, loadProperty, deleteProperty } from "./routes/property-script";
+import { loadPlaces, loadProperty, deleteProperty, loadBoth } from "./routes/property-script";
 import { Auth } from "./routes/Users/auth";
 import { AuthContext } from "./shared/context/auth-context";
 import { useCallback, useState } from "react";
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: ':id', children: [
-          { path: "post-details", element: <PostDetails />, loader: loadProperty, action: deleteProperty }, // general post details for: apartments, houses, lands
+          { path: "post-details", element: <PostDetails />, loader: loadBoth, action: deleteProperty }, // general post details for: apartments, houses, lands
           { path: 'edit', element: <EditPost />, loader: loadProperty, action: formAction }
         ]
       },

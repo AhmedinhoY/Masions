@@ -1,6 +1,9 @@
 const HttpError = require('../models/http-error');
 const mongoose = require('mongoose');
 
+const fs = require('fs');
+const path = require('path');
+
 const Place = require('../models/place');
 const User = require('../models/users');
 
@@ -33,7 +36,7 @@ exports.getPlaceById = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(pid);
+    place = await Place.findById(pid).populate('creator');
 
   } catch (err) {
     const error = new HttpError('Something went wrong, could not find a place',
@@ -98,18 +101,28 @@ exports.createPlace = async (req, res, next) => {
     features,
     description,
     creator,
-    
+
 
   } = req.body;
 
-  
-  if (req.file) {
-    console.log(req.file);
+  let featuresList;
+
+  if (features) {
+    featuresList = features.split(',').map(f => f.trim());
+  } else {
+    featuresList = "No Features Added";
   }
 
-  if (!req.file) {
-    console.log('file is undefined');
-  }
+  console.log(featuresList);
+
+  // if (req.files) {
+  //   console.log(req.files);
+  //   console.log(req.files['image0'][0].path);
+  // }
+
+  // if (!req.files) {
+  //   console.log('file is undefined');
+  // }
 
   let coordinates;
   try {
@@ -135,23 +148,25 @@ exports.createPlace = async (req, res, next) => {
     bathrooms,
     area,
     price,
-    features,
+    features: featuresList,
     img: [
       {
         imgNo: 1,
-        imgSrc: req.file.path,
+        imgSrc: req.files['image0'] ? req.files['image0'][0].path : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       },
       {
         imgNo: 2,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        imgSrc: req.files['image1'] ? req.files['image1'][0].path : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
       },
       {
         imgNo: 3,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        imgSrc: req.files['image2'] ? req.files['image2'][0].path : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+
       },
       {
         imgNo: 4,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+        imgSrc: req.files['image3'] ? req.files['image3'][0].path : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+
       },
     ],
 
@@ -222,10 +237,30 @@ exports.updatePlaceById = async (req, res, next) => {
     bedrooms,
     bathrooms,
     area,
+    address,
     price,
     features,
     description,
-    address } = req.body;
+    image0,
+    image1,
+    image2,
+    image3,
+  
+  } = req.body;
+
+  let featuresList;
+
+  if (features) {
+    featuresList = features.split(',').map(f => f.trim());
+  } else {
+    featuresList = "No Features Added";
+  }
+
+  console.log(features);
+
+  console.log(req.files);
+  console.log('normal image0 in req.body');
+  console.log(image0);
 
   let place;
 
@@ -247,9 +282,14 @@ exports.updatePlaceById = async (req, res, next) => {
   place.bathrooms = bathrooms;
   place.area = area;
   place.price = price;
-  place.features = features;
+  place.features = featuresList;
   place.description = description;
   place.address = address;
+  place.img[0].imgSrc = req.files['image0'] ? req.files['image0'][0].path : image0;
+  place.img[1].imgSrc = req.files['image1'] ? req.files['image1'][0].path : image1;
+  place.img[2].imgSrc = req.files['image2'] ? req.files['image2'][0].path : image2;
+  place.img[3].imgSrc = req.files['image3'] ? req.files['image3'][0].path : image3;
+
 
 
 
@@ -310,6 +350,14 @@ exports.deletePlaceById = async (req, res, next) => {
 
     return next(error);
   }
+
+  // delete the place here 
+  const imagePath = place.img[0].imgSrc;
+
+  fs.unlink(imagePath, err => {
+    console.log(err);
+  })
+
 
   res.status(200).json(
     { message: ' Deleted Place' });

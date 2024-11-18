@@ -8,6 +8,8 @@ import { useForm } from "../shared/hooks/useForm";
 import { useEffect, useRef, useState } from "react";
 import { useHttp } from "../shared/hooks/useHttp";
 import { ErrorModal } from "../shared/UI-Elements/ErrorModal";
+import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
+import { ImageUpload } from "../shared/ImageUpload";
 
 
 
@@ -17,9 +19,8 @@ export const EditPost = () => {
   const modal = useRef();
 
 
-  const formCss = "flex flex-col gap-6 items-center bg-white min-w-[50vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl ";
+  const formCss = "flex flex-col gap-6 items-center bg-white min-w-[75vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl ";
 
-  const [isLoading, setIsLoading] = useState(true);
 
   // array destructuring ... JS ES6 
   // initial state 
@@ -65,10 +66,26 @@ export const EditPost = () => {
       value: property.description,
       isValid: true
     },
+    image0: {
+      value: property.img[0].imgSrc,
+      isValid: true
+    },
+    image1: {
+      value: property.img[1].imgSrc,
+      isValid: true
+    },
+    image2: {
+      value: property.img[2].imgSrc,
+      isValid: true
+    },
+    image3: {
+      value: property.img[3].imgSrc,
+      isValid: true
+    },
   }, true);
 
 
-  const { error, sendRequest, clearError } = useHttp();
+  const { error, sendRequest, clearError, isLoading } = useHttp();
 
 
 
@@ -78,42 +95,74 @@ export const EditPost = () => {
   const onSubmitForm = async (e) => {
     e.preventDefault();
 
-    const features = inputs.features.value;
-    let featuresList;
-    if (typeof features == 'string' ) {
-      featuresList = features.split(",").map(f => f.trim());
-    } else if (Array.isArray(features) || typeof features == 'object') {
-      featuresList = features;
-    }
+    // let featuresList;
+    // if (typeof features == 'string') {
+    //   featuresList = features.split(",").map(f => f.trim());
+    // } else if (Array.isArray(features) || typeof features == 'object') {
+    //   featuresList = features;
+    // }
 
-    
+    // allow the user to edit the images as well, why not
+
+    // const bedrooms = inputs.bedrooms.value;
+    // const bathrooms = inputs.bathrooms.value;
+    // const area = inputs.area.value;
+    // const price = inputs.price.value;
+
+    // const newPlace = {
+    //   city: inputs.city.value,
+    //   type: inputs.type.value,
+    //   propertyStatus: inputs.propertyStatus.value,
+    //   bedrooms: +bedrooms,
+    //   bathrooms: +bathrooms,
+    //   area: +area,
+    //   address: inputs.address.value,
+    //   price: +price,
+    //   features: features,
+    //   description: inputs.description.value,
+    // }
+
+    let features = inputs.features.value;
+    // const featuresList = features.split(",").map(f => f.trim());
     const bedrooms = inputs.bedrooms.value;
     const bathrooms = inputs.bathrooms.value;
     const area = inputs.area.value;
     const price = inputs.price.value;
+    const city = inputs.city.value;
+    const type = inputs.type.value;
+    const propertyStatus = inputs.propertyStatus.value;
+    const address = inputs.address.value;
+    const description = inputs.description.value;
+    const image0 = inputs.image0.value;
+    const image1 = inputs.image1.value;
+    const image2 = inputs.image2.value;
+    const image3 = inputs.image3.value;
 
-    const newPlace = {
-      city: inputs.city.value,
-      type: inputs.type.value,
-      propertyStatus: inputs.propertyStatus.value,
-      bedrooms: +bedrooms,
-      bathrooms: +bathrooms,
-      area: +area,
-      address: inputs.address.value,
-      price: +price,
-      features: featuresList,
-      description: inputs.description.value,
-    }
+
+    const formData = new FormData();
+    formData.append('city', city);
+    formData.append('type', type);
+    formData.append('propertyStatus', propertyStatus);
+    formData.append('bedrooms', +bedrooms);
+    formData.append('bathrooms', +bathrooms);
+    formData.append('area', +area);
+    formData.append('address', address);
+    formData.append('price', +price);
+    formData.append('features', features);
+    formData.append('description', description);
+    formData.append('image0', image0);
+    formData.append('image1', image1);
+    formData.append('image2', image2);
+    formData.append('image3', image3);
+
+
 
 
 
     try {
       const responseData = await sendRequest(`http://localhost:3000/api/places/${property.id}`,
         'PATCH',
-        JSON.stringify(newPlace),
-        {
-          'Content-Type': 'application/json'
-        }
+        formData
       )
 
       console.log(responseData);
@@ -133,17 +182,18 @@ export const EditPost = () => {
   return (
     <>
       <ErrorModal ref={modal} error={error} onClear={clearError} />
-      <main className=" w-full min-h-[70vh] px-8 py-8">
+      <main className=" min-w-[75vh] min-h-[70vh] px-8 py-8">
         <h1 className=" drop-shadow-xl rounded-md bg-white w-[150px] text-center px-4 py-2"> Edit Form </h1>
         <div className="w-full min-h-full px-[20rem]">
 
           <form className={`${formCss} pb-5`} onSubmit={onSubmitForm}>
+            {isLoading && <LoadingSpinner asOverlay />}
 
             <Input
-              id="city"
-              element="input"
-              type="text"
-              label="city"
+              elementType={"input"}
+              type={"text"}
+              label={"city"}
+              id={"city"}
               validators={[VALIDATOR_REQUIRE()]}
               errorText="Please enter a valid city."
               onInput={inputHandler}
@@ -151,29 +201,38 @@ export const EditPost = () => {
               valid={formState.inputs.city.isValid}
             />
 
+
             <Input
-              elementType={'input'}
-              type={'text'}
+              elementType={'select'}
               label={'type'}
               id={'type'}
               validators={[VALIDATOR_REQUIRE()]}
-              errorText={' Please enter a correct type'}
+              errorText={' Please select a property type'}
               onInput={inputHandler}
+              options={[
+                { value: 'house', label: 'House' },
+                { value: 'apartment', label: 'Apartment' },
+                { value: 'land', label: 'Land' },
+              ]}
               defaultValue={formState.inputs.type.value}
               valid={formState.inputs.type.isValid}
             />
 
             <Input
-              elementType={'input'}
-              type={'text'}
+              elementType={'select'}
               label={'property Status'}
               id={'propertyStatus'}
               validators={[VALIDATOR_REQUIRE()]}
-              errorText={' Please enter a correct property Status'}
+              errorText={' Please select the property status'}
               onInput={inputHandler}
+              options={[
+                { value: 'sale', label: 'Sale' },
+                { value: 'rent', label: 'Rent' },
+              ]}
               defaultValue={formState.inputs.propertyStatus.value}
               valid={formState.inputs.propertyStatus.isValid}
             />
+
 
             <Input
               elementType={'input'}
@@ -259,6 +318,16 @@ export const EditPost = () => {
               defaultValue={formState.inputs.description.value}
               valid={formState.inputs.description.isValid}
             />
+
+            <div className="flex w-full h-full items-center justify-center gap-2 ">
+              {/* add the logic needed here and in the backend to handle the imageUpload */}
+              <ImageUpload name={'image0'} onInput={inputHandler} editImageUploaded={formState.inputs.image0.value} />
+              <ImageUpload name={'image1'} onInput={inputHandler} editImageUploaded={formState.inputs.image1.value} />
+              <ImageUpload name={'image2'} onInput={inputHandler} editImageUploaded={formState.inputs.image2.value} />
+              <ImageUpload name={'image3'} onInput={inputHandler} editImageUploaded={formState.inputs.image3.value} />
+
+            </div>
+
             <Button type="submit" disabled={!formState.isValid} inverse>
               UPDATE PLACE
             </Button>
