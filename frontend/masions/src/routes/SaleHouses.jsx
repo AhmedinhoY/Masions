@@ -114,42 +114,34 @@ const HousesForSale = [
     area: 402,
     location: "Block 605, Road 587",
     price: 91000,
-    propertyType: 'sale'
+    propertyType: "sale",
   },
 ];
 
 export const SaleHouses = () => {
   const properties = useLoaderData();
   const propertyHoueses_sale = properties.filter((property) => {
-    return (property.type == 'house' && property.propertyStatus == 'sale')
+    return property.type == "house" && property.propertyStatus == "sale";
   });
-
-
 
   return (
     <>
       {propertyHoueses_sale.length === 0 && (
-        <main className=" w-full min-h-[70vh]  flex items-center justify-center">
-          <h1
-            className="font-serif font-bold capitalize text-[5vh] drop-shadow-xl "
-          > no items here please add one</h1>
-        </main>
+        <div className=" w-full min-h-[100px]  flex items-center justify-center">
+          <h1 className="capitalize  drop-shadow-xl ">
+            No items here please add one
+          </h1>
+        </div>
       )}
 
-
-      {
-        propertyHoueses_sale.length > 0 && (
-
-          <div className="container">
-            <section>
-              <h1 className="container-header">Houses For Sale</h1>
-              <PropertiesList propertyType={propertyHoueses_sale} />
-            </section>
-          </div>
-        )
-
-
-      }
+      {propertyHoueses_sale.length > 0 && (
+        <div className="container">
+          <section>
+            <h1 className="container-header">Houses For Sale</h1>
+            <PropertiesList propertyType={propertyHoueses_sale} />
+          </section>
+        </div>
+      )}
     </>
   );
 };

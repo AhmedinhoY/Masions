@@ -1,22 +1,9 @@
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
-  const navigate = useNavigate();
-
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-left",
-    });
-
-  const handleInputs = async (event) => {
+const LoginForm = ({ closeDialog, onLoginSuccess }) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
@@ -25,34 +12,30 @@ const LoginForm = () => {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    console.log(data);
 
     try {
-      const { data } = await axios.post(
+      await axios.post(
         "http://localhost:3000/api/users/login",
 
         data,
         { withCredentials: true }
       );
 
-      const { success, message } = data;
-      if (success) {
-        handleSuccess(message);
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      } else {
-        handleError(message);
-      }
+      alert("Logged in successfully");
+      setTimeout(() => {
+        closeDialog();
+        onLoginSuccess();
+      }, 500);
     } catch (error) {
       console.log(error);
+      alert("Failed to Logged in ");
     }
 
     event.target.reset(); //reset the input fields
   };
 
   return (
-    <Form.Root className="FormRoot" onSubmit={handleInputs}>
+    <Form.Root className="FormRoot" onSubmit={handleSubmit}>
       {/* Form.Root is basically the form tag <form> */}
       <Form.Field className="FormField" name="email">
         {/* Form.Field is just a div tag */}

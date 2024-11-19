@@ -6,8 +6,10 @@ const HttpError = require("./models/http-error");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // CORS
 let frontendURL = "http://localhost:5173";

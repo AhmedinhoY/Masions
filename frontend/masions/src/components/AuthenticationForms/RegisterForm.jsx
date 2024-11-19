@@ -2,19 +2,13 @@ import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
-const RegisterForm = () => {
-  const navigate = useNavigate();
-
+const RegisterForm = ({ closeDialog, onLoginSuccess }) => {
   const handleError = (err) =>
     toast.error(err, {
       position: "bottom-left",
     });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-left",
-    });
+
   const handleInputs = async (event) => {
     event.preventDefault();
 
@@ -39,15 +33,12 @@ const RegisterForm = () => {
       );
       const { success, message } = response.data;
 
-      if (success) {
-        handleSuccess(message);
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      } else {
-        console.log("first");
-        handleError(message);
-      }
+      alert("Logged in successfully");
+      setTimeout(() => {
+        closeDialog();
+        onLoginSuccess();
+      }, 500);
+      // Close the dialog
     } catch (error) {
       console.log(error);
       handleError("Something went wrong, please try again.");

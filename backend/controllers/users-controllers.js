@@ -67,15 +67,13 @@ exports.signUp = async (req, res, next) => {
 
     res.cookie("token", refreshToken, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
     res
       .status(201)
       .json({ userID: newUser.id, email: newUser.email, token: accessToken });
-
-    console.log("Sign up is successful");
   } catch (err) {
     console.log(err);
     handleError("Sign up failed, please try again", 500, next);
@@ -108,18 +106,23 @@ exports.login = async (req, res, next) => {
 
     // if the login was successful, create token with cookie
 
-    const accessToken = createAccessToken(newUser.id, newUser.email);
-    const refreshToken = createRefreshToken(newUser.id, newUser.email);
+    const accessToken = createAccessToken(existingUser.id, existingUser.email);
+    const refreshToken = createRefreshToken(
+      existingUser.id,
+      existingUser.email
+    );
 
     res.cookie("token", refreshToken, {
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    res
-      .status(201)
-      .json({ userID: newUser.id, email: newUser.email, token: accessToken });
+    res.status(201).json({
+      userID: existingUser.id,
+      email: existingUser.email,
+      token: accessToken,
+    });
   } catch (err) {
     console.error(err);
     return handleError("Login failed, please try again.", 500, next);
@@ -133,6 +136,38 @@ exports.logout = async (req, res) => {
   } else {
     res.clearCookie("token", { withCredentials: true, httpOnly: false });
     res.json({ message: "Cookie cleared" });
+  }
+};
+
+// Check if the user is logged in
+exports.checkIfLoggedin = async (req, res, next) => {
+  try {
+    // Check if the token exists in cookies
+    const cookies = req.cookies;
+    if (!cookies?.token) {
+      return res
+        .status(401)
+        .json({ message: "Authentication failed, no token found" });
+    }
+
+    // Verify the token using your JWT verify function
+    const decoded = jwt.verify(cookies.token, process.env.TOKEN_KEY);
+
+    // If the token is valid, send user details as response
+    const existingUser = await User.findById(decoded.userID);
+    if (!existingUser) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    // If user is found, return success with user details
+    res.status(200).json({
+      message: "User is logged in",
+      userID: existingUser.id,
+      email: existingUser.email,
+    });
+  } catch (err) {
+    console.error(err);
+    return handleError("Authentication failed, please try again", 500, next);
   }
 };
 

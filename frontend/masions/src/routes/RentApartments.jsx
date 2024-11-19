@@ -12,7 +12,6 @@ export const RentApartments = () => {
       {propertyApartments_rent.length === 0 && (
         <div className=" w-full min-h-[100px]  flex items-center justify-center">
           <h1 className="capitalize  drop-shadow-xl ">
-            {" "}
             No items here please add one
           </h1>
         </div>
