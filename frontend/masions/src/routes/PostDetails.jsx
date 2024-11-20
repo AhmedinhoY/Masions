@@ -1,144 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Await, useLoaderData, useSubmit } from "react-router-dom";
+import { Await, json, useLoaderData, useSubmit } from "react-router-dom";
 import Card from "../components/Card/Card";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 import { Button } from "../shared/Button";
 import { Modal } from "../shared/Modal";
 import { Suspense, useContext, useRef } from "react";
 import { AuthContext } from "../shared/context/auth-context";
+import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
+import { HttpError } from "../util/route-error";
 
-const houses = [
-  {
-    id: 1,
-    img: [
-      {
-        imgNo: 1,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 2,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 3,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 4,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-    ],
-    city: "Manama",
-    type: "House",
-    bedrooms: 4,
-    bathrooms: 4,
-    area: 403,
-    location: "Block 605, Road 587",
-    price: 86500,
-    features: ["Garden", "Garage", "Swimming Pool", "Central Heating"],
-    description:
-      "A spacious 4-bedroom house located in the heart of Manama with modern amenities and close to shopping centers.",
-  },
-  {
-    id: 2,
-    img: [
-      {
-        imgNo: 1,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 2,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 3,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 4,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-    ],
-    city: "Sitra",
-    type: "Villa",
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 333,
-    location: "Block 605, Road 587",
-    price: 86200,
-    features: ["Private Garden", "Balcony", "Solar Panels", "Outdoor Parking"],
-    description:
-      "A luxurious villa in Sitra with a private garden, ideal for families. Well-connected to local amenities.",
-  },
-  {
-    id: 3,
-    img: [
-      {
-        imgNo: 1,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 2,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 3,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 4,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-    ],
-    city: "Muharraq",
-    type: "Villa",
-    bedrooms: 3,
-    bathrooms: 4,
-    area: 393,
-    location: "Block 605, Road 587",
-    price: 88000,
-    features: [
-      "Gym Room",
-      "Home Theater",
-      "Security System",
-      "Backup Generator",
-    ],
-    description:
-      "Modern 3-bedroom villa with top-notch security and entertainment amenities. Located in a quiet area in Muharraq.",
-  },
-  {
-    id: 4,
-    img: [
-      {
-        imgNo: 1,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 2,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 3,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-      {
-        imgNo: 4,
-        imgSrc: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
-      },
-    ],
-    city: "Sanabis",
-    type: "House",
-    bedrooms: 5,
-    bathrooms: 5,
-    area: 402,
-    location: "Block 605, Road 587",
-    price: 91000,
-    features: ["Rooftop Terrace", "Indoor Pool", "Guest House", "Fireplace"],
-    description:
-      "An elegant 5-bedroom house in Sanabis with a rooftop terrace and an indoor pool, perfect for luxurious living.",
-  },
-];
+
 
 const agents = [
   {
@@ -153,10 +25,11 @@ const agents = [
 
 
 
+
 const DetailofPage = ({ property }) => {
   return (
     <>
-      <Suspense fallback={<p> Loading .... </p>}>
+      <Suspense fallback={<LoadingSpinner asOverlay />}>
         <Await resolve={property}>
           {(chosenHouse) => {
             const Status = chosenHouse.propertyStatus[0].toUpperCase() + chosenHouse.propertyStatus.slice(1);
@@ -221,14 +94,36 @@ const DetailofPage = ({ property }) => {
   )
 }
 
-const SimilarProperties = ({ places }) => {
+const SimilarProperties = ({ places, property }) => {
   return (
     <>
       {/* here add a Suspense */}
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<LoadingSpinner asOverlay />}>
         <Await resolve={places}>
           {
             (loadedPlaces) => {
+              if (!loadedPlaces) {
+                const error = new HttpError(
+                  'the loaded properties is null, please close your browser and try again later',
+                  500,
+                  { details: 'this is the details of the error' }
+                );
+                throw error;
+              }
+
+
+              loadedPlaces = loadedPlaces.filter(p => property.id !== p.id);
+
+
+              if (loadedPlaces.length === 0) {
+                return <div className="mt-10">
+                  <h2 className="">Similar Properties</h2>
+                  <div className="mt-4 space-y-6">
+                    <p > No similar places exits </p>
+                  </div>
+                </div>
+              }
+
               return (
                 <div className="mt-10">
                   <h2 className="">Similar Properties</h2>
@@ -261,7 +156,7 @@ export default function PostDetails() {
         <div className="pt-6">
           <DetailofPage property={property} />
 
-          <Suspense fallback={<p> Loading .... </p>}>
+          <Suspense fallback={<LoadingSpinner asOverlay />}>
             <Await resolve={property}>
               {
                 (chosenHouse) => {
@@ -320,10 +215,10 @@ export default function PostDetails() {
                           </div>
 
                           <div className="mt-10">
-                            <h2 className="">Description</h2>
+                            <h2 className="text-xl">Description</h2>
 
                             <div className="mt-4 space-y-6">
-                              <p className=" font-serif">{chosenHouse.description}</p>
+                              <p className=" font-serif text-[18px]">{chosenHouse.description}</p>
                             </div>
                           </div>
 
@@ -358,7 +253,7 @@ export default function PostDetails() {
 
                           {/* only displayed if the logged in user == creator of the post */}
 
-                          {auth.isLoggedIn && auth.uid === chosenHouse.creator.id && <div className="  mt-4 flex items-center justify-end gap-6">
+                          {auth.isLoggedIn && auth.uid == chosenHouse.creator.id && <div className="  mt-4 flex items-center justify-end gap-6">
                             <Button
                               to={`/${chosenHouse.id}/edit`}
 
@@ -374,7 +269,7 @@ export default function PostDetails() {
                           }
 
                           {/* here similar properties shall be rendered */}
-                          <SimilarProperties places={places}/>
+                          <SimilarProperties places={places} property={property} />
                         </div>
 
 

@@ -5,13 +5,20 @@ import { NavBar } from "../shared/NavBar/NavBar";
 export const ErrorPage = () => {
   const error = useRouteError();
 
-  console.log(error);
+  // console.log(error.message); // access the error message  
+  // console.log(error.status);  // get the status of the error 
+  // console.log(error.data); // get any extra meta data 
+
 
   let title = "an Error Occured";
-  let message = "Something have gone wrong";
+  let message = "Something have gone wrong hello world";
 
   if (error.status === 500) {
-    message = error.data.message;
+    if (!error){ 
+      console.log('Error object is not configured correctly');
+    } else {
+      message = error.message;
+    }
   }
 
   if (error.status === 404) {

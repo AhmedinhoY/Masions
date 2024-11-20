@@ -31,7 +31,7 @@ import { action as formAction } from "./components/AddPostForm/form-script";
 import { loadPlaces, loadProperty, deleteProperty, loadBoth } from "./routes/property-script";
 import { Auth } from "./routes/Users/auth";
 import { AuthContext } from "./shared/context/auth-context";
-import { useCallback, useState } from "react";
+import { useAuth } from "./shared/hooks/useAuth";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -93,31 +93,16 @@ const router = createBrowserRouter([
 
 
 
-
 export const App = () => {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState();
+  const { login, logout, token, userId } = useAuth();
 
 
-  // useCallback is so powerful to minimize the execution of the function 
-  // execute once and remember it, very very powerful
-  // use console.log and see the value of isLoggedIn to see to the useCallback power
-  const login = useCallback((uid) => {
-    setIsLoggedIn(true);
-    setUserId(uid);
-  }, []);
-
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-    setUserId(null);
-  }, []);
 
   return (
     <>
       <AuthContext.Provider value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
+        token: token,
         uid: userId,
         login: login,
         logout: logout

@@ -15,6 +15,8 @@ const RegisterForm = () => {
       password: formData.get("password"),
       confirm_password: formData.get("confirmPassword"),
       phone_number: formData.get("phoneNumber"),
+      image: formData.get("image"),
+
     };
     console.log(data);
 
@@ -91,11 +93,28 @@ const RegisterForm = () => {
         </Form.Control>
       </Form.Field>
 
+      <Form.Field className="FormField" name="image">
+        <div className="flex align-baseline justify-between">
+          <Form.Label className="">Image</Form.Label>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please chose an image
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid phone number
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          <input className="Input" type="file" required />
+        </Form.Control>
+      </Form.Field>
+
       <Form.Submit asChild>
         <div className="flex justify-center">
           <button className="primary-btn my-3">Register</button>
         </div>
       </Form.Submit>
+
+      
     </Form.Root>
   );
 };

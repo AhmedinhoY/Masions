@@ -18,6 +18,11 @@ export const NavBar = () => {
 
   console.log(` Login state in the header page: ${auth.isLoggedIn}`);
 
+  const logOut = (event)=>{
+    event.preventDefault();
+    auth.logout();
+  }
+
 
   return (
     <NavigationMenu.Root className={styles.NavigationMenuRoot}>
@@ -129,6 +134,15 @@ export const NavBar = () => {
                 className={styles.NavigationMenuLink}
               >
                 <Link to="/auth"> Login/SignUp </Link>
+              </NavigationMenu.Link>
+            </NavigationMenu.Item>}
+
+            { auth.isLoggedIn &&<NavigationMenu.Item>
+              <NavigationMenu.Link
+                asChild
+                className={styles.NavigationMenuLink}
+              >
+                <Link to="/add-post" onClick={logOut}> Logout </Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>}
 

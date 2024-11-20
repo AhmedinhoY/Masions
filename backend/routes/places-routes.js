@@ -3,11 +3,19 @@ const router = express.Router();
 const placesController = require('../controllers/places-controllers');
 const { check } = require('express-validator');
 const fileUpload = require('../middlewares/file-upload');
+const checkAuth = require('../middlewares/check-auth');
+
 router.get('/user/:uid', placesController.getPlacesByUserId);
 
 router.get('/:pid', placesController.getPlaceById);
 
 router.get('/', placesController.getAllPlaces);
+
+
+// requests goes through this script from top to bottom 
+// therefore anything under this middleware will require 
+// a token before it can be used ... Hence routes are protected now!
+router.use(checkAuth);
 
 router.post('/',
 

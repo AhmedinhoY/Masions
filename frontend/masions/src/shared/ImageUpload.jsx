@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
+import { Button } from "./Button";
 
 export const ImageUpload = (props, { name, extraClasses, pClass }) => {
   const filePickerRef = useRef();
@@ -7,11 +8,14 @@ export const ImageUpload = (props, { name, extraClasses, pClass }) => {
   const [previewUrl, setPreviewUrl] = useState();
   const [isVaild, setIsValid] = useState(false);
 
+  let databaseImage = props.editImageUploaded;
 
+  let imageUploadClearDisabled = !!previewUrl || !!databaseImage;
 
   // to display the preview image
   useEffect(() => {
     if (!file) {
+      setPreviewUrl(null);
       return;
     }
     const fileReader = new FileReader();
@@ -41,9 +45,23 @@ export const ImageUpload = (props, { name, extraClasses, pClass }) => {
       fileIsValid = true;
     } else {
       setIsValid(false);
+      setFile(null);
+      setPreviewUrl(null);
+      pickedFile = null;
       fileIsValid = false;
     }
     props.onInput(props.name, pickedFile, fileIsValid);
+
+  }
+
+  const ClearImage = () => {
+    setIsValid(false);
+    setFile(null);
+    setPreviewUrl(null);
+    let pickedFile = null;
+    let fileIsValid = false;
+    props.onInput(props.name, pickedFile, fileIsValid);
+
 
   }
 
@@ -78,6 +96,15 @@ export const ImageUpload = (props, { name, extraClasses, pClass }) => {
           >
             Choose a File
           </button>
+          <Button
+            type={'button'}
+            onClick={ClearImage}
+            disabled={!imageUploadClearDisabled}
+            danger
+
+          >
+            Clear
+          </Button>
         </div>
 
         {!isVaild && <p> {props.errorText} </p>}

@@ -9,6 +9,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { ErrorModal } from "../../shared/UI-Elements/ErrorModal";
 import { ImageUpload } from "../../shared/ImageUpload";
 import LoadingSpinner from '../../shared/UI-Elements/LoadingSpinner.jsx';
+import { useNavigate } from "react-router-dom";
 
 
 export const AddForm = () => {
@@ -96,7 +97,6 @@ export const AddForm = () => {
     const propertyStatus = inputs.propertyStatus.value;
     const address = inputs.address.value;
     const description = inputs.description.value;
-    const creator = auth.uid;
     const image0 = inputs.image0.value;
     const image1 = inputs.image1.value;
     const image2 = inputs.image2.value;
@@ -128,7 +128,6 @@ export const AddForm = () => {
     formData.append('price', +price);
     formData.append('features', featuresList);
     formData.append('description', description);
-    formData.append('creator', creator);
     formData.append('image0', image0);
     formData.append('image1', image1);
     formData.append('image2', image2);
@@ -142,13 +141,21 @@ export const AddForm = () => {
       // create a place
       const responseData = await sendRequest('http://localhost:3000/api/places/',
         'POST',
-        formData
+        formData,
+        {
+          Authorization: 'Bearer ' + auth.token,
+        }
       )
 
       console.log(responseData);
     } catch (err) {
       console.log(err);
     }
+  }
+
+  const navigate = useNavigate();
+  const onCancelClick = () => {
+    navigate(`/`);
   }
 
   if (error) {
@@ -285,7 +292,11 @@ export const AddForm = () => {
         </div>
 
 
-        <div className=" w-full  flex items-start justify-end px-4">
+        <div className=" w-full  flex items-start justify-end px-4 gap-3">
+
+          <Button type="button" onClick={onCancelClick}  >
+            Cancel
+          </Button>
 
           <Button
             type={'submit'}

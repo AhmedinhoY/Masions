@@ -101,7 +101,7 @@ const AuthForm = () => {
           },
         );
 
-        auth.login(responseData.user.id);
+        auth.login(responseData.user.id, responseData.token);
         navigate('/');
 
       } catch (err) {
@@ -129,7 +129,7 @@ const AuthForm = () => {
           formData,
         );
 
-        auth.login(responseData.user.id);
+        auth.login(responseData.user.id, responseData.token);
         navigate('/');
 
 

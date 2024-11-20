@@ -36,7 +36,7 @@ exports.getPlaceById = async (req, res, next) => {
 
   let place;
   try {
-    place = await Place.findById(pid).populate('creator');
+    place = await Place.findById(pid).populate('creator','-password'); // removing the password for extra security
 
   } catch (err) {
     const error = new HttpError('Something went wrong, could not find a place',
@@ -100,7 +100,6 @@ exports.createPlace = async (req, res, next) => {
     price,
     features,
     description,
-    creator,
 
 
   } = req.body;
@@ -140,7 +139,7 @@ exports.createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    creator,
+    creator: req.userData.userId,
     city,
     type,
     propertyStatus,
@@ -176,7 +175,7 @@ exports.createPlace = async (req, res, next) => {
 
   let user;
   try {
-    user = await User.findById(creator);
+    user = await User.findById(req.userData.userId);
   } catch (err) {
     const error = new HttpError('Creating Place Failed, please try again later ',
       500
@@ -274,6 +273,25 @@ exports.updatePlaceById = async (req, res, next) => {
     return next(error);
   }
 
+  if (!place) {
+    const error = new HttpError(
+      'the provided place id does not exist',
+      500
+    );
+    return next(error);
+  }
+
+
+  // if the person trying to edit this place is not the user 
+  // who created this place, then the action is not allowed
+  if (place.creator.toString() !== req.userData.userId){
+    const error = new HttpError('You are not allowed to edit this place',
+      401
+    );
+
+    return next(error);
+  }
+
 
   place.city = city;
   place.type = type;
@@ -332,6 +350,16 @@ exports.deletePlaceById = async (req, res, next) => {
     return next(error);
   }
 
+  // if the person trying to delete this place is not the user 
+  // who created this place, then the action is not allowed
+  if (place.creator.id !== req.userData.userId){
+    const error = new HttpError(
+      'You are not allowed to edit this place',
+      401
+    );
+
+    return next(error);
+  }
 
 
   try {

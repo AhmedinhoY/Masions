@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { AddPostForm } from "../components/AddPostForm/AddPostForm";
 import { Input } from "../shared/Input";
 import { VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../shared/util/validators";
 import { Button } from "../shared/Button";
 import { useForm } from "../shared/hooks/useForm";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useHttp } from "../shared/hooks/useHttp";
 import { ErrorModal } from "../shared/UI-Elements/ErrorModal";
 import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
 import { ImageUpload } from "../shared/ImageUpload";
+import { AuthContext } from "../shared/context/auth-context";
 
 
 
@@ -17,10 +18,12 @@ export const EditPost = () => {
   // use defer with this later on... 
   const property = useLoaderData();
   const modal = useRef();
-
-
+  const navigate = useNavigate();
+  const auth = useContext(AuthContext);
   const formCss = "flex flex-col gap-6 items-center bg-white min-w-[75vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl ";
 
+
+  console.log(property);
 
   // array destructuring ... JS ES6 
   // initial state 
@@ -162,13 +165,20 @@ export const EditPost = () => {
     try {
       const responseData = await sendRequest(`http://localhost:3000/api/places/${property.id}`,
         'PATCH',
-        formData
+        formData,
+        {
+          Authorization: 'Bearer ' + auth.token,
+        }
       )
-
       console.log(responseData);
+
     } catch (err) {
       console.log(err);
     }
+  }
+
+  const onCancelClick = () => {
+    navigate(`/${property.id}/post-details`);
   }
 
   if (error) {
@@ -321,16 +331,25 @@ export const EditPost = () => {
 
             <div className="flex w-full h-full items-center justify-center gap-2 ">
               {/* add the logic needed here and in the backend to handle the imageUpload */}
-              <ImageUpload name={'image0'} onInput={inputHandler} editImageUploaded={formState.inputs.image0.value} />
+              <ImageUpload name={'image0'} onInput={inputHandler} editImageUploaded={formState.inputs.image0.value} /> 
               <ImageUpload name={'image1'} onInput={inputHandler} editImageUploaded={formState.inputs.image1.value} />
               <ImageUpload name={'image2'} onInput={inputHandler} editImageUploaded={formState.inputs.image2.value} />
               <ImageUpload name={'image3'} onInput={inputHandler} editImageUploaded={formState.inputs.image3.value} />
 
             </div>
 
-            <Button type="submit" disabled={!formState.isValid} inverse>
-              UPDATE PLACE
-            </Button>
+            <div className="flex w-full items-center justify-end px-8 pt-8 gap-3">
+
+              <Button type="button" onClick={onCancelClick}  >
+                Cancel
+              </Button>
+
+              <Button type="submit" disabled={!formState.isValid} inverse>
+                UPDATE PLACE
+              </Button>
+
+            </div>
+
           </form>
 
         </div>
