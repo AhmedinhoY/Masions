@@ -18,14 +18,15 @@ router.get('/', placesController.getAllPlaces);
 router.use(checkAuth);
 
 router.post('/',
-
-
+  // git version controll video 
+  
   fileUpload.fields([
     { name: 'image0', maxCount: 1 },
     { name: 'image1', maxCount: 1 },
     { name: 'image2', maxCount: 1 },
     { name: 'image3', maxCount: 1 }
   ]),
+
   [
     check('city').notEmpty(),
     check('type').trim().notEmpty(),
