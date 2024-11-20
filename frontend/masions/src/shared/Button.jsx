@@ -12,6 +12,7 @@ export const Button =
       disabled,
       inverse,
       danger,
+      blue
 
     }
   ) => {
@@ -24,6 +25,9 @@ export const Button =
           ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
           ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-200 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
           ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}
+           ${blue && `  hover:bg-blue-600 ${disabled ? 'bg-blue-200 text-gray-800' : `bg-blue-800 text-white`}`} 
+
+
           `}
           href={href}
         >
@@ -43,6 +47,8 @@ export const Button =
             ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
             ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-200 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
             ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}
+           ${blue && `  hover:bg-blue-600 ${disabled ? 'bg-blue-200 text-gray-800' : `bg-blue-800 text-white`}`} 
+
             `}
 
         >
@@ -60,6 +66,9 @@ export const Button =
            ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
            ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-300 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
            ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}
+           ${blue && `  hover:bg-blue-600 ${disabled ? 'bg-blue-200 text-gray-800' : `bg-blue-800 text-white`}`} 
+
+
            `}
         type={type}
         onClick={onClick}

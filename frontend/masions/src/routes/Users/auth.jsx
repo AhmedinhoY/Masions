@@ -54,7 +54,7 @@ const AuthForm = () => {
         name: undefined,
         image: undefined,
       },
-        formState.inputs.email.isValid && formState.inputs.password.isValid
+        formState.inputs.email.isValid && formState.inputs.password.isValid 
       );
     } else {
       // Login Mode - name is empty value
@@ -89,7 +89,7 @@ const AuthForm = () => {
     if (isLoginMode) {
       // Login
       try {
-        
+
         const responseData = await sendRequest('http://localhost:3000/api/users/login', 'POST',
 
           JSON.stringify({
@@ -131,8 +131,7 @@ const AuthForm = () => {
 
         auth.login(responseData.user.id, responseData.token);
         navigate('/');
-
-
+        
       } catch (err) {
         console.log(' error in signUp mode');
 
@@ -202,7 +201,7 @@ const AuthForm = () => {
           <Button
             type={'submit'}
             disabled={!formState.isValid}
-            inverse
+            blue
           >
             {isLoginMode ? 'Login' : 'Signup'}
 
@@ -216,7 +215,7 @@ const AuthForm = () => {
       <div className="  flex items-center justify-center my-8">
         <div className=" rounded-md px-8 py-2 drop-shadow-lg text-xl" >
           <Button
-            inverse
+            blue
             onClick={switchHandler}
           >
             {isLoginMode ? 'SignUp' : 'Login'}

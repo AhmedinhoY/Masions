@@ -84,7 +84,7 @@ export async function deleteProperty({ request, params }) {
     );
     throw error;
   }
-  
+
   const response = await fetch('http://localhost:3000/api/places/' + id, {
     method: request.method,
     headers: {

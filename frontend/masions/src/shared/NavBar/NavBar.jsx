@@ -15,8 +15,8 @@ export const NavBar = () => {
   const auth = useContext(AuthContext);
 
   console.log(auth.uid);
-
-  console.log(` Login state in the header page: ${auth.isLoggedIn}`);
+  let token = !!auth.token;
+  console.log(` token state in the header page: ${token}`);
 
   const logOut = (event)=>{
     event.preventDefault();
