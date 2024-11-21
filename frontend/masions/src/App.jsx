@@ -1,4 +1,3 @@
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 
@@ -28,7 +27,12 @@ import { EditPost } from "./routes/EditPost";
 import { AddPost } from "./routes/AddPost";
 
 import { action as formAction } from "./components/AddPostForm/form-script";
-import { loadPlaces, loadProperty, deleteProperty, loadBoth } from "./routes/property-script";
+import {
+  loadPlaces,
+  loadProperty,
+  deleteProperty,
+  loadBoth,
+} from "./routes/property-script";
 import { Auth } from "./routes/Users/auth";
 import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/useAuth";
@@ -40,34 +44,55 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage />, loader: loadPlaces },
       {
-        path: '/houses', children: [
+        path: "/login",
+        element: <LoginForm />,
+      },
+      {
+        path: "/signUp",
+        element: <RegisterForm />,
+      },
+      {
+        path: "/houses",
+        children: [
           { path: "for-sale", element: <SaleHouses />, loader: loadPlaces },
           { path: "for-rent", element: <RentHouses />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: 'apartments', children: [
+        path: "apartments",
+        children: [
           { path: "for-sale", element: <SaleApartments />, loader: loadPlaces },
           { path: "for-rent", element: <RentApartments />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: 'lands', children: [
+        path: "lands",
+        children: [
           { path: "for-sale", element: <SaleLands />, loader: loadPlaces },
-        ]
+        ],
       },
       {
-        path: ':id', children: [
-          { path: "post-details", element: <PostDetails />, loader: loadBoth, action: deleteProperty }, // general post details for: apartments, houses, lands
-          { path: 'edit', element: <EditPost />, loader: loadProperty, action: formAction }
-        ]
+        path: ":id",
+        children: [
+          {
+            path: "post-details",
+            element: <PostDetails />,
+            loader: loadBoth,
+            action: deleteProperty,
+          }, // general post details for: apartments, houses, lands
+          {
+            path: "edit",
+            element: <EditPost />,
+            loader: loadProperty,
+            action: formAction,
+          },
+        ],
       },
-      { path: '/add-post', element: <AddPost />, action: formAction },
+      { path: "/add-post", element: <AddPost />, action: formAction },
       { path: "/wishlist", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
       { path: "/auth", element: <Auth /> },
-
     ],
   },
   {
@@ -91,25 +116,22 @@ const router = createBrowserRouter([
   },
 ]);
 
-
-
 export const App = () => {
   const { login, logout, token, userId } = useAuth();
 
-
-
   return (
     <>
-      <AuthContext.Provider value={{
-        isLoggedIn: !!token,
-        token: token,
-        uid: userId,
-        login: login,
-        logout: logout
-      }}>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: !!token,
+          token: token,
+          uid: userId,
+          login: login,
+          logout: logout,
+        }}
+      >
         <RouterProvider router={router} />
       </AuthContext.Provider>
     </>
   );
-
-}
+};

@@ -6,7 +6,7 @@ const placeSchema = new Schema({
 
   img: [
     {
-      imgNo: { type: Number },
+      imgNo: { type: Number }, //optional
       imgSrc: { type: String },
     }
   ],
@@ -26,7 +26,7 @@ const placeSchema = new Schema({
   price: { type: Number, required: true },
 
   features: {
-    type: [String],
+    type: [String], //array of strings
     required: true,
   },
 

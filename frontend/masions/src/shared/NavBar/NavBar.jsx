@@ -18,12 +18,6 @@ export const NavBar = () => {
   let token = !!auth.token;
   console.log(` token state in the header page: ${token}`);
 
-  const logOut = (event)=>{
-    event.preventDefault();
-    auth.logout();
-  }
-
-
   return (
     <NavigationMenu.Root className={styles.NavigationMenuRoot}>
       <NavigationMenu.List className={`${styles.NavigationMenuList} w-screen`}>
@@ -119,40 +113,20 @@ export const NavBar = () => {
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
-            { auth.isLoggedIn &&<NavigationMenu.Item>
-              <NavigationMenu.Link
-                asChild
-                className={styles.NavigationMenuLink}
-              >
-                <Link to="/add-post"> Add Post </Link>
-              </NavigationMenu.Link>
-            </NavigationMenu.Item>}
-
-            { !auth.isLoggedIn && <NavigationMenu.Item>
-              <NavigationMenu.Link
-                asChild
-                className={styles.NavigationMenuLink}
-              >
-                <Link to="/auth"> Login/SignUp </Link>
-              </NavigationMenu.Link>
-            </NavigationMenu.Item>}
-
-            { auth.isLoggedIn &&<NavigationMenu.Item>
-              <NavigationMenu.Link
-                asChild
-                className={styles.NavigationMenuLink}
-              >
-                <Link to="/add-post" onClick={logOut}> Logout </Link>
-              </NavigationMenu.Link>
-            </NavigationMenu.Item>}
-
-
-
-
-
+            {auth.isLoggedIn && (
+              <NavigationMenu.Item>
+                <NavigationMenu.Link
+                  asChild
+                  className={styles.NavigationMenuLink}
+                >
+                  <Link to="/add-post"> Add Post </Link>
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            )}
           </div>
           <div className="flex flex-row items-center">
             <NavigationMenu.Item>
+              {/* explore link */}
               <Link
                 className={styles.IconButton}
                 aria-label="Customise options"
@@ -160,6 +134,7 @@ export const NavBar = () => {
               >
                 <MapIcon className="h-7 w-7 rounded-full" />
               </Link>
+              {/* wishlist link */}
               <Link
                 className={styles.IconButton}
                 aria-label="Customise options"
@@ -170,6 +145,7 @@ export const NavBar = () => {
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
+              {/* profile link */}
               <DropDownMenu />
             </NavigationMenu.Item>
           </div>
