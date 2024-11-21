@@ -3,6 +3,7 @@
 
 import { Form, useNavigate, useNavigation } from "react-router-dom";
 import { ImageUpload } from "../../shared/ImageUpload";
+import { Button } from "../../shared/Button";
 
 
 
@@ -37,6 +38,8 @@ export const AddPostForm = ({ method, property }) => {
         className="flex flex-col gap-6 items-center bg-white min-w-[50vh] min-h-[50vh] p-2 rounded-md drop-shadow-2xl "
         method={method}
       >
+
+
         <p className={pCss}>
           <label htmlFor="city" className={labelCss}>
             city
@@ -206,15 +209,16 @@ export const AddPostForm = ({ method, property }) => {
           >
             Cancel
           </button>
-          <button
-            className={` px-6 py-2 rounded-md text-gray-50  ${isSubmitting ? " bg-gray-400" : "bg-gray-900 hover:bg-gray-700"
-              }`}
+       
+          <Button
+            type={'submit'}
             disabled={isSubmitting}
+            inverse
+
+
           >
-
             {isSubmitting ? "Submitting..." : "Add"}
-
-          </button>
+          </Button>
         </div>
       </Form>
     </>

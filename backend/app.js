@@ -1,4 +1,6 @@
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const placesRoutes = require("./routes/places-routes");
 const userRoutes = require("./routes/user-routes");
 const bodyParser = require("body-parser");
@@ -10,6 +12,11 @@ const cookieParser = require("cookie-parser");
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+// serve the images statiscally to the user in order for the user
+// to acess the images
+// world wide used technique
+app.use("/uploads/images", express.static(path.join("uploads", "images")));
 
 // CORS
 let frontendURL = "http://localhost:5173";
@@ -34,6 +41,12 @@ app.use((req, res, next) => {
 // error function that express js recognizes it
 // a generic error handling function
 app.use((error, req, res, next) => {
+  if (req.file) {
+    fs.unlink(req.file.path, (err) => {
+      console.log(err);
+    });
+  }
+
   if (res.headerSent) {
     return next(error);
   }

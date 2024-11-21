@@ -20,6 +20,7 @@ const RegisterForm = ({ closeDialog, onLoginSuccess }) => {
       password: formData.get("password"),
       confirm_password: formData.get("confirmPassword"),
       phoneNumber: formData.get("phoneNumber"),
+      image: formData.get("image"),
     };
 
     try {
@@ -130,6 +131,21 @@ const RegisterForm = ({ closeDialog, onLoginSuccess }) => {
         </div>
         <Form.Control asChild>
           <input className="Input" type="number" />
+        </Form.Control>
+      </Form.Field>
+
+      <Form.Field className="FormField" name="image">
+        <div className="flex align-baseline justify-between">
+          <Form.Label className="">Image</Form.Label>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please chose an image
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid phone number
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          <input className="Input" type="file" required />
         </Form.Control>
       </Form.Field>
 

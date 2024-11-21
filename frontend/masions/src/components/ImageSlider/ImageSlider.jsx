@@ -27,8 +27,8 @@ export function ImageSlider({ imgCollection, propertyID }) {
         // changed this item from <a> to <div>
         <Link key={img.imgNo} to={`/${propertyID}/post-details`}>
           <img
-            src={img.imgSrc}
-            alt={img.imgNo}
+            src={`http://localhost:3000/${img.imgSrc}`}
+            alt={img._id}
             className="h-full w-full object-cover"
           />
         </Link>

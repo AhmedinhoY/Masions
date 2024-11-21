@@ -31,9 +31,11 @@ import {
   loadPlaces,
   loadProperty,
   deleteProperty,
+  loadBoth,
 } from "./routes/property-script";
-import LoginForm from "./components/AuthenticationForms/LoginForm";
-import RegisterForm from "./components/AuthenticationForms/RegisterForm";
+import { Auth } from "./routes/Users/auth";
+import { AuthContext } from "./shared/context/auth-context";
+import { useAuth } from "./shared/hooks/useAuth";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,7 +77,7 @@ const router = createBrowserRouter([
           {
             path: "post-details",
             element: <PostDetails />,
-            loader: loadProperty,
+            loader: loadBoth,
             action: deleteProperty,
           }, // general post details for: apartments, houses, lands
           {
@@ -90,6 +92,7 @@ const router = createBrowserRouter([
       { path: "/wishlist", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
+      { path: "/auth", element: <Auth /> },
     ],
   },
   {
@@ -114,5 +117,21 @@ const router = createBrowserRouter([
 ]);
 
 export const App = () => {
-  return <RouterProvider router={router} />;
+  const { login, logout, token, userId } = useAuth();
+
+  return (
+    <>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: !!token,
+          token: token,
+          uid: userId,
+          login: login,
+          logout: logout,
+        }}
+      >
+        <RouterProvider router={router} />
+      </AuthContext.Provider>
+    </>
+  );
 };
