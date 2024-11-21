@@ -20,6 +20,8 @@ backend/.env
 frontend/masions/.env
 *.local
 
+.env
+
 .vscode/
 !.vscode/extensions.json
 .idea/

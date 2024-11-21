@@ -3,7 +3,7 @@ import "./AuthenticationForm.css";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
-export default function AuthenticationForm() {
+const AuthenticationForm = ({ closeDialog, onLoginSuccess }) => {
   return (
     <div>
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
@@ -16,12 +16,20 @@ export default function AuthenticationForm() {
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content className="TabsContent" value="tab1">
-          <LoginForm />
+          <LoginForm
+            closeDialog={closeDialog}
+            onLoginSuccess={onLoginSuccess}
+          />
         </Tabs.Content>
         <Tabs.Content className="TabsContent" value="tab2">
-          <RegisterForm />
+          <RegisterForm
+            closeDialog={closeDialog}
+            onLoginSuccess={onLoginSuccess}
+          />
         </Tabs.Content>
       </Tabs.Root>
     </div>
   );
-}
+};
+
+export default AuthenticationForm;

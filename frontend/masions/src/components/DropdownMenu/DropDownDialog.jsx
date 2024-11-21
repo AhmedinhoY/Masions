@@ -4,20 +4,28 @@ import styles from "./DropDownDialog.module.css";
 import AuthenticationForm from "../AuthenticationForms/AuthenticationForm";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
-const DropDownDialog = ({ open, onOpenChange }) => (
+const DropDownDialog = ({
+  open,
+  onOpenChange,
+  closeDialog,
+  onLoginSuccess,
+}) => (
   // { open, onOpenChange } are props passed when login item is clicked to open the modal/dialog
   <Dialog.Root open={open} onOpenChange={onOpenChange}>
     <Dialog.Portal>
       <Dialog.Overlay className={styles.Overlay} />
       <Dialog.Content className={styles.Content}>
         <VisuallyHidden.Root>
-          <Dialog.Title>Edit profile</Dialog.Title>
+          <Dialog.Title>Dummy</Dialog.Title>
           <Dialog.Description className={styles.Description}>
-            Make changes to your profile here. Click save when you're done.
+            Dummy
           </Dialog.Description>
         </VisuallyHidden.Root>
 
-        <AuthenticationForm />
+        <AuthenticationForm
+          closeDialog={closeDialog}
+          onLoginSuccess={onLoginSuccess}
+        />
 
         <Dialog.Close asChild>
           <button className={styles.IconButton} aria-label="Close">

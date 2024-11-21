@@ -1,29 +1,71 @@
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const RegisterForm = () => {
-  const handleInputs = (event) => {
+const RegisterForm = ({ closeDialog, onLoginSuccess }) => {
+  const handleError = (err) =>
+    toast.error(err, {
+      position: "bottom-left",
+    });
+
+  const handleInputs = async (event) => {
     event.preventDefault();
 
+    // Fetch form data using formData API
     const formData = new FormData(event.target);
-
-    /* The FormData API is a built-in JavaScript interface for working with form data, allowing you to collect, inspect, and submit form values easily. It's part of the Web API, so it’s available in modern web browsers without needing to install anything.
-    When you initialize FormData with a form element (like new FormData(event.target) in an onSubmit handler), it collects all input data from that form, such as text fields, checkboxes, radio buttons, and other input types. Each form field must have a name attribute for FormData to collect its value. */
-
     const data = {
+      name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
       confirm_password: formData.get("confirmPassword"),
-      phone_number: formData.get("phoneNumber"),
+      phoneNumber: formData.get("phoneNumber"),
     };
-    console.log(data);
 
-    event.target.reset(); //reset the input fields
+    try {
+      // Send POST request to the backend to register the user
+      const response = await axios.post(
+        "http://localhost:3000/api/users/signup",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      const { success, message } = response.data;
+
+      alert("Logged in successfully");
+      setTimeout(() => {
+        closeDialog();
+        onLoginSuccess();
+      }, 500);
+      // Close the dialog
+    } catch (error) {
+      console.log(error);
+      handleError("Something went wrong, please try again.");
+    }
+
+    // Reset form fields
+    event.target.reset();
   };
 
   return (
     <Form.Root className="FormRoot" onSubmit={handleInputs}>
       {/* email */}
+
+      <Form.Field className="FormField" name="name">
+        <div className="flex align-baseline justify-between">
+          <Form.Label className="">Name</Form.Label>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please enter your name
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid name
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          <input className="Input" type="string" />
+        </Form.Control>
+      </Form.Field>
 
       <Form.Field className="FormField" name="email">
         <div className="flex align-baseline justify-between">
@@ -59,7 +101,7 @@ const RegisterForm = () => {
 
       {/* confirm password */}
 
-      <Form.Field className="FormField" name="confirmPassword">
+      {/* <Form.Field className="FormField" name="confirmPassword">
         <div className="flex align-baseline justify-between">
           <Form.Label className="">Confirm Password</Form.Label>
           <Form.Message className="FormMessage" match="valueMissing">
@@ -72,7 +114,7 @@ const RegisterForm = () => {
         <Form.Control asChild>
           <input className="Input" type="password" required />
         </Form.Control>
-      </Form.Field>
+      </Form.Field> */}
 
       {/* phone */}
 
@@ -87,7 +129,7 @@ const RegisterForm = () => {
           </Form.Message>
         </div>
         <Form.Control asChild>
-          <input className="Input" type="number" required />
+          <input className="Input" type="number" />
         </Form.Control>
       </Form.Field>
 
