@@ -1,8 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React, { useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
+import { AuthContext } from "../../shared/context/auth-context";
 import axios from "axios";
 
-const LoginForm = ({ closeDialog, onLoginSuccess }) => {
+const LoginForm = ({ closeDialog }) => {
+  const { login } = useContext(AuthContext);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -13,23 +19,11 @@ const LoginForm = ({ closeDialog, onLoginSuccess }) => {
       password: formData.get("password"),
     };
 
-    try {
-      await axios.post(
-        "http://localhost:3000/api/users/login",
+    await login(data.email, data.password);
 
-        data,
-        { withCredentials: true }
-      );
-
-      alert("Logged in successfully");
-      setTimeout(() => {
-        closeDialog();
-        onLoginSuccess();
-      }, 500);
-    } catch (error) {
-      console.log(error);
-      alert("Failed to Logged in ");
-    }
+    setTimeout(() => {
+      closeDialog();
+    }, 300);
 
     event.target.reset(); //reset the input fields
   };
