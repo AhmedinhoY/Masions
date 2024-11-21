@@ -1,52 +1,34 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React, { useContext } from "react";
+import { AuthContext } from "../../shared/context/auth-context";
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-
-const RegisterForm = ({ closeDialog, onLoginSuccess }) => {
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
+const RegisterForm = ({ closeDialog }) => {
+  const { signUp } = useContext(AuthContext);
 
   const handleInputs = async (event) => {
     event.preventDefault();
 
-    // Fetch form data using formData API
     const formData = new FormData(event.target);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       password: formData.get("password"),
-      confirm_password: formData.get("confirmPassword"),
+      confirmPassword: formData.get("confirmPassword"),
       phoneNumber: formData.get("phoneNumber"),
       image: formData.get("image"),
     };
 
     try {
-      // Send POST request to the backend to register the user
-      const response = await axios.post(
-        "http://localhost:3000/api/users/signup",
-        data,
-        {
-          withCredentials: true,
-        }
-      );
-      const { success, message } = response.data;
-
-      alert("Logged in successfully");
-      setTimeout(() => {
-        closeDialog();
-        onLoginSuccess();
-      }, 500);
-      // Close the dialog
+      await signUp(data);
+      closeDialog();
+      event.target.reset();
     } catch (error) {
-      console.log(error);
-      handleError("Something went wrong, please try again.");
+      console.error("Sign up error:", error);
     }
-
-    // Reset form fields
-    event.target.reset();
   };
 
   return (

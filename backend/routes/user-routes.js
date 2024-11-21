@@ -25,13 +25,12 @@ router.post("/logout", isLoggedIn, logout);
 
 router.get("/isLoggedIn", isLoggedIn, (req, res) => {
   if (req.user) {
-    // If user is logged in
     return res.status(200).json({
       isLoggedIn: true,
-      user: req.user, // Send back user info
+      user: req.user,
+      token: req.token,
     });
   }
-  // If user is not logged in (not found in req)
   res.status(200).json({
     isLoggedIn: false,
   });

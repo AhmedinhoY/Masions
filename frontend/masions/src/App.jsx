@@ -33,9 +33,12 @@ import {
   deleteProperty,
   loadBoth,
 } from "./routes/property-script";
-import { Auth } from "./routes/Users/auth";
+
+import { useContext } from "react";
 import { AuthContext } from "./shared/context/auth-context";
-import { useAuth } from "./shared/hooks/useAuth";
+import { AuthProvider } from "./shared/context/auth-context";
+
+import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,11 +48,11 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage />, loader: loadPlaces },
       {
         path: "/login",
-        element: <LoginForm />,
+        element: <AuthenticationForm />,
       },
       {
         path: "/signUp",
-        element: <RegisterForm />,
+        element: <AuthenticationForm />,
       },
       {
         path: "/houses",
@@ -92,7 +95,7 @@ const router = createBrowserRouter([
       { path: "/wishlist", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
-      { path: "/auth", element: <Auth /> },
+      { path: "/auth", element: <AuthenticationForm /> },
     ],
   },
   {
@@ -117,21 +120,23 @@ const router = createBrowserRouter([
 ]);
 
 export const App = () => {
-  const { login, logout, token, userId } = useAuth();
+  const { login, logout, signUp, token, user } = useContext(AuthContext);
 
   return (
     <>
-      <AuthContext.Provider
+      <AuthProvider
         value={{
           isLoggedIn: !!token,
           token: token,
-          uid: userId,
+          uid: user ? user.id : null,
+
           login: login,
           logout: logout,
+          signUp: signUp,
         }}
       >
         <RouterProvider router={router} />
-      </AuthContext.Provider>
+      </AuthProvider>
     </>
   );
 };
