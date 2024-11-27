@@ -120,7 +120,7 @@ const HousesForRent = [
 export const RentHouses = () => {
   const properties = useLoaderData();
   const propertyHoueses_rent = properties.filter((property) => {
-    return property.type == "house" && property.propertyStatus == "rent";
+    return property.type == "house" && property.status == "rent";
   });
 
   return (

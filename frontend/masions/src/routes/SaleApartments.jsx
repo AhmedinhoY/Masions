@@ -4,7 +4,7 @@ import PropertiesList from "../components/PropertiesList/PropertiesList";
 export const SaleApartments = () => {
   const properties = useLoaderData();
   const propertyApartments_sale = properties.filter((property) => {
-    return property.type == "apartment" && property.propertyStatus == "sale";
+    return property.type == "apartment" && property.status == "sale";
   });
 
   return (

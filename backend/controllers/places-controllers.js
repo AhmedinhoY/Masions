@@ -130,10 +130,10 @@ exports.createPlace = async (req, res, next) => {
 
   const images = ["image0", "image1", "image2", "image3"].map((img, index) => ({
     imgNo: index + 1,
-    imgSrc: req.files[img]?.[0]?.path || "https://via.placeholder.com/150",
+    imgSrc: req.files[img]?.[0]?.filename || "https://via.placeholder.com/150", // Only the filename
   }));
 
-  console.log(images);
+  console.log(images[0].imgSrc);
   console.log("images handled successfully");
 
   const createdPlace = new Place({

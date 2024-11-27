@@ -18,7 +18,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Serve uploaded images statically
-app.use("./uploads/images", express.static(path.join("uploads", "images")));
+app.use(
+  "/uploads/images",
+  express.static(path.join(__dirname, "uploads", "images"))
+);
 
 // CORS configuration
 const frontendURL = "http://localhost:5173";
