@@ -14,10 +14,6 @@ import { AuthContext } from "../context/auth-context";
 export const NavBar = () => {
   const auth = useContext(AuthContext);
 
-  console.log(auth.uid);
-  let token = !!auth.token;
-  console.log(` token state in the header page: ${token}`);
-
   return (
     <NavigationMenu.Root className={styles.NavigationMenuRoot}>
       <NavigationMenu.List className={`${styles.NavigationMenuList} w-screen`}>
@@ -78,6 +74,17 @@ export const NavBar = () => {
               </NavigationMenu.Content>
             </NavigationMenu.Item>
 
+            {auth.isLoggedIn && (
+              <NavigationMenu.Item>
+                <NavigationMenu.Link
+                  asChild
+                  className={styles.NavigationMenuLink}
+                >
+                  <Link to="/add-post"> Sell </Link>
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            )}
+
             <NavigationMenu.Item>
               <NavigationMenu.Link
                 asChild
@@ -112,17 +119,6 @@ export const NavBar = () => {
                 </ul>
               </NavigationMenu.Content>
             </NavigationMenu.Item>
-
-            {auth.isLoggedIn && (
-              <NavigationMenu.Item>
-                <NavigationMenu.Link
-                  asChild
-                  className={styles.NavigationMenuLink}
-                >
-                  <Link to="/add-post"> Add Post </Link>
-                </NavigationMenu.Link>
-              </NavigationMenu.Item>
-            )}
           </div>
           <div className="flex flex-row items-center">
             <NavigationMenu.Item>

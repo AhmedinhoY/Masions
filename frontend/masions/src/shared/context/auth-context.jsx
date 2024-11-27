@@ -81,7 +81,6 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(false);
     } catch (error) {
       console.error("Logout failed", error);
-      alert("Logout failed, please try again.");
     }
   };
 
@@ -96,7 +95,7 @@ export const AuthProvider = ({ children }) => {
         if (response.data.isLoggedIn) {
           setIsLoggedIn(true);
           setUser(response.data.user); // Set user data  from response
-          setToken(response.data.token.token); // Set token from response
+          setToken(response.data.token); // Set token from response
         } else {
           setIsLoggedIn(false);
           setUser(null);

@@ -1,21 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
 const placeSchema = new Schema({
-
   img: [
     {
       imgNo: { type: Number }, //optional
       imgSrc: { type: String },
-    }
+    },
   ],
 
   city: { type: String, required: true },
 
   type: { type: String, required: true },
 
-  propertyStatus: { type: String, required: true },
+  status: { type: String, required: true },
 
   bedrooms: { type: Number, required: true },
 
@@ -39,13 +38,11 @@ const placeSchema = new Schema({
     lng: { type: String, required: true },
   },
 
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
+  creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
 });
 
+module.exports = mongoose.model("Place", placeSchema);
 
-module.exports = mongoose.model('Place', placeSchema);
-
-
-// required = true 
+// required = true
 // The required option in Mongoose is a schema validation rule that enforces
 // the presence of a particular field when creating or updating a document.

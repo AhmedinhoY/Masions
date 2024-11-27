@@ -1,117 +1,119 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
-import { Button } from "./Button";
+import "../components/AuthenticationForms/AuthenticationForm.css";
 
-export const ImageUpload = (props, { name, extraClasses, pClass }) => {
-  const filePickerRef = useRef();
-  const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
-  const [isVaild, setIsValid] = useState(false);
+export const ImageUpload = ({
+  name,
+  onInput,
+  editImageUploaded = null,
+  extraClasses = "",
+  errorText = "Invalid image.",
+}) => {
+  const filePickerRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(editImageUploaded || null);
+  const [isValid, setIsValid] = useState(!!editImageUploaded);
 
-  let databaseImage = props.editImageUploaded;
-
-  let imageUploadClearDisabled = !!previewUrl || !!databaseImage;
-
-  // to display the preview image
+  // Display image preview when a file is selected
   useEffect(() => {
     if (!file) {
-      setPreviewUrl(null);
       return;
     }
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result);
-    }
+    };
     fileReader.readAsDataURL(file);
   }, [file]);
 
-
-  // opens the pick image thing on the user os system
+  // Opens the file picker dialog
   const pickImageHandler = () => {
     filePickerRef.current.click();
-  }
+  };
 
-  // getting the picked file 
-  const pickedHandler = event => {
-    let pickedFile;
-    // react will execute the state functions after seeing all the code inside the function
-    // therefore we need to set it manually by using 'fileIsValid'
-    let fileIsValid = isVaild;
+  // Handles file selection
+  const pickedHandler = (event) => {
+    let pickedFile = null;
+    let fileIsValid = false;
+
     if (event.target.files && event.target.files.length === 1) {
-      // pick only the 1st file that is uploaded
       pickedFile = event.target.files[0];
       setFile(pickedFile);
       setIsValid(true);
       fileIsValid = true;
     } else {
-      setIsValid(false);
       setFile(null);
       setPreviewUrl(null);
-      pickedFile = null;
-      fileIsValid = false;
+      setIsValid(false);
     }
-    props.onInput(props.name, pickedFile, fileIsValid);
 
-  }
+    onInput(name, pickedFile, fileIsValid); // Callback to parent
+  };
 
-  const ClearImage = () => {
-    setIsValid(false);
+  // Clears the selected file
+  const clearImageHandler = () => {
     setFile(null);
     setPreviewUrl(null);
-    let pickedFile = null;
-    let fileIsValid = false;
-    props.onInput(props.name, pickedFile, fileIsValid);
+    setIsValid(false);
 
-
-  }
-
+    onInput(name, null, false); // Clear callback to parent
+  };
 
   return (
-    <>
-      <div className={pClass}>
-        <input
-          type="file"
-          className={` ${extraClasses} hidden`}
-          name={name}
-          id={name}
-          ref={filePickerRef}
-          accept=".jpg,.jpeg,.png"
-          onChange={pickedHandler}
-        />
+    <div className="img-input w-[100%] p-4 flex flex-col items-center">
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        className={`${extraClasses} hidden Input items-center`}
+        id={name}
+        name={name}
+        ref={filePickerRef}
+        accept=".jpg,.jpeg,.png"
+        onChange={pickedHandler}
+      />
 
-        <div className=" flex flex-col gap-3 justify-center items-center">
-          <div className=" h-[16vh] w-[16vh] border-2 flex items-center justify-center">
-            {previewUrl &&
-              <img src={previewUrl} className=" h-[16vh] w-[16vh] object-contain" alt="Preview" />}
-            {!previewUrl && props.editImageUploaded &&
-              <img src={`http://localhost:3000/${props.editImageUploaded}`} className=" h-[16vh] w-[16vh] object-contain" alt="Preview" />}
-            {!previewUrl && !props.editImageUploaded && <p className="text-center">Please Pick an Image.</p>}
-
-
+      {/* Image Preview and Controls */}
+      <div className="flex flex-col gap-4 items-center h-full w-full align-center">
+        {/* Preview Box */}
+        <button type="button" onClick={pickImageHandler} className="w-64 h-60 ">
+          <div className="w-full h-full flex items-center justify-center rounded bg-gray-100 border-2 border-dashed border-gray-300">
+            {previewUrl ? (
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="rounded w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-center text-gray-400">
+                Please Pick an Image.
+              </div>
+            )}
           </div>
+        </button>
+
+        {/* Buttons */}
+        <div className="w-full h-full flex flex-col items-center">
           <button
             type="button"
             onClick={pickImageHandler}
-            className="  px-2 py-2 rounded-md text-black text-sm bg-gray-400 hover:bg-gray-700 hover:text-white  "
+            className="primary-btn-sm text-black text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"
           >
             Choose a File
           </button>
-          <Button
-            type={'button'}
-            onClick={ClearImage}
-            disabled={!imageUploadClearDisabled}
-            danger
 
+          <button
+            type="button"
+            onClick={clearImageHandler}
+            className="primary-btn-sm text-black text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"
+            disabled={!previewUrl}
           >
             Clear
-          </Button>
+          </button>
+
+          {/* Error Message */}
+          {!isValid && <p className="text-red-500 text-sm">{errorText}</p>}
         </div>
-
-        {!isVaild && <p> {props.errorText} </p>}
       </div>
-
-
-    </>
-
+    </div>
   );
-}
+};

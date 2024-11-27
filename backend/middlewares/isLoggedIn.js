@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
     }
 
     // decoding the token with scerect key
-    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
     const user = await User.findById(decoded.id);
 
@@ -31,6 +31,7 @@ module.exports = async (req, res, next) => {
     }
 
     req.user = { id: user.id, email: user.email }; // Attach user details to the request
+    req.token = token; // Attach token to the request
     next(); // Continue to the next middleware/route
   } catch (error) {
     console.log(error);
