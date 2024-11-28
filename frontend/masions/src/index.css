@@ -30,7 +30,9 @@
   --secondary-bg: #fcfcfc;
   --nav-color: #f9f9f9;
   --blue-12: #1e3a8a;
+  --red-11: #ce2c31;
   --gray-11: #646464;
+  --gray-8: #bbbbbb;
   --gray-6: #d9d9d9;
   --gray-3: #f0f0f0;
   --blue-10: #3b82f6;
@@ -145,6 +147,61 @@ p {
   justify-content: center;
 }
 
+.secondary-btn {
+  background-color: var(--secondary-btn);
+  color: var(--text-color);
+  border-radius: var(--border-radius-btn);
+  font-size: 1.1rem;
+  line-height: 1.25rem;
+  width: 100%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondary-btn-sm {
+  background-color: var(--secondary-btn);
+  color: var(--text-color);
+  border-radius: var(--border-radius-btn);
+  font-size: 0.9rem;
+  line-height: 1;
+  width: 80%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.danger-btn {
+  background-color: var(--danger);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 1.1rem;
+  line-height: 1.25rem;
+  width: 100%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.danger-btn-sm {
+  background-color: var(--danger);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 0.9rem;
+  line-height: 1;
+  width: 80%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .buttons-container {
   /* flex flex-col justify-center items-center mt-6 */
   display: flex;
@@ -201,6 +258,8 @@ p {
   --secondary: var(--blue-10); /* 10% */
   --text-color: var(--gray-12);
   --description-color: var(--gray-11);
+  --danger: var(--red-11);
+  --secondary-btn: var(--gray-8);
   --border-seperator-color: var(--gray-6);
   --hover-color: var(--gray-3);
   --overlay-color: rgba(0, 0, 0, 0.15);

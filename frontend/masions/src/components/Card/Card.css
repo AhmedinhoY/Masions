@@ -13,14 +13,12 @@
   justify-content: center;
 }
 
-
 .card-title {
   font-size: 1.25rem;
   line-height: 1.75rem;
   font-family: var(--font-family-bold);
   text-align: center;
 }
-
 
 .card-subtitle {
   margin-top: -0.25rem;
@@ -30,15 +28,12 @@
   text-align: center;
 }
 
-
 .card-text {
-
 }
 
 .card-img {
-  height:fit-content;
-  width: fit-content;
+  height: 20rem;
+  width: 20rem;
   border-radius: var(--border-radius-img);
   margin-bottom: 1.25rem;
 }
-

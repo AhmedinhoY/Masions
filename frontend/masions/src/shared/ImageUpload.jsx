@@ -6,25 +6,30 @@ export const ImageUpload = ({
   name,
   onInput,
   editImageUploaded = null,
-  extraClasses = "",
   errorText = "Invalid image.",
 }) => {
   const filePickerRef = useRef(null);
   const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(editImageUploaded || null);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const [isValid, setIsValid] = useState(!!editImageUploaded);
 
   // Display image preview when a file is selected
   useEffect(() => {
-    if (!file) {
-      return;
+    if (file) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        setPreviewUrl(fileReader.result);
+      };
+      fileReader.readAsDataURL(file);
+    } else if (editImageUploaded) {
+      // If there is an existing image, set the preview URL to the API URL
+      setPreviewUrl(
+        `http://localhost:3000/uploads/images/${editImageUploaded}`
+      );
+    } else {
+      setPreviewUrl(null); // Reset if no image is provided
     }
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setPreviewUrl(fileReader.result);
-    };
-    fileReader.readAsDataURL(file);
-  }, [file]);
+  }, [file, editImageUploaded]);
 
   // Opens the file picker dialog
   const pickImageHandler = () => {
@@ -64,7 +69,7 @@ export const ImageUpload = ({
       {/* Hidden File Input */}
       <input
         type="file"
-        className={`${extraClasses} hidden Input items-center`}
+        className={`hidden Input items-center`}
         id={name}
         name={name}
         ref={filePickerRef}
@@ -96,7 +101,7 @@ export const ImageUpload = ({
           <button
             type="button"
             onClick={pickImageHandler}
-            className="primary-btn-sm text-black text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"
+            className="secondary-btn-sm"
           >
             Choose a File
           </button>
@@ -104,7 +109,7 @@ export const ImageUpload = ({
           <button
             type="button"
             onClick={clearImageHandler}
-            className="primary-btn-sm text-black text-sm bg-gray-400 hover:bg-gray-700 hover:text-white"
+            className="danger-btn-sm"
             disabled={!previewUrl}
           >
             Clear

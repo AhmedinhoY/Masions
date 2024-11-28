@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Form from "@radix-ui/react-form";
 import "../AuthenticationForms/AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
@@ -8,7 +9,30 @@ import { ImageUpload } from "../../shared/ImageUpload";
 
 export const AddProperty = () => {
   const [images, setImages] = useState({}); // To store images by name
+  const [features, setFeatures] = useState([" "]);
   const auth = useContext(AuthContext);
+  const inputRef = useRef();
+  const navigate = useNavigate();
+
+  // Handle change in input fields
+  const handleInputChange = (index, event) => {
+    const newFeatures = [...features];
+    newFeatures[index] = event.target.value;
+    setFeatures(newFeatures);
+  };
+
+  // Add a new input field
+  const handleAddInput = () => {
+    const updatedFeatures = [...features, ""];
+    setFeatures(updatedFeatures);
+    console.log("Updated Features after Add:", updatedFeatures);
+  };
+
+  const handleRemoveInput = (index) => {
+    const updatedFeatures = features.filter((_, i) => i !== index);
+    setFeatures(updatedFeatures);
+    console.log("Updated Features after Remove:", updatedFeatures);
+  };
 
   const handleImageInput = (name, file, isValid) => {
     setImages((prevImages) => ({
@@ -19,20 +43,28 @@ export const AddProperty = () => {
 
   const handleSubmission = async (event) => {
     event.preventDefault();
+    if (inputRef.current) {
+      const value = inputRef.current.value;
+      if (value === "") {
+        inputRef.current.setCustomValidity("This field cannot be empty");
+      } else {
+        inputRef.current.setCustomValidity("");
+      }
+    }
 
-    const formData = new FormData(event.target);
+    console.log("Features before submission:", features);
 
     // Append other form data
     const data = new FormData();
-    data.append("type", formData.get("type"));
-    data.append("status", formData.get("status"));
-    data.append("city", formData.get("city"));
-    data.append("address", formData.get("address"));
-    data.append("price", formData.get("price"));
-    data.append("bedrooms", formData.get("bedrooms"));
-    data.append("bathrooms", formData.get("bathrooms"));
-    data.append("area", formData.get("area"));
-    data.append("description", formData.get("description"));
+    data.append("type", event.target.type.value);
+    data.append("status", event.target.status.value);
+    data.append("city", event.target.city.value);
+    data.append("address", event.target.address.value);
+    data.append("price", event.target.price.value);
+    data.append("bedrooms", event.target.bedrooms.value);
+    data.append("bathrooms", event.target.bathrooms.value);
+    data.append("area", event.target.area.value);
+    data.append("description", event.target.description.value);
 
     // Append images from state
     Object.keys(images).forEach((key) => {
@@ -40,8 +72,18 @@ export const AddProperty = () => {
         data.append(key, images[key]);
       }
     });
+    console.log("features before append", features);
 
-    console.log("FormData:", ...data.entries());
+    features.forEach((feature, index) => {
+      data.append(`features[${index}]`, feature);
+    });
+    // Log the appended features using getAll()
+    const featuresArray = [];
+    for (let i = 0; i < features.length; i++) {
+      featuresArray.push(data.get(`features[${i}]`));
+    }
+
+    console.log("Features in FormData:", featuresArray);
 
     try {
       const response = await axios.post(
@@ -56,6 +98,7 @@ export const AddProperty = () => {
       );
 
       console.log("Response:", response);
+      navigate("/");
     } catch (err) {
       console.error("Error:", err);
     }
@@ -181,15 +224,39 @@ export const AddProperty = () => {
 
       {/* Features */}
       <Form.Field className="FormField" name="features">
-        <div className="flex align-baseline justify-between">
-          <Form.Label>Features (comma-separated)</Form.Label>
-          <Form.Message className="FormMessage" match="valueMissing">
-            Please enter features
-          </Form.Message>
+        <div>
+          <Form.Label>Features</Form.Label>
+          {features.map((feature, index) => (
+            <div
+              className="relative flex items-center space-x-2 mb-2"
+              key={index}
+            >
+              <input
+                ref={inputRef}
+                type="text"
+                value={feature}
+                onChange={(e) => handleInputChange(index, e)}
+                className="Input !w-[90%]"
+              />
+              <button
+                type="button"
+                className="secondary-btn !w-[5%] !h-[90%]"
+                onClick={() => handleAddInput(index)}
+              >
+                +
+              </button>
+              {features.length > 1 && (
+                <button
+                  type="button"
+                  className="danger-btn !w-[5%] !h-[80%]"
+                  onClick={() => handleRemoveInput(index)}
+                >
+                  x
+                </button>
+              )}
+            </div>
+          ))}
         </div>
-        <Form.Control asChild>
-          <input className="Input" type="text" />
-        </Form.Control>
       </Form.Field>
 
       {/* Description */}
@@ -218,7 +285,7 @@ export const AddProperty = () => {
               <ImageUpload
                 name={`image${index}`}
                 onInput={handleImageInput}
-                errorText={`Image ${index + 1} is required.`}
+                errorText={`required.`}
               />
             </Form.Control>
           </Form.Field>
