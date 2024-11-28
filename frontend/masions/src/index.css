@@ -3,23 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Geist-Light'; /* Font weight 300 */
-  src: url('./assets/fonts/Geist-Light.woff2') format('woff2');
+  font-family: "Geist-Light"; /* Font weight 300 */
+  src: url("./assets/fonts/Geist-Light.woff2") format("woff2");
   font-weight: 300;
 }
 
 @font-face {
-  font-family: 'Geist'; /* Font weight 500 */
-  src: url('./assets/fonts/Geist-Medium.woff2') format('woff2');
+  font-family: "Geist"; /* Font weight 500 */
+  src: url("./assets/fonts/Geist-Medium.woff2") format("woff2");
   font-weight: 500;
 }
 
 @font-face {
-  font-family: 'Geist-Bold'; /* Font weight 700 */
-  src: url('./assets/fonts/Geist-Bold.woff2') format('woff2');
+  font-family: "Geist-Bold"; /* Font weight 700 */
+  src: url("./assets/fonts/Geist-Bold.woff2") format("woff2");
   font-weight: 700;
 }
-
 
 * {
   box-sizing: border-box;
@@ -28,23 +27,24 @@
 /* CSS Variables */
 :root {
   --bg-color: #f9f9f9;
-  --secondary-bg: #FCFCFC;
-  --nav-color: #F9F9F9;
+  --secondary-bg: #fcfcfc;
+  --nav-color: #f9f9f9;
   --blue-12: #1e3a8a;
+  --red-11: #ce2c31;
   --gray-11: #646464;
-  --gray-6: #D9D9D9;
-  --gray-3: #F0F0F0;
+  --gray-8: #bbbbbb;
+  --gray-6: #d9d9d9;
+  --gray-3: #f0f0f0;
   --blue-10: #3b82f6;
   --gray-12: #202020;
 
   /* Global font settings */
-  --font-family: 'Geist', sans-serif;
-  --font-family-bold: 'Geist-Bold', sans-serif;
-  --font-family-light:'Geist-Light', sans-serif;
+  --font-family: "Geist", sans-serif;
+  --font-family-bold: "Geist-Bold", sans-serif;
+  --font-family-light: "Geist-Light", sans-serif;
 
   --container-padding: 15px;
 
-  
   font-size: 16px;
   line-height: 24px;
   font-synthesis: none;
@@ -73,26 +73,26 @@ section {
   margin-bottom: 2.5rem;
 }
 
-h1{
-  font-family: 'Geist-Bold', sans-serif;
-  font-size: 1.5rem ;
-  line-height: 2rem ;
+h1 {
+  font-family: "Geist-Bold", sans-serif;
+  font-size: 1.5rem;
+  line-height: 2rem;
   letter-spacing: -0.025em;
-  color: var(--blue-12)
+  color: var(--blue-12);
 }
 
-h2{
+h2 {
   margin-top: 1rem;
-  font-size: 1.25rem ;
-  line-height: 1.75rem ;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   font-weight: 700;
-  color: var(--blue-12)
+  color: var(--blue-12);
 }
 
-h3{
+h3 {
   margin-top: auto;
-  font-size: 0.875rem ;
-  line-height: 1.25rem ;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--description-color);
 }
 
@@ -100,7 +100,6 @@ p {
   margin-bottom: 1.5rem;
   color: var(--text-color);
 }
-
 
 .container {
   @apply mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 sm:justify-center lg:max-w-7xl lg:px-8;
@@ -110,6 +109,15 @@ p {
   margin-bottom: 20px;
 }
 
+.container-body {
+  background-color: var(--secondary-bg);
+  border-radius: var(--border-radius-card);
+  height: max-content;
+  margin: auto;
+  padding: 30px;
+  width: 100%;
+  box-shadow: var(--box-shadow);
+}
 
 .primary-btn {
   background-color: var(--primary);
@@ -117,12 +125,12 @@ p {
   border-radius: var(--border-radius-btn);
   font-size: 1.1rem;
   line-height: 1.25rem;
-	width:100%;
-	margin: 4px;
-	padding: 4px 12px;
+  width: 100%;
+  margin: 4px;
+  padding: 4px 12px;
   display: inline-flex;
-	align-items: center;
-	justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .primary-btn-sm {
@@ -131,12 +139,67 @@ p {
   border-radius: var(--border-radius-btn);
   font-size: 0.9rem;
   line-height: 1;
-	width:80%;
-	margin: 4px;
-	padding: 4px 12px;
+  width: 80%;
+  margin: 4px;
+  padding: 4px 12px;
   display: inline-flex;
-	align-items: center;
-	justify-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondary-btn {
+  background-color: var(--secondary-btn);
+  color: var(--text-color);
+  border-radius: var(--border-radius-btn);
+  font-size: 1.1rem;
+  line-height: 1.25rem;
+  width: 100%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.secondary-btn-sm {
+  background-color: var(--secondary-btn);
+  color: var(--text-color);
+  border-radius: var(--border-radius-btn);
+  font-size: 0.9rem;
+  line-height: 1;
+  width: 80%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.danger-btn {
+  background-color: var(--danger);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 1.1rem;
+  line-height: 1.25rem;
+  width: 100%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.danger-btn-sm {
+  background-color: var(--danger);
+  color: white;
+  border-radius: var(--border-radius-btn);
+  font-size: 0.9rem;
+  line-height: 1;
+  width: 80%;
+  margin: 4px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .buttons-container {
@@ -160,7 +223,7 @@ p {
 }
 
 .list-item {
-  width: calc(100%/3);
+  width: calc(100% / 3);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -173,7 +236,6 @@ p {
 
 .list-item:last-child {
   border-right: none; /* Remove border on the last item */
-  
 }
 
 .item-heading {
@@ -187,7 +249,6 @@ p {
   margin: 0;
   line-height: 1.5rem;
   color: var(--text-color);
-
 }
 
 /* Color palette using 60-30-10 rule */
@@ -197,6 +258,8 @@ p {
   --secondary: var(--blue-10); /* 10% */
   --text-color: var(--gray-12);
   --description-color: var(--gray-11);
+  --danger: var(--red-11);
+  --secondary-btn: var(--gray-8);
   --border-seperator-color: var(--gray-6);
   --hover-color: var(--gray-3);
   --overlay-color: rgba(0, 0, 0, 0.15);
@@ -206,9 +269,10 @@ p {
   --border-radius-img: 8px;
   --border-radius-input: 3px;
 
-  --box-shadow: oklab(0.834362 -0.000609 -0.018261 / 0.294118) 0px 0px 0px 1px inset,
-  rgba(0, 0, 0, 0.05) 0px 8px 40px 0px,
-  rgba(0, 0, 51, 0.06) 0px 12px 32px -16px;
+  --box-shadow: oklab(0.834362 -0.000609 -0.018261 / 0.294118) 0px 0px 0px 1px
+      inset,
+    rgba(0, 0, 0, 0.05) 0px 8px 40px 0px,
+    rgba(0, 0, 51, 0.06) 0px 12px 32px -16px;
 }
 
 /* box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); */

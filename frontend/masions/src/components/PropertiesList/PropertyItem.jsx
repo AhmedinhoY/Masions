@@ -13,7 +13,9 @@ export const PropertyItem = ({ property }) => {
         <Link to={`/${property.id}/post-details`}>
           <div>
             <h2>{property.city}</h2>
-            <h3>{property.type} for Sale</h3>
+            <h3>
+              {property.type} for {property.status}
+            </h3>
             <h3>
               {property.area} m<sup>2</sup> - {property.bedrooms} bedrooms
             </h3>

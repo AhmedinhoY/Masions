@@ -6,7 +6,7 @@ export const SaleLands = () => {
   let propertyLands_sale;
   if (properties) {
     propertyLands_sale = properties.filter((property) => {
-      return property.type == "land" && property.propertyStatus == "sale";
+      return property.type == "land" && property.status == "sale";
     });
   }
 

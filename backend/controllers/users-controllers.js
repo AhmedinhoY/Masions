@@ -3,10 +3,7 @@ const uuid = require("uuid").v4;
 const { validationResult } = require("express-validator");
 const User = require("../models/users");
 const bcrypt = require("bcryptjs");
-const {
-  createAccessToken,
-  createRefreshToken,
-} = require("../util/secretToken");
+const { createToken } = require("../util/secretToken");
 const { handleError } = require("../util/utils");
 
 // get all users controller
@@ -62,18 +59,17 @@ exports.signUp = async (req, res, next) => {
 
     await newUser.save();
 
-    const accessToken = createAccessToken(newUser.id, newUser.email);
-    const refreshToken = createRefreshToken(newUser.id, newUser.email);
+    const Token = createToken(newUser.id, newUser.email);
 
-    res.cookie("token", refreshToken, {
+    res.cookie("token", Token, {
       withCredentials: true,
       httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: 3 * 60 * 60 * 1000,
     });
 
     res
       .status(201)
-      .json({ userID: newUser.id, email: newUser.email, token: accessToken });
+      .json({ userID: newUser.id, email: newUser.email, token: Token });
   } catch (err) {
     console.log(err);
     handleError("Sign up failed, please try again", 500, next);
@@ -106,22 +102,18 @@ exports.login = async (req, res, next) => {
 
     // if the login was successful, create token with cookie
 
-    const accessToken = createAccessToken(existingUser.id, existingUser.email);
-    const refreshToken = createRefreshToken(
-      existingUser.id,
-      existingUser.email
-    );
+    const Token = createToken(existingUser.id, existingUser.email);
 
-    res.cookie("token", refreshToken, {
+    res.cookie("token", Token, {
       withCredentials: true,
       httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: 3 * 60 * 60 * 1000,
     });
 
     res.status(201).json({
       userID: existingUser.id,
       email: existingUser.email,
-      token: accessToken,
+      token: Token,
     });
   } catch (err) {
     console.error(err);
@@ -136,38 +128,6 @@ exports.logout = async (req, res) => {
   } else {
     res.clearCookie("token", { withCredentials: true, httpOnly: false });
     res.json({ message: "Cookie cleared" });
-  }
-};
-
-// Check if the user is logged in
-exports.checkIfLoggedin = async (req, res, next) => {
-  try {
-    // Check if the token exists in cookies
-    const cookies = req.cookies;
-    if (!cookies?.token) {
-      return res
-        .status(401)
-        .json({ message: "Authentication failed, no token found" });
-    }
-
-    // Verify the token using your JWT verify function
-    const decoded = jwt.verify(cookies.token, process.env.TOKEN_KEY);
-
-    // If the token is valid, send user details as response
-    const existingUser = await User.findById(decoded.userID);
-    if (!existingUser) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    // If user is found, return success with user details
-    res.status(200).json({
-      message: "User is logged in",
-      userID: existingUser.id,
-      email: existingUser.email,
-    });
-  } catch (err) {
-    console.error(err);
-    return handleError("Authentication failed, please try again", 500, next);
   }
 };
 

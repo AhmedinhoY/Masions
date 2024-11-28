@@ -23,12 +23,11 @@ import { SaleApartments } from "./routes/SaleApartments";
 import { RentApartments } from "./routes/RentApartments";
 import { Explore } from "./routes/Explore";
 import { WishList } from "./routes/WishList";
-import { EditPost } from "./routes/EditPost";
 import { AddPost } from "./routes/AddPost";
 
 import { action as formAction } from "./components/AddPostForm/form-script";
 import {
-  loadPlaces,
+  loadProperties,
   loadProperty,
   deleteProperty,
   loadBoth,
@@ -39,13 +38,14 @@ import { AuthContext } from "./shared/context/auth-context";
 import { AuthProvider } from "./shared/context/auth-context";
 
 import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
+import { EditProperty } from "./routes/EditProperty";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <HomePage />, loader: loadPlaces },
+      { index: true, element: <HomePage />, loader: loadProperties },
       {
         path: "/login",
         element: <AuthenticationForm />,
@@ -57,21 +57,29 @@ const router = createBrowserRouter([
       {
         path: "/houses",
         children: [
-          { path: "for-sale", element: <SaleHouses />, loader: loadPlaces },
-          { path: "for-rent", element: <RentHouses />, loader: loadPlaces },
+          { path: "for-sale", element: <SaleHouses />, loader: loadProperties },
+          { path: "for-rent", element: <RentHouses />, loader: loadProperties },
         ],
       },
       {
         path: "apartments",
         children: [
-          { path: "for-sale", element: <SaleApartments />, loader: loadPlaces },
-          { path: "for-rent", element: <RentApartments />, loader: loadPlaces },
+          {
+            path: "for-sale",
+            element: <SaleApartments />,
+            loader: loadProperties,
+          },
+          {
+            path: "for-rent",
+            element: <RentApartments />,
+            loader: loadProperties,
+          },
         ],
       },
       {
         path: "lands",
         children: [
-          { path: "for-sale", element: <SaleLands />, loader: loadPlaces },
+          { path: "for-sale", element: <SaleLands />, loader: loadProperties },
         ],
       },
       {
@@ -85,7 +93,7 @@ const router = createBrowserRouter([
           }, // general post details for: apartments, houses, lands
           {
             path: "edit",
-            element: <EditPost />,
+            element: <EditProperty />,
             loader: loadProperty,
             action: formAction,
           },

@@ -121,8 +121,9 @@ const HousesForSale = [
 export const SaleHouses = () => {
   const properties = useLoaderData();
   const propertyHoueses_sale = properties.filter((property) => {
-    return property.type == "house" && property.propertyStatus == "sale";
+    return property.type == "house" && property.status == "sale";
   });
+  console.log(propertyHoueses_sale);
 
   return (
     <>

@@ -1,304 +1,202 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-import { Await, json, useLoaderData, useSubmit } from "react-router-dom";
+import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
+import { Suspense, useContext, useRef } from "react";
 import Card from "../components/Card/Card";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 import { Button } from "../shared/Button";
-import { Modal } from "../shared/Modal";
-import { Suspense, useContext, useRef } from "react";
-import { AuthContext } from "../shared/context/auth-context";
 import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
-import { HttpError } from "../util/route-error";
+import { AuthContext } from "../shared/context/auth-context";
 
-const agents = [
-  {
-    name: "Dries Vincent",
-    email: "dries.vincent@example.com",
-    agency: "Grnata",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    phoneNumber: 36728829,
-  },
-];
+export default function PostDetails() {
+  const { property, properties } = useLoaderData();
+  const submit = useSubmit();
+  const auth = useContext(AuthContext);
+  const modal = useRef();
 
-const DetailofPage = ({ property }) => {
+  const deleteConfirmation = () => {
+    const formData = new FormData(); // Empty FormData for delete action
+    submit(formData, { method: "DELETE" });
+    console.log("Deleted!");
+  };
+
   return (
-    <>
+    <div className="pt-6">
       <Suspense fallback={<LoadingSpinner asOverlay />}>
-        <Await resolve={property}>
-          {(chosenHouse) => {
-            const Status =
-              chosenHouse.propertyStatus[0].toUpperCase() +
-              chosenHouse.propertyStatus.slice(1);
-            const propertyType =
-              chosenHouse.type[0].toUpperCase() + chosenHouse.type.slice(1);
+        <Await resolve={{ property, properties }}>
+          {({ property: chosenHouse, properties: loadedProperties }) => {
+            if (!chosenHouse) {
+              return <p>Property details are unavailable.</p>;
+            }
+
+            // Filter out the current property from the similar properties list
+            const similarProperties = loadedProperties.filter(
+              (p) => chosenHouse.id !== p.id
+            );
 
             return (
-              <>
-                {/* Image gallery */}
+              <div>
+                {/* Image Gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+                  {/* Main image */}
                   <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                     <img
-                      src={`http://localhost:3000/${chosenHouse.img[0].imgSrc}`}
+                      src={
+                        chosenHouse.img?.[0]?.imgSrc
+                          ? `http://localhost:3000/uploads/images/${chosenHouse.img[0].imgSrc}`
+                          : "fallback-image-path"
+                      }
                       className="h-full w-full object-cover object-center"
+                      alt={`Image of ${chosenHouse.title || "property"}`}
                     />
                   </div>
+
+                  {/* Additional images */}
                   <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                      <img
-                        src={`http://localhost:3000/${chosenHouse.img[1].imgSrc}`}
-                        className="h-full w-full object-cover object-center"
-                      />
-                    </div>
-                    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                      <img
-                        src={`http://localhost:3000/${chosenHouse.img[2].imgSrc}`}
-                        className="h-full w-full object-cover object-center"
-                      />
-                    </div>
+                    {chosenHouse.img?.slice(1, 3).map((image, index) => (
+                      <div
+                        key={index}
+                        className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg"
+                      >
+                        <img
+                          src={`http://localhost:3000/uploads/images/${image.imgSrc}`}
+                          className="h-full w-full object-cover object-center"
+                          alt={`Image ${index + 2}`}
+                        />
+                      </div>
+                    ))}
                   </div>
                   <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
                     <img
-                      src={`http://localhost:3000/${chosenHouse.img[3].imgSrc}`}
+                      src={`http://localhost:3000/uploads/images/${chosenHouse.img[3]?.imgSrc}`}
                       className="h-full w-full object-cover object-center"
+                      alt="Additional Image"
                     />
                   </div>
                 </div>
 
-                <div className="mx-auto max-w-2xl px-4  pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8  lg:pt-16">
-                  {/* Post Header */}
-                  <div className="lg:col-span-2 lg:pr-8 ">
+                {/* Post Header */}
+                <div className="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 lg:pt-16">
+                  <div className="lg:col-span-2 lg:pr-8">
                     <div className="flex justify-between">
-                      <h1 className="sm:text-3xl">
-                        {chosenHouse.type == "house" ? "Villa" : propertyType}{" "}
-                        for {Status} in {chosenHouse.city}
+                      <h1 className="text-2xl sm:text-3xl font-bold">
+                        {chosenHouse.type} for {chosenHouse.status} in{" "}
+                        {chosenHouse.city}
                       </h1>
-                      <h1 className="sm:text-3xl">{chosenHouse.price} BD</h1>
+                      <h1 className="text-2xl sm:text-3xl font-bold">
+                        {chosenHouse.price} BD
+                      </h1>
                     </div>
-                    <h3>{chosenHouse.address}</h3>
+                    <h3 className="text-lg text-gray-600">
+                      {chosenHouse.address}
+                    </h3>
                   </div>
                 </div>
-              </>
-            );
-          }}
-        </Await>
-      </Suspense>
-    </>
-  );
-};
 
-const SimilarProperties = ({ places, property }) => {
-  return (
-    <>
-      {/* here add a Suspense */}
-      <Suspense fallback={<LoadingSpinner asOverlay />}>
-        <Await resolve={places}>
-          {(loadedPlaces) => {
-            if (!loadedPlaces) {
-              const error = new HttpError(
-                "the loaded properties is null, please close your browser and try again later",
-                500,
-                { details: "this is the details of the error" }
-              );
-              throw error;
-            }
+                <div className="mx-auto max-w-2xl px-4 pb-16 pt-2 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-4">
+                  {/* columns */}
 
-            loadedPlaces = loadedPlaces.filter((p) => property.id !== p.id);
+                  {/* Col 1 */}
+                  <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+                    {/* Overview */}
+                    <div>
+                      <ul className="horizontal-list">
+                        <li className="list-item">
+                          <h2 className="item-heading">Size</h2>
+                          <p className="item-text">{chosenHouse.area} sqm</p>
+                        </li>
+                        <li className="list-item">
+                          <h2 className="item-heading">Bedrooms</h2>
+                          <p className="item-text"> {chosenHouse.bedrooms}</p>
+                        </li>
+                        <li className="list-item">
+                          <h2 className="item-heading">Bathrooms</h2>
+                          <p className="item-text"> {chosenHouse.bathrooms}</p>
+                        </li>
+                      </ul>
+                    </div>
 
-            if (loadedPlaces.length === 0) {
-              return (
-                <div className="mt-10">
-                  <h2 className="">Similar Properties</h2>
-                  <div className="mt-4 space-y-6">
-                    <p> No similar places exits </p>
+                    {chosenHouse.features.length > 0 && (
+                      <div className="mt-6">
+                        <h2 className="">Features</h2>
+                        <div className="mt-3 ml-3">
+                          <ul role="list" className="list-disc space-y-2 pl-4">
+                            {chosenHouse.features.map((feature, index) => (
+                              <li key={index}>
+                                <p>{feature}</p>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    {chosenHouse.description && (
+                      <div className="mt-6">
+                        <h2 className="">Description</h2>
+
+                        <div className="mt-3 ml-3 space-y-6">
+                          <p className="">{chosenHouse.description}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mt-6">
+                      <h2 className="">Similar Properties</h2>
+
+                      <div className="mt-3 ml-3 space-y-6">
+                        {similarProperties.length > 0 ? (
+                          <PropertiesList
+                            propertyType={similarProperties}
+                            limit={3}
+                          />
+                        ) : (
+                          <p>No similar places exist</p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            }
-
-            return (
-              <div className="mt-10">
-                <h2 className="">Similar Properties</h2>
-                <div className="mt-4 space-y-6">
-                  <PropertiesList propertyType={loadedPlaces} limit={3} />
+                  {/* Col2: Agent Card */}
+                  <div className="lg:row-span-3 lg:mt-0">
+                    {auth.isLoggedIn &&
+                      auth.user.id == chosenHouse.creator.id && (
+                        <div className="w-[80%] m-auto">
+                          <div className=" mb-4 w-full flex items-center justify-around ">
+                            <Link
+                              to={`/${chosenHouse.id}/edit`}
+                              className="secondary-btn"
+                            >
+                              Edit
+                            </Link>
+                            <button className="danger-btn"> Delete</button>
+                          </div>
+                        </div>
+                      )}
+                    <Card
+                      title={chosenHouse.creator.name}
+                      subtitle="Grnata"
+                      imageUrl={`http://localhost:3000/uploads/images/${chosenHouse.img[0]?.imgSrc}`}
+                      buttons={[
+                        {
+                          label: "Call",
+                          onclick: () => alert("Call agent"),
+                        },
+                        {
+                          label: "Message",
+                          onclick: () => alert("Message agent"),
+                        },
+                        {
+                          label: "WhatsApp",
+                          onclick: () => alert("WhatsApp agent"),
+                        },
+                      ]}
+                    />
+                  </div>
                 </div>
               </div>
             );
           }}
         </Await>
       </Suspense>
-    </>
-  );
-};
-
-export default function PostDetails() {
-  const { property, places } = useLoaderData();
-  const submit = useSubmit();
-  const auth = useContext(AuthContext);
-  const modal = useRef();
-
-  return (
-    <>
-      <div className="">
-        <div className="pt-6">
-          <DetailofPage property={property} />
-
-          <Suspense fallback={<LoadingSpinner asOverlay />}>
-            <Await resolve={property}>
-              {(chosenHouse) => {
-                const onDeleteClicked = () => {
-                  modal.current.open();
-                };
-
-                const deleteConfirmation = () => {
-                  submit(null, { method: "DELETE" });
-                  console.log("Deleted!");
-                };
-                return (
-                  <>
-                    {/* Post info */}
-                    <div className="mx-auto max-w-2xl px-4 pb-16 pt-2 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-4">
-                      {/* columns */}
-
-                      <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-                        {/* Overview */}
-                        <div className="">
-                          <h3 className="sr-only">Description</h3>
-
-                          <ul className="horizontal-list">
-                            <li className="list-item">
-                              <h2 className="item-heading">Size</h2>
-                              <p className="item-text">
-                                {chosenHouse.area} sqm
-                              </p>
-                            </li>
-                            <li className="list-item">
-                              <h2 className="item-heading">Bedrooms</h2>
-                              <p className="item-text">
-                                {" "}
-                                {chosenHouse.bedrooms}
-                              </p>
-                            </li>
-                            <li className="list-item">
-                              <h2 className="item-heading">Bathrooms</h2>
-                              <p className="item-text">
-                                {" "}
-                                {chosenHouse.bathrooms}
-                              </p>
-                            </li>
-                          </ul>
-                        </div>
-
-                        <div className="mt-10">
-                          <h2 className="">Features</h2>
-
-                          <div className="mt-4">
-                            <ul
-                              role="list"
-                              className="list-disc space-y-2 pl-4"
-                            >
-                              {chosenHouse.features.map((feature) => (
-                                <li key={feature}>
-                                  <p>{feature}</p>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-
-                        <div className="mt-10">
-                          <h2 className="text-xl">Description</h2>
-
-                          <div className="mt-4 space-y-6">
-                            <p className=" font-serif text-[18px]">
-                              {chosenHouse.description}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Modal generation */}
-                        <Modal
-                          ref={modal}
-                          className={
-                            " w-1/2 min-h-[15rem] drop-shadow-2xl rounded-md p-8"
-                          }
-                          title={"Are you Sure? "}
-                          titleClass={" font-bold font-serif w-full my-3 "}
-                          contentClass={
-                            " w-full h-[5rem]  mb-2 flex items-center justify-center "
-                          }
-                          footerClass={" flex items-center justify-end gap-3"}
-                          footer={
-                            <>
-                              <Button type={"submit"}> Cancel </Button>
-                              <Button
-                                danger
-                                type={"submit"}
-                                onClick={deleteConfirmation}
-                              >
-                                Confirm
-                              </Button>
-                            </>
-                          }
-                        >
-                          <p className=" capitalize font-serif font-semibold">
-                            if you confirm the post is{" "}
-                            <span className=" uppercase text-red-900">
-                              deleted{" "}
-                            </span>
-                            forever.
-                          </p>
-                        </Modal>
-
-                        {/* only displayed if the logged in user == creator of the post */}
-
-                        {auth.isLoggedIn &&
-                          auth.uid == chosenHouse.creator.id && (
-                            <div className="  mt-4 flex items-center justify-end gap-6">
-                              <Button to={`/${chosenHouse.id}/edit`}>
-                                Edit
-                              </Button>
-                              <Button onClick={onDeleteClicked} danger>
-                                {" "}
-                                Delete
-                              </Button>
-                            </div>
-                          )}
-
-                        {/* here similar properties shall be rendered */}
-                        <SimilarProperties
-                          places={places}
-                          property={property}
-                        />
-                      </div>
-
-                      <div className="lg:row-span-3 lg:mt-0">
-                        <div className="">
-                          <Card
-                            title={chosenHouse.creator.name}
-                            subtitle={agents[0].agency}
-                            imageUrl={`http://localhost:3000/${chosenHouse.creator.image}`}
-                            buttons={[
-                              { label: "Call", onclick: "" },
-                              { label: "Message", onclick: "" },
-                              { label: "Whatsapp", onclick: "" },
-                            ]}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Similar Properties
-                      <div className=" bg-yellow-800 px-16 py-5">
-                        <SimilarProperties places={places} />
-                      </div> */}
-                  </>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
