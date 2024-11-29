@@ -11,19 +11,21 @@ const Card = ({ imageUrl, title, subtitle, text, buttons }) => {
           {subtitle && <h3 className="card-subtitle">{subtitle}</h3>}
           {text && <p className="card-text">{text}</p>}
         </div>
-        {buttons && (
-          <div className="buttons-container">
-            {buttons.map((button, index) => (
-              <button
-                key={index}
-                className="primary-btn-sm"
-                onClick={button.onClick}
-              >
-                {button.label}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="card-buttons">
+          {buttons && (
+            <div className="buttons-container">
+              {buttons.map((button, index) => (
+                <button
+                  key={index}
+                  className="primary-btn-sm"
+                  onClick={button.onClick}
+                >
+                  {button.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

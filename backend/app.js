@@ -9,6 +9,7 @@ const multer = require("multer");
 
 const placesRoutes = require("./routes/places-routes");
 const userRoutes = require("./routes/user-routes");
+const wishlistRoutes = require("./routes/wishlist-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -37,6 +38,7 @@ app.use(
 // API Routes
 app.use("/api/places", placesRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 // Middleware to catch-all for unsupported routes
 app.use((req, res, next) => {

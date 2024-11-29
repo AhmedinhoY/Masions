@@ -131,13 +131,22 @@ export const NavBar = () => {
                 <MapIcon className="h-7 w-7 rounded-full" />
               </Link>
               {/* wishlist link */}
-              <Link
-                className={styles.IconButton}
-                aria-label="Customise options"
-                to="wishlist"
-              >
-                <HeartIcon className="h-7 w-7 rounded-full" />
-              </Link>
+              {auth.user ? (
+                <Link
+                  className={styles.IconButton}
+                  aria-label="Customise options"
+                  to={`/wishlist/${auth.user.id}`}
+                >
+                  <HeartIcon className="h-7 w-7 rounded-full" />
+                </Link>
+              ) : (
+                <button
+                  className={`${styles.IconButton} pointer-events-none`}
+                  aria-label="Customise options"
+                >
+                  <HeartIcon className="h-7 w-7 rounded-full" />
+                </button>
+              )}
             </NavigationMenu.Item>
 
             <NavigationMenu.Item>
