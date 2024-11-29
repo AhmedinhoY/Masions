@@ -1,0 +1,159 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import React, { useState, useContext } from "react";
+import * as Form from "@radix-ui/react-form";
+import * as Checkbox from "@radix-ui/react-checkbox";
+import { CheckIcon } from "@radix-ui/react-icons";
+import "./AuthenticationForm.css";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useSellerReqDialog } from "../../shared/context/dropdowndialog-context";
+import { ImageUpload } from "../../shared/ImageUpload";
+
+const SellerReqForm = () => {
+  const { user } = useContext(AuthContext);
+  const { closeSellerReqDialog } = useSellerReqDialog();
+
+  const [isFreelancer, setIsFreelancer] = useState(false);
+  const [agencyInput, setAgencyInput] = useState("");
+  const [images, setImages] = useState({});
+
+  const handleFreelancerToggle = () => {
+    setIsFreelancer((prevState) => {
+      if (prevState) {
+        setAgencyInput("");
+      }
+      return !prevState;
+    });
+  };
+
+  const handleInputChange = (event) => {
+    setAgencyInput(event.target.value);
+  };
+
+  const handleImageInput = (name, file, isValid) => {
+    setImages((prevImages) => ({
+      ...prevImages,
+      [name]: file,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const data = new FormData();
+    data.append("cpr", event.target.cpr.value);
+    data.append("agency", event.target.agency.value);
+
+    if (images && images[0]) {
+      data.append("image", images[0]);
+    }
+
+    console.log(
+      "form data: ",
+      data.get("cpr"),
+      data.get("agency"),
+      data.get("image")
+    );
+
+    // setTimeout(() => {
+    //   closeSellerReqDialog();
+    // }, 300);
+
+    // event.target.reset(); //reset the input fields
+  };
+
+  return (
+    <Form.Root className="FormRoot" onSubmit={handleSubmit}>
+      <Form.Field className="FormField" name="cpr">
+        <div className="flex align-baseline justify-between">
+          <Form.Label className="">CPR</Form.Label>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please enter your CPR
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid CPR
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          <input className="Input" type="number" required />
+        </Form.Control>
+      </Form.Field>
+
+      <Form.Field className="FormField" name="">
+        <div className="flex items-center">
+          <label className="pr-[15px] leading-none" htmlFor="c1">
+            <Form.Label className="">Are you a freelancer?</Form.Label>
+          </label>
+          <Checkbox.Root
+            className="flex size-[20px] appearance-none items-center justify-center  outline-none hover:bg-violet3 focus:shadow-[0_0_0_2px_black]"
+            style={{
+              borderRadius: "var(--border-radius-input)",
+              borderColor: "var(--border-seperator-color)",
+              borderWidth: "1px",
+              borderStyle: "solid",
+            }}
+            checked={isFreelancer} // Controlled by state
+            onClick={handleFreelancerToggle} // Handle change
+            id="c1"
+          >
+            <Checkbox.Indicator style={{ color: "var(--primary)" }}>
+              <CheckIcon />
+            </Checkbox.Indicator>
+          </Checkbox.Root>
+        </div>
+      </Form.Field>
+      <Form.Field className="FormField" name="agency">
+        <div className="flex align-baseline justify-between">
+          <Form.Label className="">Agency</Form.Label>
+
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please chose an agency
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid agency
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          {isFreelancer ? (
+            <input
+              className="Input"
+              type="text"
+              value="Freelancer"
+              disabled
+              readOnly
+              required
+            />
+          ) : (
+            <input
+              className="Input"
+              type="text"
+              value={agencyInput} // Controlled input
+              onChange={handleInputChange} // Handle input change
+              required
+            />
+          )}
+        </Form.Control>
+      </Form.Field>
+
+      <Form.Field className="FormField" name="image">
+        <Form.Label>Image</Form.Label>
+        <Form.Control asChild>
+          <ImageUpload
+            name="image"
+            numOfImages={1}
+            onInput={handleImageInput}
+            errorText={`required.`}
+            className="img-input"
+          />
+        </Form.Control>
+      </Form.Field>
+
+      <Form.Submit asChild>
+        <div className="flex justify-center">
+          <button className="primary-btn my-3">Submit</button>
+        </div>
+      </Form.Submit>
+    </Form.Root>
+  );
+};
+export default SellerReqForm;

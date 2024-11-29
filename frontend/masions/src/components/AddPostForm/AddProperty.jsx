@@ -284,6 +284,7 @@ export const AddProperty = () => {
             <Form.Control asChild>
               <ImageUpload
                 name={`image${index}`}
+                numOfImages={4}
                 onInput={handleImageInput}
                 errorText={`required.`}
               />

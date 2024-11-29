@@ -27,8 +27,12 @@ import {
 } from "./routes/property-script";
 
 import { useContext } from "react";
-import { AuthContext } from "./shared/context/auth-context";
-import { AuthProvider } from "./shared/context/auth-context";
+import { AuthContext, AuthProvider } from "./shared/context/auth-context";
+import { DialogProvider } from "./shared/context/dialog-context";
+import {
+  DropDownDialogProvider,
+  SellerReqDialogProvider,
+} from "./shared/context/dropdowndialog-context";
 
 import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
 import { EditProperty } from "./routes/EditProperty";
@@ -106,19 +110,25 @@ export const App = () => {
 
   return (
     <>
-      <AuthProvider
-        value={{
-          isLoggedIn: !!token,
-          token: token,
-          uid: user ? user.id : null,
+      <SellerReqDialogProvider>
+        <DropDownDialogProvider>
+          <DialogProvider>
+            <AuthProvider
+              value={{
+                isLoggedIn: !!token,
+                token: token,
+                uid: user ? user.id : null,
 
-          login: login,
-          logout: logout,
-          signUp: signUp,
-        }}
-      >
-        <RouterProvider router={router} />
-      </AuthProvider>
+                login: login,
+                logout: logout,
+                signUp: signUp,
+              }}
+            >
+              <RouterProvider router={router} />
+            </AuthProvider>
+          </DialogProvider>
+        </DropDownDialogProvider>
+      </SellerReqDialogProvider>
     </>
   );
 };

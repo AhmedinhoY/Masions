@@ -53,8 +53,7 @@ exports.signUp = async (req, res, next) => {
       phone: phoneNumber,
       password: hashedPassword,
       places: [],
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbdspcRNHvZL8uU406KbxA0otzbKbU9WWNzg&s",
+      image: "",
     });
 
     await newUser.save();

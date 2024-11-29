@@ -8,6 +8,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   phoneNumber: { type: Number, required: false },
   image: { type: String, required: false },
+  cpr: { type: Number, required: false },
+  agency: { type: String, required: false },
   places: [{ type: mongoose.Types.ObjectId, required: false, ref: "Place" }],
   roles: {
     type: String,

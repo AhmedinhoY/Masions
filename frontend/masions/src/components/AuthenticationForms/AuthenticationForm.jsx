@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import * as Tabs from "@radix-ui/react-tabs";
 import "./AuthenticationForm.css";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
-const AuthenticationForm = ({ closeDialog, onLoginSuccess }) => {
+const AuthenticationForm = ({ onLoginSuccess }) => {
   return (
     <div>
       <Tabs.Root className="TabsRoot" defaultValue="tab1">
@@ -16,16 +17,10 @@ const AuthenticationForm = ({ closeDialog, onLoginSuccess }) => {
           </Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content className="TabsContent" value="tab1">
-          <LoginForm
-            closeDialog={closeDialog}
-            onLoginSuccess={onLoginSuccess}
-          />
+          <LoginForm onLoginSuccess={onLoginSuccess} />
         </Tabs.Content>
         <Tabs.Content className="TabsContent" value="tab2">
-          <RegisterForm
-            closeDialog={closeDialog}
-            onLoginSuccess={onLoginSuccess}
-          />
+          <RegisterForm onLoginSuccess={onLoginSuccess} />
         </Tabs.Content>
       </Tabs.Root>
     </div>

@@ -8,6 +8,7 @@ export const useDialog = () => {
 };
 
 export const DialogProvider = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false); // State for dialog open/close
   const [dialogContent, setDialogContent] = useState({
     title: "Are you sure?",
     description: "This action cannot be undone.",
@@ -17,12 +18,21 @@ export const DialogProvider = ({ children }) => {
     onCancel: () => {},
   });
 
-  const setDialog = (content) => {
+  // Function to open the dialog with custom content
+  const openDialog = (content) => {
     setDialogContent(content);
+    setIsOpen(true);
+  };
+
+  // Function to close the dialog
+  const closeDialog = () => {
+    setIsOpen(false);
   };
 
   return (
-    <DialogContext.Provider value={{ dialogContent, setDialog }}>
+    <DialogContext.Provider
+      value={{ isOpen, openDialog, closeDialog, dialogContent }}
+    >
       {children}
     </DialogContext.Provider>
   );

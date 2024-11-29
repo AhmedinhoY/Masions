@@ -6,6 +6,7 @@ export const ImageUpload = ({
   name,
   onInput,
   editImageUploaded = null,
+  numOfImages,
   errorText = "Invalid image.",
 }) => {
   const filePickerRef = useRef(null);
@@ -65,7 +66,7 @@ export const ImageUpload = ({
   };
 
   return (
-    <div className="img-input w-[100%] p-4 flex flex-col items-center">
+    <div className="img-input p-4 flex flex-col items-center w-full">
       {/* Hidden File Input */}
       <input
         type="file"
@@ -78,10 +79,16 @@ export const ImageUpload = ({
       />
 
       {/* Image Preview and Controls */}
-      <div className="flex flex-col gap-4 items-center h-full w-full align-center">
+      <div
+        className={`flex flex-col gap-${numOfImages} items-center h-full w-full align-center`}
+      >
         {/* Preview Box */}
-        <button type="button" onClick={pickImageHandler} className="w-64 h-60 ">
-          <div className="w-full h-full flex items-center justify-center rounded bg-gray-100 border-2 border-dashed border-gray-300">
+        <button
+          type="button"
+          onClick={pickImageHandler}
+          className="w-[90%] h-[60%] "
+        >
+          <div className="m-auto w-full h-full flex items-center justify-center rounded bg-gray-100 border-2 border-dashed border-gray-300">
             {previewUrl ? (
               <img
                 src={previewUrl}
@@ -89,7 +96,7 @@ export const ImageUpload = ({
                 className="rounded w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-center text-gray-400">
+              <div className=" w-full h-full flex items-center justify-center text-center text-gray-400">
                 Please Pick an Image.
               </div>
             )}
@@ -97,7 +104,7 @@ export const ImageUpload = ({
         </button>
 
         {/* Buttons */}
-        <div className="w-full h-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center">
           <button
             type="button"
             onClick={pickImageHandler}
@@ -116,7 +123,7 @@ export const ImageUpload = ({
           </button>
 
           {/* Error Message */}
-          {!isValid && <p className="text-red-500 text-sm">{errorText}</p>}
+          {!isValid && <p className="text-red-500 text-sm mb-0">{errorText}</p>}
         </div>
       </div>
     </div>

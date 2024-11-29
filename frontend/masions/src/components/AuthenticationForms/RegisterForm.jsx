@@ -4,10 +4,10 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../shared/context/auth-context";
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
-import axios from "axios";
-import { toast } from "react-toastify";
-const RegisterForm = ({ closeDialog }) => {
+import { useDropDownDialog } from "../../shared/context/dropdowndialog-context";
+const RegisterForm = () => {
   const { signUp } = useContext(AuthContext);
+  const { closeDropDownDialog } = useDropDownDialog();
 
   const handleInputs = async (event) => {
     event.preventDefault();
@@ -24,7 +24,7 @@ const RegisterForm = ({ closeDialog }) => {
 
     try {
       await signUp(data);
-      closeDialog();
+      closeDropDownDialog();
       event.target.reset();
     } catch (error) {
       console.error("Sign up error:", error);
@@ -84,7 +84,7 @@ const RegisterForm = ({ closeDialog }) => {
 
       {/* confirm password */}
 
-      {/* <Form.Field className="FormField" name="confirmPassword">
+      <Form.Field className="FormField" name="confirmPassword">
         <div className="flex align-baseline justify-between">
           <Form.Label className="">Confirm Password</Form.Label>
           <Form.Message className="FormMessage" match="valueMissing">
@@ -97,7 +97,7 @@ const RegisterForm = ({ closeDialog }) => {
         <Form.Control asChild>
           <input className="Input" type="password" required />
         </Form.Control>
-      </Form.Field> */}
+      </Form.Field>
 
       {/* phone */}
 
@@ -113,21 +113,6 @@ const RegisterForm = ({ closeDialog }) => {
         </div>
         <Form.Control asChild>
           <input className="Input" type="number" />
-        </Form.Control>
-      </Form.Field>
-
-      <Form.Field className="FormField" name="image">
-        <div className="flex align-baseline justify-between">
-          <Form.Label className="">Image</Form.Label>
-          <Form.Message className="FormMessage" match="valueMissing">
-            Please chose an image
-          </Form.Message>
-          <Form.Message className="FormMessage" match="typeMismatch">
-            Please provide a valid phone number
-          </Form.Message>
-        </div>
-        <Form.Control asChild>
-          <input className="Input" type="file" required />
         </Form.Control>
       </Form.Field>
 
