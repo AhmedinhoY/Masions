@@ -1,20 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootLayout from "./routes/RootLayout";
 
 import "./index.css";
 import HomePage from "./routes/HomePage";
 import PostDetails from "./routes/PostDetails";
-import Places from "./routes/Places/Places";
-import { PlaceDetail } from "./routes/Places/PlaceDetails";
-import { EditPlace } from "./routes/Places/EditPlace";
-import { NewPlace } from "./routes/Places/NewPlace";
-import { action as placeFormAction } from "./components/NewPlaceForm/form-actions";
 import { ErrorPage } from "./routes/ErrorPage";
-import {
-  loader as placesLoader,
-  loadPlace,
-  deletePlaceAction,
-} from "./routes/Places/Places-script";
+
 import { SaleHouses } from "./routes/SaleHouses";
 import { RentHouses } from "./routes/RentHouses";
 import { AgentsList } from "./routes/AgentsList";
@@ -29,16 +21,22 @@ import { action as formAction } from "./components/AddPostForm/form-script";
 import {
   loadProperties,
   loadProperty,
+  loadWishlist,
   deleteProperty,
   loadBoth,
 } from "./routes/property-script";
 
 import { useContext } from "react";
-import { AuthContext } from "./shared/context/auth-context";
-import { AuthProvider } from "./shared/context/auth-context";
+import { AuthContext, AuthProvider } from "./shared/context/auth-context";
+import { DialogProvider } from "./shared/context/dialog-context";
+import {
+  DropDownDialogProvider,
+  SellerReqDialogProvider,
+} from "./shared/context/dropdowndialog-context";
 
 import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
 import { EditProperty } from "./routes/EditProperty";
+import ScrollToTop from "./shared/util/scrollToTop";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -83,10 +81,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: ":id",
+        path: "post-details",
         children: [
           {
-            path: "post-details",
+            path: ":id",
             element: <PostDetails />,
             loader: loadBoth,
             action: deleteProperty,
@@ -100,29 +98,10 @@ const router = createBrowserRouter([
         ],
       },
       { path: "/add-post", element: <AddPost />, action: formAction },
-      { path: "/wishlist", element: <WishList /> },
+      { path: "/wishlist/:id", element: <WishList />, loader: loadWishlist },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
       { path: "/auth", element: <AuthenticationForm /> },
-    ],
-  },
-  {
-    path: "/places",
-    children: [
-      { index: true, element: <Places />, loader: placesLoader },
-      {
-        path: ":placeId",
-        element: <PlaceDetail />,
-        loader: loadPlace,
-        action: deletePlaceAction,
-      },
-      {
-        path: ":placeId/edit",
-        element: <EditPlace />,
-        loader: loadPlace,
-        action: placeFormAction,
-      },
-      { path: "new-place", element: <NewPlace />, action: placeFormAction },
     ],
   },
 ]);
@@ -132,19 +111,27 @@ export const App = () => {
 
   return (
     <>
-      <AuthProvider
-        value={{
-          isLoggedIn: !!token,
-          token: token,
-          uid: user ? user.id : null,
+      <SellerReqDialogProvider>
+        <DropDownDialogProvider>
+          <DialogProvider>
+            <AuthProvider
+              value={{
+                isLoggedIn: !!token,
+                token: token,
+                uid: user ? user.id : null,
 
-          login: login,
-          logout: logout,
-          signUp: signUp,
-        }}
-      >
-        <RouterProvider router={router} />
-      </AuthProvider>
+                login: login,
+                logout: logout,
+                signUp: signUp,
+              }}
+            >
+              <RouterProvider router={router}>
+                <ScrollToTop />
+              </RouterProvider>
+            </AuthProvider>
+          </DialogProvider>
+        </DropDownDialogProvider>
+      </SellerReqDialogProvider>
     </>
   );
 };

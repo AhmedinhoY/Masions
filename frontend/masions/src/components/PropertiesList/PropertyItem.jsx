@@ -8,9 +8,9 @@ export const PropertyItem = ({ property }) => {
     <>
       <div className="group">
         <div className="product-img-container">
-          <ImageSlider imgCollection={property.img} propertyID={property.id} />
+          <ImageSlider imgCollection={property.img} propertyID={property._id} />
         </div>
-        <Link to={`/${property.id}/post-details`}>
+        <Link to={`/post-details/${property._id}`}>
           <div>
             <h2>{property.city}</h2>
             <h3>

@@ -4,10 +4,11 @@ import React, { useContext } from "react";
 import * as Form from "@radix-ui/react-form";
 import "./AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
-import axios from "axios";
+import { useDropDownDialog } from "../../shared/context/dropdowndialog-context";
 
-const LoginForm = ({ closeDialog }) => {
+const LoginForm = () => {
   const { login } = useContext(AuthContext);
+  const { closeDropDownDialog } = useDropDownDialog();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,7 +23,7 @@ const LoginForm = ({ closeDialog }) => {
     await login(data.email, data.password);
 
     setTimeout(() => {
-      closeDialog();
+      closeDropDownDialog();
     }, 300);
 
     event.target.reset(); //reset the input fields
@@ -30,10 +31,7 @@ const LoginForm = ({ closeDialog }) => {
 
   return (
     <Form.Root className="FormRoot" onSubmit={handleSubmit}>
-      {/* Form.Root is basically the form tag <form> */}
       <Form.Field className="FormField" name="email">
-        {/* Form.Field is just a div tag */}
-        {/* If you notice here in the Form.Field component we have a prop called name used to identify this field input. (The value of it will be the name of the Form Control which is the input field therefore we can fetch the input data by it) */}
         <div className="flex align-baseline justify-between">
           <Form.Label className="">Email</Form.Label>
           <Form.Message className="FormMessage" match="valueMissing">

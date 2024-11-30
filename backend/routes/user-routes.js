@@ -5,9 +5,11 @@ const {
   login,
   logout,
   getAllUsers,
+  updateToSeller,
 } = require("../controllers/users-controllers");
 const { check } = require("express-validator");
 const isLoggedIn = require("../middlewares/isLoggedIn");
+const fileUpload = require("../middlewares/file-upload");
 
 router.get("/", getAllUsers);
 
@@ -22,6 +24,8 @@ router.post(
 
 router.post("/login", login);
 router.post("/logout", isLoggedIn, logout);
+
+router.patch("/updateToSeller/:id", fileUpload.single("image"), updateToSeller);
 
 router.get("/isLoggedIn", isLoggedIn, (req, res) => {
   if (req.user) {

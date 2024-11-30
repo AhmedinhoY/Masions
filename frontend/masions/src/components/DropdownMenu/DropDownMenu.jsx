@@ -1,16 +1,22 @@
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { AvatarIcon } from "@radix-ui/react-icons";
 import "./DropDownMenu.css";
-import DropDownDialog from "./DropDownDialog";
+import DropDownDialog from "../../shared/DropDownDialog";
+import SellerReqDialog from "../../shared/SellerReqDialog";
 import { AuthContext } from "../../shared/context/auth-context";
+import {
+  useDropDownDialog,
+  useSellerReqDialog,
+} from "../../shared/context/dropdowndialog-context";
 
 export default function DropDownMenu() {
-  const { isLoggedIn, logout } = useContext(AuthContext); // Get login status and logout logic from AuthContext
-  const [isDialogOpen, setDialogOpen] = useState(false);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
+  const { openDropDownDialog } = useDropDownDialog();
+  const { openSellerReqDialog } = useSellerReqDialog();
 
   const handleLogOut = async () => {
-    await logout(); // Call logout from auth context
+    await logout();
   };
 
   return (
@@ -27,10 +33,22 @@ export default function DropDownMenu() {
           <DropdownMenu.Item
             className="DropdownMenuItem"
             disabled={isLoggedIn} // Disable if logged in
-            onSelect={() => setDialogOpen(true)} // Open dialog
+            onSelect={() => openDropDownDialog()} // Open dialog
           >
-            Log in
+            {isLoggedIn ? `Hi, ${user.email} ` : "Log in"}
           </DropdownMenu.Item>
+
+          {user?.roles === "buyer" && (
+            <>
+              <DropdownMenu.Separator className="DropdownMenuSeparator" />
+              <DropdownMenu.Item
+                className="DropdownMenuItem"
+                onSelect={() => openSellerReqDialog()}
+              >
+                Request to be a seller
+              </DropdownMenu.Item>
+            </>
+          )}
 
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
           {/* Contact Us and About Us */}
@@ -56,11 +74,9 @@ export default function DropDownMenu() {
       </DropdownMenu.Portal>
 
       {/* Log In Dialog */}
-      <DropDownDialog
-        open={isDialogOpen}
-        onOpenChange={setDialogOpen}
-        closeDialog={() => setDialogOpen(false)}
-      />
+      <DropDownDialog />
+      {/* Request to be a seller Dialog */}
+      <SellerReqDialog />
     </DropdownMenu.Root>
   );
 }

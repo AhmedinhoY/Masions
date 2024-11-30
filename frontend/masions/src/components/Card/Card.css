@@ -2,8 +2,10 @@
   background-color: var(--secondary-bg);
   border-radius: var(--border-radius-card);
   box-shadow: var(--box-shadow);
+  padding: 0 1.5rem;
   height: auto;
-  @apply mx-auto max-w-2xl px-6 sm:py-12 sm:justify-center lg:max-w-7xl  lg:py-8;
+  max-height: max-content;
+  @apply mx-auto max-w-2xl sm:py-12 sm:justify-center lg:max-w-7xl  lg:py-8;
 }
 
 .card-body {
@@ -36,4 +38,8 @@
   width: 20rem;
   border-radius: var(--border-radius-img);
   margin-bottom: 1.25rem;
+}
+
+.card-buttons {
+  width: 100%;
 }

@@ -24,7 +24,7 @@ export function ImageSlider({ imgCollection, propertyID }) {
       )}
     >
       {imgCollection.map((img) => (
-        <Link key={img.imgNo} to={`/${propertyID}/post-details`}>
+        <Link key={img.imgNo} to={`/post-details/${propertyID}`}>
           <img
             src={`http://localhost:3000/uploads/images/${img.imgSrc}`}
             alt={img._id}

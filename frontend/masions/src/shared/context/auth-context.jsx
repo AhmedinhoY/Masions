@@ -94,8 +94,8 @@ export const AuthProvider = ({ children }) => {
 
         if (response.data.isLoggedIn) {
           setIsLoggedIn(true);
-          setUser(response.data.user); // Set user data  from response
-          setToken(response.data.token); // Set token from response
+          setUser(response.data.user);
+          setToken(response.data.token);
         } else {
           setIsLoggedIn(false);
           setUser(null);

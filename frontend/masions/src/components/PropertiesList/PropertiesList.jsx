@@ -7,21 +7,14 @@ const PropertiesList = ({ propertyType, limit }) => {
   return (
     <div className="products-grid">
       {limit
-        ? propertyType.slice(0, limit).map((property) => (
-          // Property Item - renders a single property 
-          <PropertyItem
-            key={property.id}
-            property={property}
-
-          />
-        ))
+        ? propertyType
+            .slice(0, limit)
+            .map((property) => (
+              <PropertyItem key={property._id} property={property} />
+            ))
         : propertyType.map((property) => (
-          <PropertyItem
-            key={property.id}
-            property={property}
-
-          />
-        ))}
+            <PropertyItem key={property._id} property={property} />
+          ))}
     </div>
   );
 };

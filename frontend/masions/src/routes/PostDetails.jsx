@@ -6,6 +6,8 @@ import PropertiesList from "../components/PropertiesList/PropertiesList";
 import { Button } from "../shared/Button";
 import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
 import { AuthContext } from "../shared/context/auth-context";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function PostDetails() {
   const { property, properties } = useLoaderData();
@@ -13,10 +15,62 @@ export default function PostDetails() {
   const auth = useContext(AuthContext);
   const modal = useRef();
 
-  const deleteConfirmation = () => {
-    const formData = new FormData(); // Empty FormData for delete action
-    submit(formData, { method: "DELETE" });
-    console.log("Deleted!");
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const userId = auth?.user?.id;
+  const propertyId = property?.id;
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    const checkWishlist = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/wishlist/get-wishlist/${userId}`
+        );
+        console.log("Wishlist Response:", response.data); // Log the response
+        const wishlist = response.data.wishlist.places;
+        console.log("Wishlist:", wishlist); // Log the extracted wishlist
+
+        const isPropertyInWishlist = wishlist.some(
+          (property) => property._id === propertyId
+        );
+        setIsInWishlist(isPropertyInWishlist);
+      } catch (err) {
+        console.error("Error checking wishlist:", err);
+      }
+    };
+
+    checkWishlist();
+  }, [userId, propertyId]);
+
+  // Add or remove property from wishlist
+  const toggleWishlistHandler = async () => {
+    if (!userId) {
+      return; // Prevent further execution
+    }
+
+    try {
+      if (isInWishlist) {
+        // Remove from wishlist
+        await axios.post(
+          "http://localhost:3000/api/wishlist/remove-from-wishlist",
+          { userId: userId, propertyId: propertyId },
+          { withCredentials: true }
+        );
+        console.log("removed!");
+      } else {
+        // Add to wishlist
+        await axios.post(
+          "http://localhost:3000/api/wishlist/add-to-wishlist",
+          { userId: userId, propertyId: propertyId },
+          { withCredentials: true }
+        );
+        console.log("added!");
+      }
+      setIsInWishlist((prevState) => !prevState);
+    } catch (err) {
+      console.error("Error toggling wishlist:", err);
+    }
   };
 
   return (
@@ -75,7 +129,7 @@ export default function PostDetails() {
                 </div>
 
                 {/* Post Header */}
-                <div className="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 lg:pt-16">
+                <div className="mx-auto max-w-2xl px-4 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 lg:pt-16 justify-around">
                   <div className="lg:col-span-2 lg:pr-8">
                     <div className="flex justify-between">
                       <h1 className="text-2xl sm:text-3xl font-bold">
@@ -90,6 +144,34 @@ export default function PostDetails() {
                       {chosenHouse.address}
                     </h3>
                   </div>
+                  {auth.isLoggedIn && auth.user.id == chosenHouse.creator.id ? (
+                    <div className="w-full">
+                      <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full flex items-center justify-between">
+                        <Link
+                          to={`/${chosenHouse.id}/edit`}
+                          className="secondary-btn h-10"
+                        >
+                          Edit
+                        </Link>
+                        <button className="danger-btn h-8"> Delete</button>
+                      </div>
+                    </div>
+                  ) : (
+                    auth.isLoggedIn && (
+                      <div className="w-full">
+                        <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full lg:w-[80%] flex justify-center items-center">
+                          <button
+                            onClick={toggleWishlistHandler}
+                            className="primary-btn h-8"
+                          >
+                            {isInWishlist
+                              ? "Remove from Wishlist"
+                              : "Add to Wishlist"}
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
 
                 <div className="mx-auto max-w-2xl px-4 pb-16 pt-2 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-4">
@@ -156,25 +238,11 @@ export default function PostDetails() {
                     </div>
                   </div>
                   {/* Col2: Agent Card */}
-                  <div className="lg:row-span-3 lg:mt-0">
-                    {auth.isLoggedIn &&
-                      auth.user.id == chosenHouse.creator.id && (
-                        <div className="w-[80%] m-auto">
-                          <div className=" mb-4 w-full flex items-center justify-around ">
-                            <Link
-                              to={`/${chosenHouse.id}/edit`}
-                              className="secondary-btn"
-                            >
-                              Edit
-                            </Link>
-                            <button className="danger-btn"> Delete</button>
-                          </div>
-                        </div>
-                      )}
+                  <div className="lg:row-span-5 lg:mt-0">
                     <Card
                       title={chosenHouse.creator.name}
                       subtitle="Grnata"
-                      imageUrl={`http://localhost:3000/uploads/images/${chosenHouse.img[0]?.imgSrc}`}
+                      imageUrl={`http://localhost:3000/uploads/images/${chosenHouse.creator.image}`}
                       buttons={[
                         {
                           label: "Call",
