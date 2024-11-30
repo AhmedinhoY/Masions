@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
       return next(); // Continue to the next middleware/route
     }
 
-    req.user = { id: user.id, email: user.email }; // Attach user details to the request
+    req.user = { id: user.id, email: user.email, roles: user.roles }; // Attach user details to the request
     req.token = token; // Attach token to the request
     next(); // Continue to the next middleware/route
   } catch (error) {

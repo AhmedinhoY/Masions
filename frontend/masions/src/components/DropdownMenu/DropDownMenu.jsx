@@ -11,7 +11,7 @@ import {
 } from "../../shared/context/dropdowndialog-context";
 
 export default function DropDownMenu() {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   const { openDropDownDialog } = useDropDownDialog();
   const { openSellerReqDialog } = useSellerReqDialog();
 
@@ -35,18 +35,20 @@ export default function DropDownMenu() {
             disabled={isLoggedIn} // Disable if logged in
             onSelect={() => openDropDownDialog()} // Open dialog
           >
-            Log in
+            {isLoggedIn ? `Hi, ${user.email} ` : "Log in"}
           </DropdownMenu.Item>
 
-          <DropdownMenu.Separator className="DropdownMenuSeparator" />
-
-          <DropdownMenu.Item
-            className="DropdownMenuItem"
-            disabled={!isLoggedIn} // Disable if logged in
-            onSelect={() => openSellerReqDialog()} // Open dialog
-          >
-            Request to be a seller
-          </DropdownMenu.Item>
+          {user?.roles === "buyer" && (
+            <>
+              <DropdownMenu.Separator className="DropdownMenuSeparator" />
+              <DropdownMenu.Item
+                className="DropdownMenuItem"
+                onSelect={() => openSellerReqDialog()}
+              >
+                Request to be a seller
+              </DropdownMenu.Item>
+            </>
+          )}
 
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
           {/* Contact Us and About Us */}

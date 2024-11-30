@@ -27,12 +27,9 @@ export const NavBar = () => {
       confirmText: "Go to Login",
       cancelText: "Dismiss",
       onConfirm: () => {
-        console.log("Redirecting to login...");
-        // Redirect to the login page or trigger the login modal
+        openDropDownDialog(); // open login dialog
       },
-      onCancel: () => {
-        console.log("Cancelled access to restricted page");
-      },
+      onCancel: () => {},
     });
   };
 
@@ -108,7 +105,7 @@ export const NavBar = () => {
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
 
-              {auth.isLoggedIn && (
+              {auth.isLoggedIn && auth.user.roles === "seller" && (
                 <NavigationMenu.Item>
                   <NavigationMenu.Link
                     asChild

@@ -8,9 +8,10 @@ import "./AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useSellerReqDialog } from "../../shared/context/dropdowndialog-context";
 import { ImageUpload } from "../../shared/ImageUpload";
+import axios from "axios";
 
 const SellerReqForm = () => {
-  const { user } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const { closeSellerReqDialog } = useSellerReqDialog();
 
   const [isFreelancer, setIsFreelancer] = useState(false);
@@ -44,8 +45,11 @@ const SellerReqForm = () => {
     data.append("cpr", event.target.cpr.value);
     data.append("agency", event.target.agency.value);
 
-    if (images && images[0]) {
-      data.append("image", images[0]);
+    if (images.image) {
+      data.append("image", images.image); // Key must match backend's expectation
+    } else {
+      alert("Please upload an image before submitting!");
+      return;
     }
 
     console.log(
@@ -55,9 +59,23 @@ const SellerReqForm = () => {
       data.get("image")
     );
 
-    // setTimeout(() => {
-    //   closeSellerReqDialog();
-    // }, 300);
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/api/users/updateToSeller/${auth.user.id}`,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Response:", response);
+      closeSellerReqDialog();
+    } catch (err) {
+      console.error("Error:", err);
+    }
 
     // event.target.reset(); //reset the input fields
   };

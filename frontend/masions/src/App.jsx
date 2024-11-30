@@ -36,6 +36,7 @@ import {
 
 import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
 import { EditProperty } from "./routes/EditProperty";
+import ScrollToTop from "./shared/util/scrollToTop";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -80,10 +81,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: ":id",
+        path: "post-details",
         children: [
           {
-            path: "post-details",
+            path: ":id",
             element: <PostDetails />,
             loader: loadBoth,
             action: deleteProperty,
@@ -124,7 +125,9 @@ export const App = () => {
                 signUp: signUp,
               }}
             >
-              <RouterProvider router={router} />
+              <RouterProvider router={router}>
+                <ScrollToTop />
+              </RouterProvider>
             </AuthProvider>
           </DialogProvider>
         </DropDownDialogProvider>

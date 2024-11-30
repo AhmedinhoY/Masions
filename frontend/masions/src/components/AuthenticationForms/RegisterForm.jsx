@@ -19,7 +19,6 @@ const RegisterForm = () => {
       password: formData.get("password"),
       confirmPassword: formData.get("confirmPassword"),
       phoneNumber: formData.get("phoneNumber"),
-      image: formData.get("image"),
     };
 
     try {

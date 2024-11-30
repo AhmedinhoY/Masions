@@ -242,7 +242,7 @@ export default function PostDetails() {
                     <Card
                       title={chosenHouse.creator.name}
                       subtitle="Grnata"
-                      imageUrl={`http://localhost:3000/uploads/images/${chosenHouse.img[0]?.imgSrc}`}
+                      imageUrl={`http://localhost:3000/uploads/images/${chosenHouse.creator.image}`}
                       buttons={[
                         {
                           label: "Call",
