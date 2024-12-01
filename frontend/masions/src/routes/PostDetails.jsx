@@ -8,12 +8,30 @@ import LoadingSpinner from "../shared/UI-Elements/LoadingSpinner";
 import { AuthContext } from "../shared/context/auth-context";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useDialog } from "../shared/context/dialog-context";
+import { useDropDownDialog } from "../shared/context/dropdowndialog-context";
+import DropDownDialog from "../shared/DropDownDialog";
+import Alert from "../shared/Alert";
 
 export default function PostDetails() {
   const { property, properties } = useLoaderData();
   const submit = useSubmit();
   const auth = useContext(AuthContext);
-  const modal = useRef();
+  const { openDialog } = useDialog();
+  const { openDropDownDialog } = useDropDownDialog();
+
+  const openLogInAlert = () => {
+    openDialog({
+      title: "Login Required",
+      description: "You must be logged in to use this functionality.",
+      confirmText: "Go to Login",
+      cancelText: "Dismiss",
+      onConfirm: () => {
+        openDropDownDialog();
+      },
+      onCancel: () => {},
+    });
+  };
 
   const [isInWishlist, setIsInWishlist] = useState(false);
   const userId = auth?.user?.id;
@@ -25,7 +43,8 @@ export default function PostDetails() {
     const checkWishlist = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/wishlist/get-wishlist/${userId}`
+          `http://localhost:3000/api/wishlist/get-wishlist`,
+          { withCredentials: true }
         );
         console.log("Wishlist Response:", response.data); // Log the response
         const wishlist = response.data.wishlist.places;
@@ -156,21 +175,32 @@ export default function PostDetails() {
                         <button className="danger-btn h-8"> Delete</button>
                       </div>
                     </div>
-                  ) : (
-                    auth.isLoggedIn && (
-                      <div className="w-full">
-                        <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full lg:w-[80%] flex justify-center items-center">
-                          <button
-                            onClick={toggleWishlistHandler}
-                            className="primary-btn h-8"
-                          >
-                            {isInWishlist
-                              ? "Remove from Wishlist"
-                              : "Add to Wishlist"}
-                          </button>
-                        </div>
+                  ) : auth.isLoggedIn ? (
+                    <div className="w-full">
+                      <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full lg:w-[80%] flex justify-center items-center">
+                        <button
+                          onClick={toggleWishlistHandler}
+                          className="primary-btn h-8"
+                        >
+                          {isInWishlist
+                            ? "Remove from Wishlist"
+                            : "Add to Wishlist"}
+                        </button>
                       </div>
-                    )
+                    </div>
+                  ) : (
+                    <div className="w-full">
+                      <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full lg:w-[80%] flex justify-center items-center">
+                        <button
+                          onClick={openLogInAlert}
+                          className="primary-btn h-8"
+                        >
+                          {isInWishlist
+                            ? "Remove from Wishlist"
+                            : "Add to Wishlist"}
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
 
@@ -260,6 +290,8 @@ export default function PostDetails() {
                     />
                   </div>
                 </div>
+                <Alert />
+                <DropDownDialog />
               </div>
             );
           }}

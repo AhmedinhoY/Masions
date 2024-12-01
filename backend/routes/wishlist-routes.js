@@ -5,9 +5,8 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const router = express.Router();
 
 router.use(isLoggedIn);
-
 router.post("/add-to-wishlist", wishlistController.addToWishlist);
-router.get("/get-wishlist/:id", wishlistController.getWishlist);
+router.get("/get-wishlist", wishlistController.getWishlist);
 router.post("/remove-from-wishlist", wishlistController.removeFromWishlist);
 
 module.exports = router;

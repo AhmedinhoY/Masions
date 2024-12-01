@@ -10,7 +10,7 @@ export const PropertyItem = ({ property }) => {
         <div className="product-img-container">
           <ImageSlider imgCollection={property.img} propertyID={property._id} />
         </div>
-        <Link to={`/post-details/${property._id}`}>
+        <Link to={`/${property._id}/post-details`}>
           <div>
             <h2>{property.city}</h2>
             <h3>

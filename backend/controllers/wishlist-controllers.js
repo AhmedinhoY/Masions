@@ -56,22 +56,22 @@ exports.addToWishlist = async (req, res, next) => {
 };
 
 exports.getWishlist = async (req, res, next) => {
-  const { id } = req.params.id;
+  console.log("req reached the controller");
 
+  const userId = req.user.id;
+  console.log(userId);
   let wishlist;
   try {
     // Find the wishlist for the user and populate the places with their details
-    wishlist = await Wishlist.findOne({ id }).populate("places", id);
+    wishlist = await Wishlist.findOne({ userId }).populate("places");
+    if (!wishlist) {
+      // Return an empty wishlist if none exists
+      wishlist = { places: [] };
+    }
   } catch (err) {
     console.error("Database Error:", err);
     return next(
       new HttpError("Fetching wishlist failed, please try again later.", 500)
-    );
-  }
-
-  if (!wishlist) {
-    return next(
-      new HttpError("Could not find wishlist for the provided user ID.", 404)
     );
   }
 

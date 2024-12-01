@@ -21,7 +21,6 @@ import { action as formAction } from "./components/AddPostForm/form-script";
 import {
   loadProperties,
   loadProperty,
-  loadWishlist,
   deleteProperty,
   loadBoth,
 } from "./routes/property-script";
@@ -81,10 +80,10 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "post-details",
+        path: ":id",
         children: [
           {
-            path: ":id",
+            path: "post-details",
             element: <PostDetails />,
             loader: loadBoth,
             action: deleteProperty,
@@ -98,7 +97,7 @@ const router = createBrowserRouter([
         ],
       },
       { path: "/add-post", element: <AddPost />, action: formAction },
-      { path: "/wishlist/:id", element: <WishList />, loader: loadWishlist },
+      { path: "/wishlist/:id", element: <WishList /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
       { path: "/auth", element: <AuthenticationForm /> },

@@ -23,7 +23,7 @@ router.post(
 );
 
 router.post("/login", login);
-router.post("/logout", isLoggedIn, logout);
+router.post("/logout", logout);
 
 router.patch("/updateToSeller/:id", fileUpload.single("image"), updateToSeller);
 

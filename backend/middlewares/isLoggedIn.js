@@ -4,38 +4,42 @@ require("dotenv").config();
 
 module.exports = async (req, res, next) => {
   try {
-    const findToken = () => {
-      // check if token found in cookies
-      if (req.cookies.token) {
-        console.log("token found in cookies");
-        return req.cookies.token;
-      }
+    // Check for token in cookies
+    const token = req.cookies.token;
+    console.log("token is: ", token);
+    if (!token) {
+      return res.status(401).json({ isLoggedIn: false, user: null });
+    }
+
+    // Decode and verify token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+      console.log("decoded token: ", decoded);
+    } catch (err) {
+      return res.status(401).json({ isLoggedIn: false, user: null });
+    }
+
+    // Find user from the database
+    const user = await User.findById(decoded.id).catch((err) => {
+      console.error("Error fetching user:", err);
+      return null;
+    });
+    console.log("the user is:", user);
+    if (!user) {
+      return res.status(401).json({ isLoggedIn: false, user: null });
+    }
+
+    // Attach user info to the request and proceed
+    req.user = {
+      id: user.id,
+      email: user.email,
+      roles: user.roles,
     };
 
-    const token = findToken();
-
-    if (!token) {
-      req.user = null; // Set user as null
-      return next();
-    }
-
-    // decoding the token with scerect key
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-
-    const user = await User.findById(decoded.id);
-
-    if (!user) {
-      // No user found for the token
-      req.user = null;
-      return next(); // Continue to the next middleware/route
-    }
-
-    req.user = { id: user.id, email: user.email, roles: user.roles }; // Attach user details to the request
-    req.token = token; // Attach token to the request
-    next(); // Continue to the next middleware/route
+    next();
   } catch (error) {
-    console.log(error);
-    req.user = null;
-    next(); // Continue without user info
+    console.error("Middleware error:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };

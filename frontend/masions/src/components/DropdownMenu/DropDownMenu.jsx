@@ -11,12 +11,12 @@ import {
 } from "../../shared/context/dropdowndialog-context";
 
 export default function DropDownMenu() {
-  const { isLoggedIn, logout, user } = useContext(AuthContext);
+  const auth = useContext(AuthContext);
   const { openDropDownDialog } = useDropDownDialog();
   const { openSellerReqDialog } = useSellerReqDialog();
 
   const handleLogOut = async () => {
-    await logout();
+    await auth.logout();
   };
 
   return (
@@ -30,15 +30,16 @@ export default function DropDownMenu() {
       <DropdownMenu.Portal>
         <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
           {/* Log In Button */}
+
           <DropdownMenu.Item
             className="DropdownMenuItem"
-            disabled={isLoggedIn} // Disable if logged in
+            disabled={auth.isLoggedIn} // Disable if logged in
             onSelect={() => openDropDownDialog()} // Open dialog
           >
-            {isLoggedIn ? `Hi, ${user.email} ` : "Log in"}
+            {auth.isLoggedIn ? `Hi, ${auth.user.email} ` : "Log in"}
           </DropdownMenu.Item>
 
-          {user?.roles === "buyer" && (
+          {auth.user?.roles === "buyer" && (
             <>
               <DropdownMenu.Separator className="DropdownMenuSeparator" />
               <DropdownMenu.Item
@@ -63,7 +64,7 @@ export default function DropDownMenu() {
           {/* Log Out Button */}
           <DropdownMenu.Item
             className="DropdownMenuItem"
-            disabled={!isLoggedIn} // Disable if not logged in
+            disabled={!auth.isLoggedIn} // Disable if not logged in
             onSelect={handleLogOut}
           >
             Log Out

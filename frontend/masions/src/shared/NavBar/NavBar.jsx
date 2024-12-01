@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import styles from "./NavBar.module.css"; // Import styles as a module
 import DropDownMenu from "../../components/DropdownMenu/DropDownMenu";
-import { HeartIcon } from "@radix-ui/react-icons";
+import { HeartIcon, HomeIcon } from "@radix-ui/react-icons";
 import { MapIcon } from "@heroicons/react/24/outline";
 
 import { Link } from "react-router-dom";
@@ -43,7 +43,7 @@ export const NavBar = () => {
             <NavigationMenu.Item className="">
               <NavigationMenu.Link
                 className={styles.NavigationMenuLink}
-                style={{
+                styles={{
                   fontSize: "1.5rem",
                   lineHeight: "1.75rem",
                   color: "var(--primary)",
@@ -51,7 +51,15 @@ export const NavBar = () => {
                 asChild
               >
                 <Link to="/">
-                  <h1>Maisons</h1>
+                  <div className="flex flex-row items-stretch justify-between">
+                    <HomeIcon
+                      className="mr-3 h-7 w-7 rounded-full"
+                      style={{
+                        color: "var(--primary)",
+                      }}
+                    />
+                    <h1>Maisons</h1>
+                  </div>
                 </Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>

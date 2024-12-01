@@ -36,18 +36,6 @@ export async function loadProperty({ params }) {
   }
 }
 
-export async function loadWishlist({ params }) {
-  const id = params.id;
-  const response = await fetch(
-    "http://localhost:3000/api/wishlist/get-wishlist/" + id
-  );
-  if (!response.ok) {
-    throw new Error("Failed to fetch wishlist.");
-  }
-  const resData = await response.json();
-  return resData.wishlist;
-}
-
 // this function is used for LoadBoth()
 export async function property(id) {
   const response = await fetch("http://localhost:3000/api/places/" + id);

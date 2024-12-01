@@ -120,12 +120,14 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res) => {
   const cookies = req.cookies;
+
   if (!cookies?.token) {
-    return res.sendStatus(204); // no content
-  } else {
-    res.clearCookie("token", { withCredentials: true, httpOnly: false });
-    res.json({ message: "Cookie cleared" });
+    return res.sendStatus(204); // No content, no further execution
   }
+
+  res.clearCookie("token", { withCredentials: true, httpOnly: false });
+
+  return res.status(200).json({ message: "Cookie cleared" });
 };
 
 exports.updateToSeller = async (req, res) => {

@@ -73,6 +73,7 @@ const SellerReqForm = () => {
 
       console.log("Response:", response);
       closeSellerReqDialog();
+      window.location.reload();
     } catch (err) {
       console.error("Error:", err);
     }
