@@ -94,7 +94,7 @@ export const NavBar = () => {
                 <NavigationMenu.Trigger
                   className={styles.NavigationMenuTrigger}
                 >
-                  Rent{" "}
+                  Rent
                   <CaretDownIcon className={styles.CaretDown} aria-hidden />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content

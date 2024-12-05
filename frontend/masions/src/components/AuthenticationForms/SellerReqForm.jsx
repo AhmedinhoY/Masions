@@ -7,12 +7,14 @@ import { CheckIcon } from "@radix-ui/react-icons";
 import "./AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useSellerReqDialog } from "../../shared/context/dropdowndialog-context";
+import { useToast } from "../../shared/context/Toast-context";
 import { ImageUpload } from "../../shared/ImageUpload";
 import axios from "axios";
 
 const SellerReqForm = () => {
   const auth = useContext(AuthContext);
   const { closeSellerReqDialog } = useSellerReqDialog();
+  const { showToast } = useToast();
 
   const [isFreelancer, setIsFreelancer] = useState(false);
   const [agencyInput, setAgencyInput] = useState("");
@@ -73,9 +75,10 @@ const SellerReqForm = () => {
 
       console.log("Response:", response);
       closeSellerReqDialog();
-      window.location.reload();
+      showToast("success", "Your request has been sent successfully");
     } catch (err) {
       console.error("Error:", err);
+      showToast("error", "Failed. Please try again later.");
     }
 
     // event.target.reset(); //reset the input fields

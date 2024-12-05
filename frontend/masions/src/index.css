@@ -68,6 +68,12 @@ body {
   min-height: 100vh;
   font-family: var(--font-family);
   background-color: var(--bg-color);
+  overflow-x: hidden;
+}
+
+h1,
+h2 {
+  text-transform: capitalize;
 }
 
 section {

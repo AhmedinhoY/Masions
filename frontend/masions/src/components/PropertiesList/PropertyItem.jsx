@@ -19,7 +19,10 @@ export const PropertyItem = ({ property }) => {
             <h3>
               {property.area} m<sup>2</sup> - {property.bedrooms} bedrooms
             </h3>
-            <p className="mt-1">{property.price.toLocaleString()} BD</p>
+            <div className="flex flex-row justify-between mt-1">
+              <p className="">{property.price.toLocaleString()} BD</p>
+              <p>{property.availability}</p>
+            </div>
           </div>
         </Link>
       </div>
