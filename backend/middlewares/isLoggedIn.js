@@ -6,7 +6,6 @@ module.exports = async (req, res, next) => {
   try {
     // Check for token in cookies
     const token = req.cookies.token;
-    console.log("token is: ", token);
     if (!token) {
       return res.status(401).json({ isLoggedIn: false, user: null });
     }
@@ -15,7 +14,6 @@ module.exports = async (req, res, next) => {
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-      console.log("decoded token: ", decoded);
     } catch (err) {
       return res.status(401).json({ isLoggedIn: false, user: null });
     }
@@ -25,7 +23,7 @@ module.exports = async (req, res, next) => {
       console.error("Error fetching user:", err);
       return null;
     });
-    console.log("the user is:", user);
+
     if (!user) {
       return res.status(401).json({ isLoggedIn: false, user: null });
     }
