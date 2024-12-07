@@ -3,10 +3,10 @@ import React, { useContext, useState, useRef } from "react";
 import * as Form from "@radix-ui/react-form";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../shared/context/auth-context";
-import { useToast } from "../shared/context/Toast-context";
-import { ImageUpload } from "../shared/ImageUpload";
-import "../components/AuthenticationForms/AuthenticationForm.css";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useToast } from "../../shared/context/Toast-context";
+import { ImageUpload } from "../../shared/ImageUpload";
+import "../AuthenticationForms/AuthenticationForm.css";
 
 export const EditPost = () => {
   const property = useLoaderData(); // Fetch existing property data

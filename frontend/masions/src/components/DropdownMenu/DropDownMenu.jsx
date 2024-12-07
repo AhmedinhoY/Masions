@@ -23,7 +23,7 @@ export default function DropDownMenu() {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button className="IconButton" aria-label="Customize options">
-          <AvatarIcon className="h-7 w-7 rounded-full" />
+          <AvatarIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
         </button>
       </DropdownMenu.Trigger>
 

@@ -12,6 +12,7 @@ import { useDialog } from "../shared/context/dialog-context";
 import { useDropDownDialog } from "../shared/context/dropdowndialog-context";
 import DropDownDialog from "../shared/DropDownDialog";
 import Alert from "../shared/Alert";
+import { ImageSlider } from "../components/ImageSlider/ImageSlider";
 
 export default function PostDetails() {
   const { property, properties } = useLoaderData();
@@ -120,7 +121,7 @@ export default function PostDetails() {
             return (
               <div>
                 {/* Image Gallery */}
-                <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+                <div className="hidden lg:grid mx-auto mt-6 max-w-2xl sm:px-6  lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
                   <div className=" lg:grid lg:grid-cols-1 lg:gap-y-8">
                     {chosenHouse.img?.slice(0, 2).map((image, index) => (
                       <div
@@ -149,6 +150,13 @@ export default function PostDetails() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                <div className="block lg:hidden mx-auto mt-6 max-w-2xl sm:px-6">
+                  <ImageSlider
+                    imgCollection={chosenHouse.img}
+                    propertyID={chosenHouse.id}
+                  />
                 </div>
 
                 {/* Post Header */}

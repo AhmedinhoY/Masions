@@ -92,12 +92,17 @@ const SellerReqForm = () => {
           <Form.Message className="FormMessage" match="valueMissing">
             Please enter your CPR
           </Form.Message>
-          <Form.Message className="FormMessage" match="typeMismatch">
+          <Form.Message className="FormMessage" match="patternMismatch">
             Please provide a valid CPR
           </Form.Message>
         </div>
         <Form.Control asChild>
-          <input className="Input" type="number" required />
+          <input
+            className="Input"
+            type="number"
+            pattern="^(6[0-9]|7[0-9]|8[0-9]|9[0-9]|0[1-9]|1[0-9]|2[0-4])(0[1-9]|1[0-2])\d{5}$"
+            required
+          />
         </Form.Control>
       </Form.Field>
 

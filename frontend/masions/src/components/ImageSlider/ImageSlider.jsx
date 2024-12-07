@@ -15,7 +15,7 @@ export function ImageSlider({ imgCollection, propertyID }) {
                 activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
               }`}
               onClick={(e) => {
-                e.preventDefault(); // Prevents scrolling to the top
+                e.preventDefault();
                 setActiveIndex(i);
               }}
             />

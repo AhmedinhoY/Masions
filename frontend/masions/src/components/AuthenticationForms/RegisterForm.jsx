@@ -39,8 +39,7 @@ const RegisterForm = () => {
   return (
     <>
       <Form.Root className="FormRoot" onSubmit={handleInputs}>
-        {/* email */}
-
+        {/* name */}
         <Form.Field className="FormField" name="name">
           <div className="flex align-baseline justify-between">
             <Form.Label className="">Name</Form.Label>
@@ -52,10 +51,11 @@ const RegisterForm = () => {
             </Form.Message>
           </div>
           <Form.Control asChild>
-            <input className="Input" type="string" />
+            <input className="Input" type="string" required />
           </Form.Control>
         </Form.Field>
 
+        {/* email */}
         <Form.Field className="FormField" name="email">
           <div className="flex align-baseline justify-between">
             <Form.Label className="">Email</Form.Label>
@@ -72,7 +72,6 @@ const RegisterForm = () => {
         </Form.Field>
 
         {/* password */}
-
         <Form.Field className="FormField" name="password">
           <div className="flex align-baseline justify-between">
             <Form.Label className="">Password</Form.Label>
@@ -88,7 +87,7 @@ const RegisterForm = () => {
           </Form.Control>
         </Form.Field>
 
-        {/* confirm password */}
+        {/* confirm password
 
         <Form.Field className="FormField" name="confirmPassword">
           <div className="flex align-baseline justify-between">
@@ -103,22 +102,26 @@ const RegisterForm = () => {
           <Form.Control asChild>
             <input className="Input" type="password" required />
           </Form.Control>
-        </Form.Field>
+        </Form.Field> */}
 
-        {/* phone */}
-
+        {/* Phone Number */}
         <Form.Field className="FormField" name="phoneNumber">
           <div className="flex align-baseline justify-between">
-            <Form.Label className="">Phone Number</Form.Label>
+            <Form.Label>Phone Number</Form.Label>
             <Form.Message className="FormMessage" match="valueMissing">
               Please enter your phone number
             </Form.Message>
-            <Form.Message className="FormMessage" match="typeMismatch">
-              Please provide a valid phone number
+            <Form.Message className="FormMessage" match="patternMismatch">
+              Please enter Bahraini phone number
             </Form.Message>
           </div>
           <Form.Control asChild>
-            <input className="Input" type="number" />
+            <input
+              className="Input"
+              type="tel"
+              pattern="^(36|34|33|35|39|37|66|67)\d{6}$"
+              required
+            />
           </Form.Control>
         </Form.Field>
 
