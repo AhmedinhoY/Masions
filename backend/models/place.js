@@ -1,50 +1,53 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const placeSchema = new Schema({
-  img: [
-    {
-      imgNo: { type: Number },
-      imgSrc: { type: String },
+const placeSchema = new Schema(
+  {
+    img: [
+      {
+        imgNo: { type: Number },
+        imgSrc: { type: String },
+      },
+    ],
+
+    city: { type: String, required: true },
+
+    type: { type: String, required: true },
+
+    status: { type: String, required: true },
+
+    bedrooms: { type: Number, required: true },
+
+    bathrooms: { type: Number, required: true },
+
+    area: { type: Number, required: true },
+
+    price: { type: Number, required: true },
+
+    features: {
+      type: [String],
+      required: true,
     },
-  ],
 
-  city: { type: String, required: true },
+    description: { type: String, required: true },
 
-  type: { type: String, required: true },
+    address: { type: String, required: true },
 
-  status: { type: String, required: true },
+    location: {
+      lat: { type: String, required: true },
+      lng: { type: String, required: true },
+    },
 
-  bedrooms: { type: Number, required: true },
+    creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
 
-  bathrooms: { type: Number, required: true },
-
-  area: { type: Number, required: true },
-
-  price: { type: Number, required: true },
-
-  features: {
-    type: [String],
-    required: true,
+    availability: {
+      type: String,
+      enum: ["Available", "Sold", "Rented"],
+      default: "Available",
+    },
   },
-
-  description: { type: String, required: true },
-
-  address: { type: String, required: true },
-
-  location: {
-    lat: { type: String, required: true },
-    lng: { type: String, required: true },
-  },
-
-  creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-
-  availability: {
-    type: String,
-    enum: ["Available", "Sold", "Rented"],
-    default: "Available",
-  },
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Place", placeSchema);
 

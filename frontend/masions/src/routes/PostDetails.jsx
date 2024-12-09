@@ -300,10 +300,6 @@ export default function PostDetails() {
                           label: "Message",
                           onclick: () => alert("Message agent"),
                         },
-                        {
-                          label: "WhatsApp",
-                          onclick: () => alert("WhatsApp agent"),
-                        },
                       ]}
                     />
                   </div>

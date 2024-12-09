@@ -21,6 +21,15 @@ exports.getAllUsers = async (req, res, next) => {
     .json({ users: users.map((u) => u.toObject({ getters: true })) });
 };
 
+exports.getAllUsersForMessages = async (req, res, next) => {
+  const LoggedInUser = req.user.id;
+  console.log(LoggedInUser);
+  const Users = await User.find({ _id: { $ne: LoggedInUser } }).select(
+    "-password"
+  );
+  res.status(200).json(Users);
+};
+
 // Sign up controller
 exports.signUp = async (req, res, next) => {
   try {
@@ -110,6 +119,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
+// Log out controller
 exports.logout = async (req, res) => {
   const cookies = req.cookies;
   if (!cookies?.token) {
@@ -120,6 +130,7 @@ exports.logout = async (req, res) => {
   return res.status(200).json({ message: "Cookie cleared" });
 };
 
+// Update to seller controller
 exports.updateToSeller = async (req, res) => {
   try {
     const errors = validationResult(req);

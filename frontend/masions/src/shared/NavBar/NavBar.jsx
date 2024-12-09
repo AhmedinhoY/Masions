@@ -9,7 +9,7 @@ import { CaretDownIcon } from "@radix-ui/react-icons";
 import styles from "./NavBar.module.css"; // Import styles as a module
 import DropDownMenu from "../../components/DropdownMenu/DropDownMenu";
 import { HeartIcon, HomeIcon } from "@radix-ui/react-icons";
-import { MapIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { MapIcon, Bars3Icon, EnvelopeIcon } from "@heroicons/react/24/outline";
 
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
@@ -198,6 +198,24 @@ export const NavBar = () => {
                     onClick={() => openLogInAlert()}
                   >
                     <HeartIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
+                  </button>
+                )}
+                {/* Messages link */}
+                {auth.user ? (
+                  <Link
+                    className={styles.IconButton}
+                    aria-label="Customise options"
+                    to={`/messages/${auth.user.id}`}
+                  >
+                    <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
+                  </Link>
+                ) : (
+                  <button
+                    className={styles.IconButton}
+                    aria-label="Customise options"
+                    onClick={() => openLogInAlert()}
+                  >
+                    <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
                   </button>
                 )}
               </NavigationMenu.Item>
