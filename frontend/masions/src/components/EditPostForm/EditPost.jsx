@@ -3,14 +3,16 @@ import React, { useContext, useState, useRef } from "react";
 import * as Form from "@radix-ui/react-form";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../shared/context/auth-context";
-import { ImageUpload } from "../shared/ImageUpload";
-import "../components/AuthenticationForms/AuthenticationForm.css";
+import { AuthContext } from "../../shared/context/auth-context";
+import { useToast } from "../../shared/context/Toast-context";
+import { ImageUpload } from "../../shared/ImageUpload";
+import "../AuthenticationForms/AuthenticationForm.css";
 
 export const EditPost = () => {
   const property = useLoaderData(); // Fetch existing property data
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const { showToast } = useToast();
 
   const [images, setImages] = useState(() =>
     property.img.reduce(
@@ -19,6 +21,10 @@ export const EditPost = () => {
     )
   );
   const [features, setFeatures] = useState(property.features || [""]);
+  const [type, setType] = useState(property.type || "");
+  const [status, setStatus] = useState(property.status || "");
+  const [availability, setAvailability] = useState(property.availability || "");
+
   const inputRef = useRef();
 
   const handleInputChange = (index, event) => {
@@ -49,6 +55,7 @@ export const EditPost = () => {
     const data = new FormData();
     data.append("type", event.target.type.value);
     data.append("status", event.target.status.value);
+    data.append("availability", event.target.availability.value);
     data.append("city", event.target.city.value);
     data.append("address", event.target.address.value);
     data.append("price", event.target.price.value);
@@ -80,9 +87,11 @@ export const EditPost = () => {
       );
 
       console.log("Update response:", response);
+      showToast("success", "Your property has been edited successfully!");
       navigate("/");
     } catch (err) {
       console.error("Update error:", err);
+      showToast("error", "Failed. Please try again later.");
     }
   };
 
@@ -97,7 +106,13 @@ export const EditPost = () => {
           </Form.Message>
         </div>
         <Form.Control asChild>
-          <select className="Input" defaultValue={property.type} required>
+          <select
+            className="Input"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            defaultValue={property.type}
+            required
+          >
             <option value="">Select type</option>
             <option value="house">House</option>
             <option value="apartment">Apartment</option>
@@ -115,10 +130,42 @@ export const EditPost = () => {
           </Form.Message>
         </div>
         <Form.Control asChild>
-          <select className="Input" defaultValue={property.status} required>
+          <select
+            className="Input"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            defaultValue={property.status}
+            required
+          >
             <option value="">Select status</option>
             <option value="sale">For sale</option>
             <option value="rent">For rent</option>
+          </select>
+        </Form.Control>
+      </Form.Field>
+
+      {console.log(type)}
+      {console.log(status)}
+      {console.log(type)}
+      <Form.Field className="FormField" name="availability">
+        <div className="flex align-baseline justify-between">
+          <Form.Label>Property Availability</Form.Label>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please select an option
+          </Form.Message>
+        </div>
+        <Form.Control asChild>
+          <select
+            className="Input"
+            value={availability}
+            onChange={(e) => setAvailability(e.target.value)}
+            defaultValue={property.availability}
+            required
+          >
+            <option value="">Select status</option>
+            <option value="available">Available</option>
+            <option value="sold">Sold</option>
+            <option value="rented">Rented</option>
           </select>
         </Form.Control>
       </Form.Field>

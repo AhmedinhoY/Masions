@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { EditPost } from "./EditPost";
+import { EditPost } from "../components/EditPostForm/EditPost";
 
 export const EditProperty = () => {
   return (

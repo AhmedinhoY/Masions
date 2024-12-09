@@ -12,6 +12,7 @@ import { useDialog } from "../shared/context/dialog-context";
 import { useDropDownDialog } from "../shared/context/dropdowndialog-context";
 import DropDownDialog from "../shared/DropDownDialog";
 import Alert from "../shared/Alert";
+import { ImageSlider } from "../components/ImageSlider/ImageSlider";
 
 export default function PostDetails() {
   const { property, properties } = useLoaderData();
@@ -92,6 +93,17 @@ export default function PostDetails() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/places/delete-property/${propertyId}`,
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Error deleting property:", error);
+    }
+  };
+
   return (
     <div className="pt-6">
       <Suspense fallback={<LoadingSpinner asOverlay />}>
@@ -109,26 +121,12 @@ export default function PostDetails() {
             return (
               <div>
                 {/* Image Gallery */}
-                <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-                  {/* Main image */}
-                  <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-                    <img
-                      src={
-                        chosenHouse.img?.[0]?.imgSrc
-                          ? `http://localhost:3000/uploads/images/${chosenHouse.img[0].imgSrc}`
-                          : "fallback-image-path"
-                      }
-                      className="h-full w-full object-cover object-center"
-                      alt={`Image of ${chosenHouse.title || "property"}`}
-                    />
-                  </div>
-
-                  {/* Additional images */}
-                  <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-                    {chosenHouse.img?.slice(1, 3).map((image, index) => (
+                <div className="hidden lg:grid mx-auto mt-6 max-w-2xl sm:px-6  lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
+                  <div className=" lg:grid lg:grid-cols-1 lg:gap-y-8">
+                    {chosenHouse.img?.slice(0, 2).map((image, index) => (
                       <div
                         key={index}
-                        className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg"
+                        className="aspect-h-1 aspect-w-2 overflow-hidden rounded-lg"
                       >
                         <img
                           src={`http://localhost:3000/uploads/images/${image.imgSrc}`}
@@ -138,13 +136,27 @@ export default function PostDetails() {
                       </div>
                     ))}
                   </div>
-                  <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                    <img
-                      src={`http://localhost:3000/uploads/images/${chosenHouse.img[3]?.imgSrc}`}
-                      className="h-full w-full object-cover object-center"
-                      alt="Additional Image"
-                    />
+                  <div className=" lg:grid lg:grid-cols-1 lg:gap-y-8">
+                    {chosenHouse.img?.slice(2, 4).map((image, index) => (
+                      <div
+                        key={index}
+                        className="aspect-h-1 aspect-w-2 overflow-hidden rounded-lg"
+                      >
+                        <img
+                          src={`http://localhost:3000/uploads/images/${image.imgSrc}`}
+                          className="h-full w-full object-cover object-center"
+                          alt={`Image ${index + 2}`}
+                        />
+                      </div>
+                    ))}
                   </div>
+                </div>
+
+                <div className="block lg:hidden mx-auto mt-6 max-w-2xl sm:px-6">
+                  <ImageSlider
+                    imgCollection={chosenHouse.img}
+                    propertyID={chosenHouse.id}
+                  />
                 </div>
 
                 {/* Post Header */}
@@ -172,7 +184,13 @@ export default function PostDetails() {
                         >
                           Edit
                         </Link>
-                        <button className="danger-btn h-8"> Delete</button>
+                        <button
+                          className="danger-btn h-8"
+                          onClick={handleDelete}
+                        >
+                          {" "}
+                          Delete
+                        </button>
                       </div>
                     </div>
                   ) : auth.isLoggedIn ? (

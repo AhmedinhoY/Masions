@@ -36,6 +36,7 @@ import {
 import AuthenticationForm from "./components/AuthenticationForms/AuthenticationForm";
 import { EditProperty } from "./routes/EditProperty";
 import ScrollToTop from "./shared/util/scrollToTop";
+import { ToastProvider } from "./shared/context/Toast-context";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -110,27 +111,29 @@ export const App = () => {
 
   return (
     <>
-      <SellerReqDialogProvider>
-        <DropDownDialogProvider>
-          <DialogProvider>
-            <AuthProvider
-              value={{
-                isLoggedIn: !!token,
-                token: token,
-                uid: user ? user.id : null,
+      <ToastProvider>
+        <SellerReqDialogProvider>
+          <DropDownDialogProvider>
+            <DialogProvider>
+              <AuthProvider
+                value={{
+                  isLoggedIn: !!token,
+                  token: token,
+                  uid: user ? user.id : null,
 
-                login: login,
-                logout: logout,
-                signUp: signUp,
-              }}
-            >
-              <RouterProvider router={router}>
-                <ScrollToTop />
-              </RouterProvider>
-            </AuthProvider>
-          </DialogProvider>
-        </DropDownDialogProvider>
-      </SellerReqDialogProvider>
+                  login: login,
+                  logout: logout,
+                  signUp: signUp,
+                }}
+              >
+                <RouterProvider router={router}>
+                  <ScrollToTop />
+                </RouterProvider>
+              </AuthProvider>
+            </DialogProvider>
+          </DropDownDialogProvider>
+        </SellerReqDialogProvider>
+      </ToastProvider>
     </>
   );
 };

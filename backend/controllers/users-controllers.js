@@ -5,6 +5,7 @@ const User = require("../models/users");
 const bcrypt = require("bcryptjs");
 const { createToken } = require("../util/secretToken");
 const { handleError } = require("../util/utils");
+const { capitalize } = require("../util/utils.js");
 
 // get all users controller
 exports.getAllUsers = async (req, res, next) => {
@@ -26,7 +27,6 @@ exports.signUp = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log(errors);
       return handleError(
         "Submission Failed, Please provide valid inputs",
         422,
@@ -34,18 +34,16 @@ exports.signUp = async (req, res, next) => {
       );
     }
 
-    // destructuring the request
-    const { name, phoneNumber, email, password } = req.body;
+    let { name } = req.body;
+    name = capitalize(name);
+    const { phoneNumber, email, password } = req.body;
 
     const existingUser = await User.findOne({ email: email });
-
     if (existingUser) {
       return handleError("This user already exists, please login", 422, next);
     }
 
-    /* before we register the user we need to hash password to ensure security and privacy.
-    we will do this using third party authentication library called bcrypt */
-    const hashedPassword = await bcrypt.hash(password, 12); // will use hash function from bcrypt library (It takes 2 args: the password we need to hash and no. of salts.).
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const newUser = new User({
       name: name,
@@ -57,18 +55,19 @@ exports.signUp = async (req, res, next) => {
     await newUser.save();
 
     const Token = createToken(newUser.id, newUser.email);
-
     res.cookie("token", Token, {
       withCredentials: true,
       httpOnly: true,
       maxAge: 3 * 60 * 60 * 1000,
     });
 
-    res
-      .status(201)
-      .json({ userID: newUser.id, email: newUser.email, token: Token });
+    res.status(201).json({
+      userID: newUser.id,
+      email: newUser.email,
+      token: Token,
+      roles: newUser.roles,
+    });
   } catch (err) {
-    console.log(err);
     handleError("Sign up failed, please try again", 500, next);
   }
 };
@@ -78,26 +77,18 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // checking if the user exists or not
     const existingUser = await User.findOne({ email: email });
-
-    // if the user does not exist.
     if (!existingUser) {
       return handleError("Invalid credintials, please try again", 401, next);
     }
-
-    // checking password and hashed password match
 
     const isValidPassword = await bcrypt.compare(
       password,
       existingUser.password
     );
-    // above, we used compare function from bcrypt library to check the request password and user's saved password from the db (which we hashed)...
     if (!isValidPassword) {
       return handleError("Invalid credintials, please try again", 401, next);
     }
-
-    // if the login was successful, create token with cookie
 
     const Token = createToken(existingUser.id, existingUser.email);
 
@@ -111,6 +102,7 @@ exports.login = async (req, res, next) => {
       userID: existingUser.id,
       email: existingUser.email,
       token: Token,
+      roles: existingUser.roles,
     });
   } catch (err) {
     console.error(err);
@@ -120,13 +112,11 @@ exports.login = async (req, res, next) => {
 
 exports.logout = async (req, res) => {
   const cookies = req.cookies;
-
   if (!cookies?.token) {
-    return res.sendStatus(204); // No content, no further execution
+    return res.sendStatus(204);
   }
 
   res.clearCookie("token", { withCredentials: true, httpOnly: false });
-
   return res.status(200).json({ message: "Cookie cleared" });
 };
 
@@ -138,13 +128,13 @@ exports.updateToSeller = async (req, res) => {
     }
 
     const userId = req.params.id;
-    const { cpr, agency } = req.body;
+    let { agency } = req.body;
+    agency = capitalize(agency);
+    const { cpr } = req.body;
     const file = req.file;
 
-    console.log("controller: ", userId, cpr, agency, file);
-
     const user = await User.findById(userId);
-    console.log(user);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -168,8 +158,3 @@ exports.updateToSeller = async (req, res) => {
       .json({ message: "Something went wrong", error: error.message });
   }
 };
-
-// 401 - authentication failed
-// 422 - invalid user input
-// 404 - route not found
-// 500 - general error codes

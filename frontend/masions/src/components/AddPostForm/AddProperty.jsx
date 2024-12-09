@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as Form from "@radix-ui/react-form";
 import "../AuthenticationForms/AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
+import { useToast } from "../../shared/context/Toast-context";
 import axios from "axios";
 import { ImageUpload } from "../../shared/ImageUpload";
 
@@ -13,6 +14,7 @@ export const AddProperty = () => {
   const auth = useContext(AuthContext);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   // Handle change in input fields
   const handleInputChange = (index, event) => {
@@ -98,9 +100,11 @@ export const AddProperty = () => {
       );
 
       console.log("Response:", response);
+      showToast("success", "Your property has been added successfully!");
       navigate("/");
     } catch (err) {
       console.error("Error:", err);
+      showToast("error", "Failed. Please try again later.");
     }
   };
 
@@ -160,7 +164,7 @@ export const AddProperty = () => {
       {/* Address */}
       <Form.Field className="FormField" name="address">
         <div className="flex align-baseline justify-between">
-          <Form.Label>Address (5J8F+M2 Sitra)</Form.Label>
+          <Form.Label>Address</Form.Label>
           <Form.Message className="FormMessage" match="valueMissing">
             Please enter an address
           </Form.Message>

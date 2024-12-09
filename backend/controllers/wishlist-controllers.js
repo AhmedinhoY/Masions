@@ -5,9 +5,9 @@ const Place = require("../models/place");
 const User = require("../models/users");
 const { validationResult } = require("express-validator");
 
+// Add to wishlist controller
 exports.addToWishlist = async (req, res, next) => {
   const { userId, propertyId } = req.body;
-
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.error("Validation Errors:", errors.array());
@@ -30,10 +30,8 @@ exports.addToWishlist = async (req, res, next) => {
 
     wishlist = await Wishlist.findOne({ userId });
     if (!wishlist) {
-      // Create a new wishlist if it doesn't exist
       wishlist = new Wishlist({ userId, places: [propertyId] });
     } else {
-      // Add the property to the existing wishlist if not already present
       if (!wishlist.places.includes(propertyId)) {
         wishlist.places.push(propertyId);
       } else {
@@ -55,17 +53,14 @@ exports.addToWishlist = async (req, res, next) => {
   }
 };
 
+// Get wishlist by user id controller
 exports.getWishlist = async (req, res, next) => {
-  console.log("req reached the controller");
-
   const userId = req.user.id;
-  console.log(userId);
+
   let wishlist;
   try {
-    // Find the wishlist for the user and populate the places with their details
     wishlist = await Wishlist.findOne({ userId }).populate("places");
     if (!wishlist) {
-      // Return an empty wishlist if none exists
       wishlist = { places: [] };
     }
   } catch (err) {
@@ -78,6 +73,7 @@ exports.getWishlist = async (req, res, next) => {
   res.status(200).json({ wishlist });
 };
 
+// Remove from wishlist controller
 exports.removeFromWishlist = async (req, res, next) => {
   const { userId, propertyId } = req.body;
 
@@ -91,7 +87,6 @@ exports.removeFromWishlist = async (req, res, next) => {
 
   let wishlist;
   try {
-    // Find the wishlist for the user
     wishlist = await Wishlist.findOne({ userId });
     if (!wishlist) {
       return next(
@@ -99,13 +94,11 @@ exports.removeFromWishlist = async (req, res, next) => {
       );
     }
 
-    // Check if the property is in the wishlist
     const propertyIndex = wishlist.places.indexOf(propertyId);
     if (propertyIndex === -1) {
       return next(new HttpError("Property not found in the wishlist.", 404));
     }
 
-    // Remove the property from the wishlist
     wishlist.places.splice(propertyIndex, 1);
 
     const session = await mongoose.startSession();

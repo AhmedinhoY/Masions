@@ -2,23 +2,32 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+
 import classNames from "classnames";
 import { CaretDownIcon } from "@radix-ui/react-icons";
 import styles from "./NavBar.module.css"; // Import styles as a module
 import DropDownMenu from "../../components/DropdownMenu/DropDownMenu";
 import { HeartIcon, HomeIcon } from "@radix-ui/react-icons";
-import { MapIcon } from "@heroicons/react/24/outline";
+import { MapIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 import { useDialog } from "../context/dialog-context";
 import { useDropDownDialog } from "../context/dropdowndialog-context";
 import Alert from "../Alert";
+import SellerReqDialog from "../SellerReqDialog";
+import { useSellerReqDialog } from "../../shared/context/dropdowndialog-context";
 
 export const NavBar = () => {
   const auth = useContext(AuthContext);
   const { openDialog } = useDialog(); // Get the openDialog method from context
   const { openDropDownDialog } = useDropDownDialog(); // Get the openDialog method from context
+  const { openSellerReqDialog } = useSellerReqDialog();
+
+  const handleLogOut = async () => {
+    await auth.logout();
+  };
 
   const openLogInAlert = () => {
     openDialog({
@@ -53,12 +62,12 @@ export const NavBar = () => {
                 <Link to="/">
                   <div className="flex flex-row items-stretch justify-between">
                     <HomeIcon
-                      className="mr-3 h-7 w-7 rounded-full"
+                      className="mr-3 h-6 w-6 lg:h-7 lg:w-7  rounded-full"
                       style={{
                         color: "var(--primary)",
                       }}
                     />
-                    <h1>Maisons</h1>
+                    <h1 className="hidden lg:block">Maisons</h1>
                   </div>
                 </Link>
               </NavigationMenu.Link>
@@ -94,7 +103,7 @@ export const NavBar = () => {
                 <NavigationMenu.Trigger
                   className={styles.NavigationMenuTrigger}
                 >
-                  Rent{" "}
+                  Rent
                   <CaretDownIcon className={styles.CaretDown} aria-hidden />
                 </NavigationMenu.Trigger>
                 <NavigationMenu.Content
@@ -163,7 +172,7 @@ export const NavBar = () => {
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
             </div>
-            <div className="flex flex-row items-center">
+            <div className="hidden md:flex flex-row items-center">
               <NavigationMenu.Item>
                 {/* explore link */}
                 <Link
@@ -171,7 +180,7 @@ export const NavBar = () => {
                   aria-label="Customise options"
                   to="explore"
                 >
-                  <MapIcon className="h-7 w-7 rounded-full" />
+                  <MapIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
                 </Link>
                 {/* wishlist link */}
                 {auth.user ? (
@@ -180,7 +189,7 @@ export const NavBar = () => {
                     aria-label="Customise options"
                     to={`/wishlist/${auth.user.id}`}
                   >
-                    <HeartIcon className="h-7 w-7 rounded-full" />
+                    <HeartIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
                   </Link>
                 ) : (
                   <button
@@ -188,7 +197,7 @@ export const NavBar = () => {
                     aria-label="Customise options"
                     onClick={() => openLogInAlert()}
                   >
-                    <HeartIcon className="h-7 w-7 rounded-full" />
+                    <HeartIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
                   </button>
                 )}
               </NavigationMenu.Item>
@@ -197,6 +206,53 @@ export const NavBar = () => {
                 {/* profile link */}
                 <DropDownMenu />
               </NavigationMenu.Item>
+            </div>
+            <div className="md:hidden">
+              <DropDownMenu />
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger className=" IconButton">
+                  <Bars3Icon className="h-6 w-6" />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Portal>
+                  <DropdownMenu.Content
+                    className="DropdownMenuContent bg-white shadow-lg rounded-md p-2 w-48"
+                    sideOffset={5}
+                  >
+                    {/* Explore */}
+                    <DropdownMenu.Item asChild>
+                      <Link
+                        to="explore"
+                        className="DropdownMenuItem flex items-center"
+                      >
+                        <MapIcon className="h-5 5-4 mr-2" />
+                        Explore
+                      </Link>
+                    </DropdownMenu.Item>
+
+                    {/* Wishlist */}
+                    {auth.user ? (
+                      <DropdownMenu.Item asChild>
+                        <Link
+                          to={`/wishlist/${auth.user.id}`}
+                          className="DropdownMenuItem flex items-center"
+                        >
+                          <HeartIcon className="h-5 w-5 mr-2" />
+                          Wishlist
+                        </Link>
+                      </DropdownMenu.Item>
+                    ) : (
+                      <DropdownMenu.Item
+                        className="DropdownMenuItem flex items-center"
+                        onSelect={openLogInAlert}
+                      >
+                        <HeartIcon className="h-5 w-5 mr-2" />
+                        Wishlist
+                      </DropdownMenu.Item>
+                    )}
+                    <DropdownMenu.Arrow className="DropdownMenuArrow" />
+                  </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+              </DropdownMenu.Root>
             </div>
           </div>
 

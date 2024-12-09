@@ -4,13 +4,14 @@ const fs = require("fs");
 const Place = require("../models/place");
 const User = require("../models/users");
 const getCoordinates = require("../util/location");
+const { capitalize } = require("../util/utils.js");
 const { validationResult } = require("express-validator");
 
+// Get all places controller
 exports.getAllPlaces = async (req, res, next) => {
   let places;
-
   try {
-    places = await Place.find(); // returns an array
+    places = await Place.find();
   } catch (err) {
     const error = new HttpError(
       "could not find any places, please try again or add a new one",
@@ -24,12 +25,13 @@ exports.getAllPlaces = async (req, res, next) => {
     .json({ places: places.map((p) => p.toObject({ getters: true })) });
 };
 
+// Get place by id controller
 exports.getPlaceById = async (req, res, next) => {
   const pid = req.params.pid;
 
   let place;
   try {
-    place = await Place.findById(pid).populate("creator", "-password"); // removing the password for extra security
+    place = await Place.findById(pid).populate("creator", "-password");
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not find a place",
@@ -49,22 +51,21 @@ exports.getPlaceById = async (req, res, next) => {
   res.json({ place: place.toObject({ getters: true }) });
 };
 
+// Get places by user id controller
 exports.getPlacesByUserId = async (req, res, next) => {
   const uid = req.params.uid;
-  // let places;
   let userWithPlaces;
 
   try {
-    userWithPlaces = await User.findById(uid).populate("places"); // returns an array
+    userWithPlaces = await User.findById(uid).populate("places");
   } catch (err) {
     const error = new HttpError(
       "Something went wrong, could not find the places created by this id, try again later",
       500
     );
-
     return next(error);
   }
-  // if (!places || places.length == 0){
+
   if (!userWithPlaces || userWithPlaces.length == 0) {
     return next(
       new HttpError("Could not find places for the provided user id", 404)
@@ -76,7 +77,7 @@ exports.getPlacesByUserId = async (req, res, next) => {
   });
 };
 
-// Create a new place
+// Create a new place controller
 exports.createPlace = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -86,19 +87,14 @@ exports.createPlace = async (req, res, next) => {
     );
   }
 
-  console.log("request body: ", req.body);
-  const {
-    type,
-    status,
-    city,
-    address,
-    price,
-    bedrooms,
-    bathrooms,
-    area,
-    description,
-    features,
-  } = req.body;
+  const { bedrooms, bathrooms, area, address, price } = req.body;
+  let { city, type, status, features, description } = req.body;
+
+  type = capitalize(type);
+  status = capitalize(status);
+  city = capitalize(city);
+  features = capitalize(features);
+  description = capitalize(description);
 
   let coordinates;
   try {
@@ -109,25 +105,9 @@ exports.createPlace = async (req, res, next) => {
     );
   }
 
-  console.log(
-    "full request to be sent to db (without images): ",
-    type,
-    status,
-    city,
-    address,
-    price,
-    bedrooms,
-    bathrooms,
-    area,
-    features,
-    description,
-    coordinates,
-    req.user.id
-  );
-
   const images = ["image0", "image1", "image2", "image3"].map((img, index) => ({
     imgNo: index + 1,
-    imgSrc: req.files[img]?.[0]?.filename || "https://via.placeholder.com/150", // Only the filename
+    imgSrc: req.files[img]?.[0]?.filename || "https://via.placeholder.com/150",
   }));
 
   console.log("images handled successfully");
@@ -143,6 +123,7 @@ exports.createPlace = async (req, res, next) => {
     area,
     features,
     description,
+    availability: "Available",
     location: coordinates,
     creator: req.user.id,
     img: images,
@@ -175,10 +156,9 @@ exports.createPlace = async (req, res, next) => {
   res.status(201).json({ place: createdPlace });
 };
 
-// change this function later on
+// Update place by place id controller
 exports.updatePlaceById = async (req, res, next) => {
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
     console.log(errors);
     return next(
@@ -187,22 +167,26 @@ exports.updatePlaceById = async (req, res, next) => {
   }
 
   const pid = req.params.pid;
+
   const {
-    city,
-    type,
-    propertyStatus,
     bedrooms,
     bathrooms,
     area,
     address,
     price,
-    features,
-    description,
     image0,
     image1,
     image2,
     image3,
   } = req.body;
+  let { city, type, status, features, availability, description } = req.body;
+
+  type = capitalize(type);
+  status = capitalize(status);
+  city = capitalize(city);
+  features = capitalize(features);
+  description = capitalize(description);
+  availability = capitalize(availability);
 
   let place;
   try {
@@ -217,16 +201,14 @@ exports.updatePlaceById = async (req, res, next) => {
     return next(new HttpError("The provided place ID does not exist.", 404));
   }
 
-  // if the person trying to edit this place is not the user
-  // who created this place, then the action is not allowed
   if (place.creator.toString() !== req.user.id) {
     return next(new HttpError("You are not allowed to edit this place.", 401));
   }
 
-  // Update the place fields
   place.city = city;
   place.type = type;
-  place.propertyStatus = propertyStatus;
+  place.status = status;
+  place.availability = availability;
   place.bedrooms = bedrooms;
   place.bathrooms = bathrooms;
   place.area = area;
@@ -235,7 +217,6 @@ exports.updatePlaceById = async (req, res, next) => {
   place.description = description;
   place.address = address;
 
-  // Handle image updates with the new filename logic
   place.img[0].imgSrc = req.files["image0"]
     ? req.files["image0"][0].filename
     : image0 || place.img[0].imgSrc;
@@ -263,8 +244,12 @@ exports.updatePlaceById = async (req, res, next) => {
   });
 };
 
+// Delete place by id controller
 exports.deletePlaceById = async (req, res, next) => {
+  console.log("request reached controller");
+
   const pid = req.params.pid;
+  console.log("property id: ", pid);
 
   let place;
 
@@ -284,11 +269,13 @@ exports.deletePlaceById = async (req, res, next) => {
     return next(error);
   }
 
-  // if the person trying to delete this place is not the user
-  // who created this place, then the action is not allowed
-  if (place.creator.id !== req.useData.userId) {
-    const error = new HttpError("You are not allowed to edit this place", 401);
+  console.log(place);
 
+  if (place.creator.id !== req.user.id) {
+    const error = new HttpError(
+      "You are not allowed to delete this place",
+      401
+    );
     return next(error);
   }
 
@@ -309,11 +296,15 @@ exports.deletePlaceById = async (req, res, next) => {
     return next(error);
   }
 
-  // delete the place here
-  const imagePath = place.img[0].imgSrc;
-
-  fs.unlink(imagePath, (err) => {
-    console.log(err);
+  place.img.forEach((image) => {
+    const imagePath = path.join(__dirname, "uploads", "images", image.imgSrc);
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file ${imagePath}:`, err.message);
+      } else {
+        console.log(`Successfully deleted file: ${imagePath}`);
+      }
+    });
   });
 
   res.status(200).json({ message: " Deleted Place" });

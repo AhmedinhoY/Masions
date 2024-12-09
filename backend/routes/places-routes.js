@@ -14,7 +14,7 @@ router.get("/user/:uid", placesController.getPlacesByUserId);
 // Protect the following routes with authentication
 router.use(isLoggedIn);
 
-// Add a new property
+// Add a new property route
 router.post(
   "/add-property",
   fileUpload.fields([
@@ -36,7 +36,7 @@ router.post(
   placesController.createPlace
 );
 
-// Update a property
+// Update a property route
 router.patch(
   "/:pid",
   fileUpload.fields([
@@ -58,7 +58,7 @@ router.patch(
   placesController.updatePlaceById
 );
 
-// Delete a property
-router.delete("/:pid", placesController.deletePlaceById);
+// Delete a property route
+router.delete("/delete-property/:pid", placesController.deletePlaceById);
 
 module.exports = router;

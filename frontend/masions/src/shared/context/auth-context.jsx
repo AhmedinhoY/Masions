@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 export const AuthContext = createContext({
   isLoggedIn: false,
@@ -37,11 +36,8 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       setToken(token);
       setIsLoggedIn(true);
-
-      window.location.reload();
     } catch (error) {
       console.error("Sign up failed", error);
-      alert("Sign up failed, please try again.");
     }
   };
 
@@ -65,10 +61,8 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       setToken(token);
       setIsLoggedIn(true);
-      window.location.reload();
     } catch (error) {
       console.error("Login failed", error);
-      alert("Login failed, please try again.");
     }
   };
 
@@ -87,7 +81,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setToken(null);
       setIsLoggedIn(false);
-      window.location.reload();
     } catch (error) {
       console.error("Logout failed", error);
     }

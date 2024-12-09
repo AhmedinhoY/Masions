@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-
 const Schema = mongoose.Schema;
 
 const placeSchema = new Schema({
   img: [
     {
-      imgNo: { type: Number }, //optional
+      imgNo: { type: Number },
       imgSrc: { type: String },
     },
   ],
@@ -25,7 +24,7 @@ const placeSchema = new Schema({
   price: { type: Number, required: true },
 
   features: {
-    type: [String], //array of strings
+    type: [String],
     required: true,
   },
 
@@ -39,6 +38,12 @@ const placeSchema = new Schema({
   },
 
   creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+
+  availability: {
+    type: String,
+    enum: ["Available", "Sold", "Rented"],
+    default: "Available",
+  },
 });
 
 module.exports = mongoose.model("Place", placeSchema);

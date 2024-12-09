@@ -13,18 +13,9 @@ const fileUpload = require("../middlewares/file-upload");
 
 router.get("/", getAllUsers);
 
-router.post(
-  "/signup",
-  [
-    check("email").notEmpty().normalizeEmail().isEmail(),
-    check("password").isLength({ min: 8 }),
-  ],
-  signUp
-);
-
+router.post("/signup", signUp);
 router.post("/login", login);
 router.post("/logout", logout);
-
 router.patch("/updateToSeller/:id", fileUpload.single("image"), updateToSeller);
 
 router.get("/isLoggedIn", isLoggedIn, (req, res) => {
