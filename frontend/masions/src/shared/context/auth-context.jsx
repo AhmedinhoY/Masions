@@ -112,6 +112,7 @@ export const AuthProvider = ({ children }) => {
           setIsLoggedIn(false);
           setUser(null);
           setToken(null);
+          logout();
         }
       } catch (err) {
         console.error("Error checking logged in status:", err);

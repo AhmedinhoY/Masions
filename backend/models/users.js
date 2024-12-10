@@ -17,7 +17,4 @@ const userSchema = new Schema({
   },
 });
 
-// later add the validation for the email to be truly unique
-// add it inside the user-routes using the custom method in express-validator
-
 module.exports = mongoose.model("User", userSchema);

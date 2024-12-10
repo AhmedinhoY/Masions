@@ -9,14 +9,17 @@ import {
   useDropDownDialog,
   useSellerReqDialog,
 } from "../../shared/context/dropdowndialog-context";
+import { useNavigate } from "react-router-dom";
 
 export default function DropDownMenu() {
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
   const { openDropDownDialog } = useDropDownDialog();
   const { openSellerReqDialog } = useSellerReqDialog();
 
   const handleLogOut = async () => {
     await auth.logout();
+    navigate("/");
   };
 
   return (

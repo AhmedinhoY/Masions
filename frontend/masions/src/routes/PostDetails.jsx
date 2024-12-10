@@ -1,5 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Await, Link, useLoaderData, useSubmit } from "react-router-dom";
+import {
+  Await,
+  Link,
+  useLoaderData,
+  useNavigate,
+  useSubmit,
+} from "react-router-dom";
 import { Suspense, useContext, useRef } from "react";
 import Card from "../components/Card/Card";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
@@ -20,6 +26,7 @@ export default function PostDetails() {
   const auth = useContext(AuthContext);
   const { openDialog } = useDialog();
   const { openDropDownDialog } = useDropDownDialog();
+  const navigate = useNavigate;
 
   const openLogInAlert = () => {
     openDialog({
@@ -294,15 +301,13 @@ export default function PostDetails() {
                       buttons={[
                         {
                           label: "Call",
-                          onclick: () => alert("Call agent"),
+                          onClick: () => alert("Call agent"),
                         },
+                      ]}
+                      Links={[
                         {
                           label: "Message",
-                          onclick: () => alert("Message agent"),
-                        },
-                        {
-                          label: "WhatsApp",
-                          onclick: () => alert("WhatsApp agent"),
+                          url: `/messages/${chosenHouse.creator.id}`,
                         },
                       ]}
                     />

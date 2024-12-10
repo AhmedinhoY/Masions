@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import "./Card.css";
+import { Link } from "react-router-dom";
 
-const Card = ({ imageUrl, title, subtitle, text, buttons }) => {
+const Card = ({ imageUrl, title, subtitle, text, buttons, Links }) => {
   return (
     <div className="card">
       <div className="card-body">
@@ -11,20 +12,27 @@ const Card = ({ imageUrl, title, subtitle, text, buttons }) => {
           {subtitle && <h3 className="card-subtitle">{subtitle}</h3>}
           {text && <p className="card-text">{text}</p>}
         </div>
-        <div className="card-buttons">
-          {buttons && (
-            <div className="buttons-container">
-              {buttons.map((button, index) => (
-                <button
-                  key={index}
-                  className="primary-btn-sm"
-                  onClick={button.onClick}
-                >
-                  {button.label}
-                </button>
-              ))}
-            </div>
-          )}
+        <div className="w-full flex flex-col justify-center items-center my-6">
+          {buttons &&
+            buttons.map((button, index) => (
+              <button
+                key={index}
+                className="primary-btn-sm !w-[80%] !px-0"
+                onClick={button.onClick}
+              >
+                {button.label}
+              </button>
+            ))}
+          {Links &&
+            Links.map((link, index) => (
+              <Link
+                key={index}
+                className="primary-btn-sm !w-[80%] !px-0"
+                to={link.url}
+              >
+                {link.label}
+              </Link>
+            ))}
         </div>
       </div>
     </div>
