@@ -112,7 +112,7 @@ exports.signUp = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const newUser = new User({
-      name: name,
+      name,
       email: email,
       phoneNumber: phoneNumber,
       password: hashedPassword,
@@ -120,19 +120,24 @@ exports.signUp = async (req, res, next) => {
 
     await newUser.save();
 
+    console.log('no');
+
     const Token = createToken(newUser.id, newUser.email);
+    console.log('token thing');
     res.cookie("token", Token, {
-      withCredentials: true,
       httpOnly: true,
       maxAge: 3 * 60 * 60 * 1000,
     });
+    
 
-    return res.status(201).json({
+
+    res.status(201).json({
       userID: newUser.id,
       email: newUser.email,
       token: Token,
       roles: newUser.roles,
     });
+
   } catch (err) {
     handleError("Sign up failed, please try again hellooooo", 500, next);
   }

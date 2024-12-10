@@ -38,6 +38,8 @@ import { EditProperty } from "./routes/EditProperty";
 import ScrollToTop from "./shared/util/scrollToTop";
 import { ToastProvider } from "./shared/context/Toast-context";
 import { Messages } from "./routes/Messages";
+import { HousePricePrediction } from "./routes/HousePricePrediction";
+import { StableDiff } from "./routes/StableDiff";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -104,6 +106,18 @@ const router = createBrowserRouter([
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
       { path: "/auth", element: <AuthenticationForm /> },
+      {
+        path: "/ai", children: [
+          {
+            path: 'house-price-prediction',
+            element: <HousePricePrediction />,
+          },
+          {
+            path: 'stable-diffusion',
+            element: <StableDiff />,
+          }
+        ]
+      },
     ],
   },
 ]);

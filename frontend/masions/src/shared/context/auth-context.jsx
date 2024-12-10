@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkIfLoggedIn();
-  }, []);
+  }, [token]); // may cause infinite loops
 
   return (
     <AuthContext.Provider

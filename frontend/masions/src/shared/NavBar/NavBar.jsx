@@ -38,7 +38,7 @@ export const NavBar = () => {
       onConfirm: () => {
         openDropDownDialog(); // open login dialog
       },
-      onCancel: () => {},
+      onCancel: () => { },
     });
   };
 
@@ -132,6 +132,29 @@ export const NavBar = () => {
                   </NavigationMenu.Link>
                 </NavigationMenu.Item>
               )}
+
+              <NavigationMenu.Item>
+                <NavigationMenu.Trigger
+                  className={styles.NavigationMenuTrigger}
+                >
+                  AI <CaretDownIcon className={styles.CaretDown} aria-hidden />
+                </NavigationMenu.Trigger>
+                <NavigationMenu.Content
+                  className={styles.NavigationMenuContent}
+                >
+                  <ul className={`${styles.List} ${styles.one} block`}>
+                    <ListItem
+                      to="ai/house-price-prediction"
+                      title="House Price Prediction"
+                    ></ListItem>
+                    <ListItem
+                      to="ai/stable-diffusion"
+                      title="Stable diffusion"
+                    ></ListItem>
+                  </ul>
+                </NavigationMenu.Content>
+              </NavigationMenu.Item>
+
 
               <NavigationMenu.Item>
                 <NavigationMenu.Link
