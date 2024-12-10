@@ -174,14 +174,14 @@ export const NavBar = () => {
             </div>
             <div className="hidden md:flex flex-row items-center">
               <NavigationMenu.Item>
-                {/* explore link */}
+                {/* explore link
                 <Link
                   className={styles.IconButton}
                   aria-label="Customise options"
                   to="explore"
                 >
                   <MapIcon className="h-6 w-6 lg:h-7 lg:w-7 rounded-full" />
-                </Link>
+                </Link> */}
                 {/* wishlist link */}
                 {auth.user ? (
                   <Link
@@ -236,7 +236,7 @@ export const NavBar = () => {
                     className="DropdownMenuContent bg-white shadow-lg rounded-md p-2 w-48"
                     sideOffset={5}
                   >
-                    {/* Explore */}
+                    {/* Explore
                     <DropdownMenu.Item asChild>
                       <Link
                         to="explore"
@@ -245,7 +245,7 @@ export const NavBar = () => {
                         <MapIcon className="h-5 5-4 mr-2" />
                         Explore
                       </Link>
-                    </DropdownMenu.Item>
+                    </DropdownMenu.Item> */}
 
                     {/* Wishlist */}
                     {auth.user ? (

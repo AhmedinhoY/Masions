@@ -8,12 +8,14 @@ const {
   getAllUsers,
   updateToSeller,
   getAllUsersForMessages,
+  getAllSellers,
 } = require("../controllers/users-controllers");
 const { check } = require("express-validator");
 const isLoggedIn = require("../middlewares/isLoggedIn");
 const fileUpload = require("../middlewares/file-upload");
 
 router.get("/", getAllUsers);
+router.get("/getAgents", getAllSellers);
 router.get("/getUser/:AgentId", isLoggedIn, getUser);
 router.get("/getUsersForMessages", isLoggedIn, getAllUsersForMessages);
 
