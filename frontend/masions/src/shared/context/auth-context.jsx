@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }) => {
       setToken(token);
       setIsLoggedIn(true);
     } catch (error) {
+      console.log(error.response.data.message);
       console.error("Sign up failed", error);
     }
   };

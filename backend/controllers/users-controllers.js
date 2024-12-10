@@ -99,6 +99,7 @@ exports.signUp = async (req, res, next) => {
       );
     }
 
+
     let { name } = req.body;
     name = capitalize(name);
     const { phoneNumber, email, password } = req.body;
@@ -126,14 +127,14 @@ exports.signUp = async (req, res, next) => {
       maxAge: 3 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       userID: newUser.id,
       email: newUser.email,
       token: Token,
       roles: newUser.roles,
     });
   } catch (err) {
-    handleError("Sign up failed, please try again", 500, next);
+    handleError("Sign up failed, please try again hellooooo", 500, next);
   }
 };
 
