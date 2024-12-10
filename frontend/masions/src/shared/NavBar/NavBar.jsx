@@ -236,17 +236,6 @@ export const NavBar = () => {
                     className="DropdownMenuContent bg-white shadow-lg rounded-md p-2 w-48"
                     sideOffset={5}
                   >
-                    {/* Explore
-                    <DropdownMenu.Item asChild>
-                      <Link
-                        to="explore"
-                        className="DropdownMenuItem flex items-center"
-                      >
-                        <MapIcon className="h-5 5-4 mr-2" />
-                        Explore
-                      </Link>
-                    </DropdownMenu.Item> */}
-
                     {/* Wishlist */}
                     {auth.user ? (
                       <DropdownMenu.Item asChild>
@@ -269,21 +258,23 @@ export const NavBar = () => {
                     )}
                     {/* Messages link */}
                     {auth.user ? (
-                      <Link
-                        className={styles.IconButton}
-                        aria-label="Customise options"
-                        to={`/messages/`}
-                      >
-                        <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
-                      </Link>
+                      <DropdownMenu.Item asChild>
+                        <Link
+                          className={styles.IconButton}
+                          aria-label="Customise options"
+                          to={`/messages/`}
+                        >
+                          <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
+                        </Link>
+                      </DropdownMenu.Item>
                     ) : (
-                      <button
-                        className={styles.IconButton}
-                        aria-label="Customise options"
-                        onClick={() => openLogInAlert()}
+                      <DropdownMenu.Item
+                        className="DropdownMenuItem flex items-center"
+                        onSelect={openLogInAlert}
                       >
-                        <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
-                      </button>
+                        <EnvelopeIcon className="h-5 w-5 mr-2" />
+                        Messages
+                      </DropdownMenu.Item>
                     )}
                     <DropdownMenu.Arrow className="DropdownMenuArrow" />
                   </DropdownMenu.Content>
