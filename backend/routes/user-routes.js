@@ -9,6 +9,7 @@ const {
   updateToSeller,
   getAllUsersForMessages,
   getAllSellers,
+  EditProfile,
 } = require("../controllers/users-controllers");
 const { check } = require("express-validator");
 const isLoggedIn = require("../middlewares/isLoggedIn");
@@ -23,6 +24,7 @@ router.post("/signup", signUp);
 router.post("/login", login);
 router.post("/logout", logout);
 router.patch("/updateToSeller/:id", fileUpload.single("image"), updateToSeller);
+router.patch("/editProfile/:id", fileUpload.single("image"), EditProfile);
 
 router.get("/isLoggedIn", isLoggedIn, (req, res) => {
   if (req.user) {

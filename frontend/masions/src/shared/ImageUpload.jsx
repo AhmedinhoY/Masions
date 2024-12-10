@@ -12,7 +12,7 @@ export const ImageUpload = ({
   const filePickerRef = useRef(null);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [isValid, setIsValid] = useState(!!editImageUploaded);
+  const [isValid, setIsValid] = useState(!editImageUploaded);
 
   // Display image preview when a file is selected
   useEffect(() => {

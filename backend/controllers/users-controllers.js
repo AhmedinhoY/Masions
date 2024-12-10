@@ -207,6 +207,56 @@ exports.logout = async (req, res) => {
   return res.status(200).json({ message: "Cookie cleared" });
 };
 
+exports.EditProfile = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const userId = req.params.id;
+    let { agency, name, image } = req.body;
+    agency = capitalize(agency);
+    name = capitalize(name);
+    const { phoneNumber } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (req.file) {
+      const oldImagePath = path.join(
+        __dirname,
+        "../uploads/images",
+        user.image
+      );
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath); // Delete the old image
+      }
+      user.image = req.file.filename; // Set the new image filename
+    } else {
+      user.image = image || user.image; // Use the old image if no new one is uploaded
+    }
+
+    user.agency = agency;
+    user.name = name;
+    user.phoneNumber = phoneNumber;
+
+    await user.save();
+
+    res.status(200).json({
+      message: "User info updated successfully.",
+      user: user,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong", error: error.message });
+  }
+};
+
 // Update to seller controller
 exports.updateToSeller = async (req, res) => {
   try {

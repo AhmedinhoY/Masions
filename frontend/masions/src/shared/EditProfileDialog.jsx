@@ -2,14 +2,16 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import styles from "./DropDownDialog.module.css";
-import SellerReqForm from "../components/AuthenticationForms/SellerReqForm";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import { useSellerReqDialog } from "../shared/context/dropdowndialog-context";
+import { useEditProfileDialog } from "../shared/context/dropdowndialog-context";
+import EditProfileForm from "../components/AuthenticationForms/EditProfileForm";
 
-const SellerReqDialog = () => {
-  const { isSellerReqOpen, closeSellerReqDialog } = useSellerReqDialog();
+const EditProfileDialog = () => {
+  const { isEditProfileOpen, closeEditProfileDialog } = useEditProfileDialog();
+  console.log("Dialog open state:", isEditProfileOpen);
+
   return (
-    <Dialog.Root open={isSellerReqOpen} onOpenChange={closeSellerReqDialog}>
+    <Dialog.Root open={isEditProfileOpen} onOpenChange={closeEditProfileDialog}>
       <Dialog.Portal>
         <Dialog.Overlay className={styles.Overlay} />
         <Dialog.Content className={`${styles.Content}`}>
@@ -20,7 +22,7 @@ const SellerReqDialog = () => {
             </Dialog.Description>
           </VisuallyHidden.Root>
 
-          <SellerReqForm closeDialog={closeSellerReqDialog} />
+          <EditProfileForm closeDialog={closeEditProfileDialog} />
 
           <Dialog.Close asChild>
             <button className={styles.IconButton} aria-label="Close">
@@ -33,4 +35,4 @@ const SellerReqDialog = () => {
   );
 };
 
-export default SellerReqDialog;
+export default EditProfileDialog;

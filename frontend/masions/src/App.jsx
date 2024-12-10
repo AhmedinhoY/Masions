@@ -30,6 +30,7 @@ import { AuthContext, AuthProvider } from "./shared/context/auth-context";
 import { DialogProvider } from "./shared/context/dialog-context";
 import {
   DropDownDialogProvider,
+  EditProfileDialogProvider,
   SellerReqDialogProvider,
 } from "./shared/context/dropdowndialog-context";
 
@@ -114,27 +115,29 @@ export const App = () => {
   return (
     <>
       <ToastProvider>
-        <SellerReqDialogProvider>
-          <DropDownDialogProvider>
-            <DialogProvider>
-              <AuthProvider
-                value={{
-                  isLoggedIn: !!token,
-                  token: token,
-                  uid: user ? user.id : null,
+        <EditProfileDialogProvider>
+          <SellerReqDialogProvider>
+            <DropDownDialogProvider>
+              <DialogProvider>
+                <AuthProvider
+                  value={{
+                    isLoggedIn: !!token,
+                    token: token,
+                    uid: user ? user.id : null,
 
-                  login: login,
-                  logout: logout,
-                  signUp: signUp,
-                }}
-              >
-                <RouterProvider router={router}>
-                  <ScrollToTop />
-                </RouterProvider>
-              </AuthProvider>
-            </DialogProvider>
-          </DropDownDialogProvider>
-        </SellerReqDialogProvider>
+                    login: login,
+                    logout: logout,
+                    signUp: signUp,
+                  }}
+                >
+                  <RouterProvider router={router}>
+                    <ScrollToTop />
+                  </RouterProvider>
+                </AuthProvider>
+              </DialogProvider>
+            </DropDownDialogProvider>
+          </SellerReqDialogProvider>
+        </EditProfileDialogProvider>
       </ToastProvider>
     </>
   );

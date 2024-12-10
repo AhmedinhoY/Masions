@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import * as Form from "@radix-ui/react-form";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -53,9 +53,9 @@ export const EditPost = () => {
     event.preventDefault();
 
     const data = new FormData();
-    data.append("type", event.target.type.value);
-    data.append("status", event.target.status.value);
-    data.append("availability", event.target.availability.value);
+    data.append("type", type);
+    data.append("status", status);
+    data.append("availability", availability);
     data.append("city", event.target.city.value);
     data.append("address", event.target.address.value);
     data.append("price", event.target.price.value);
@@ -105,20 +105,19 @@ export const EditPost = () => {
             Please select a type
           </Form.Message>
         </div>
-        <Form.Control asChild>
+        <div>
           <select
             className="Input"
             value={type}
             onChange={(e) => setType(e.target.value)}
-            defaultValue={property.type}
             required
           >
             <option value="">Select type</option>
-            <option value="house">House</option>
-            <option value="apartment">Apartment</option>
-            <option value="land">Land</option>
+            <option value="House">House</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Land">Land</option>
           </select>
-        </Form.Control>
+        </div>
       </Form.Field>
 
       {/* Status */}
@@ -129,19 +128,18 @@ export const EditPost = () => {
             Please select an option
           </Form.Message>
         </div>
-        <Form.Control asChild>
+        <div>
           <select
             className="Input"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            defaultValue={property.status}
             required
           >
             <option value="">Select status</option>
-            <option value="sale">For sale</option>
-            <option value="rent">For rent</option>
+            <option value="Sale">For sale</option>
+            <option value="Rent">For rent</option>
           </select>
-        </Form.Control>
+        </div>
       </Form.Field>
 
       <Form.Field className="FormField" name="availability">
@@ -151,20 +149,21 @@ export const EditPost = () => {
             Please select an option
           </Form.Message>
         </div>
-        <Form.Control asChild>
+        <div>
           <select
             className="Input"
             value={availability}
-            onChange={(e) => setAvailability(e.target.value)}
-            defaultValue={property.availability}
+            onChange={(e) => {
+              setAvailability(e.target.value);
+            }}
             required
           >
             <option value="">Select status</option>
-            <option value="available">Available</option>
-            <option value="sold">Sold</option>
-            <option value="rented">Rented</option>
+            <option value="Available">Available</option>
+            <option value="Sold">Sold</option>
+            <option value="Rented">Rented</option>
           </select>
-        </Form.Control>
+        </div>
       </Form.Field>
 
       {/* City */}
@@ -351,8 +350,11 @@ export const EditPost = () => {
       </div>
 
       {/* Submit */}
-      <Form.Submit asChild>
-        <button className="primary-btn mt-4">Update Property</button>
+      <Form.Submit
+        asChild
+        className="!flex flex-row justify-center items-center !mx-auto"
+      >
+        <button className="primary-btn mt-4 !w-[85%] ">Update Property</button>
       </Form.Submit>
     </Form.Root>
   );

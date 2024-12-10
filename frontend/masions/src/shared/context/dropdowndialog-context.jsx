@@ -3,12 +3,17 @@ import { createContext, useState, useContext } from "react";
 
 const DropDownDialogContext = createContext();
 const SellerReqDialogContext = createContext();
+const EditProfileDialogContext = createContext();
 
 export const useDropDownDialog = () => {
   return useContext(DropDownDialogContext);
 };
 export const useSellerReqDialog = () => {
   return useContext(SellerReqDialogContext);
+};
+
+export const useEditProfileDialog = () => {
+  return useContext(EditProfileDialogContext);
 };
 
 export const DropDownDialogProvider = ({ children }) => {
@@ -47,5 +52,28 @@ export const SellerReqDialogProvider = ({ children }) => {
     >
       {children}
     </SellerReqDialogContext.Provider>
+  );
+};
+
+export const EditProfileDialogProvider = ({ children }) => {
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+
+  const openEditProfileDialog = () => {
+    setIsEditProfileOpen(true);
+  };
+  const closeEditProfileDialog = () => {
+    setIsEditProfileOpen(false);
+  };
+
+  return (
+    <EditProfileDialogContext.Provider
+      value={{
+        isEditProfileOpen,
+        openEditProfileDialog,
+        closeEditProfileDialog,
+      }}
+    >
+      {children}
+    </EditProfileDialogContext.Provider>
   );
 };

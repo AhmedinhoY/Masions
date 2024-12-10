@@ -4,10 +4,12 @@ import { AvatarIcon } from "@radix-ui/react-icons";
 import "./DropDownMenu.css";
 import DropDownDialog from "../../shared/DropDownDialog";
 import SellerReqDialog from "../../shared/SellerReqDialog";
+import EditProfileDialog from "../../shared/EditProfileDialog";
 import { AuthContext } from "../../shared/context/auth-context";
 import {
   useDropDownDialog,
   useSellerReqDialog,
+  useEditProfileDialog,
 } from "../../shared/context/dropdowndialog-context";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +18,7 @@ export default function DropDownMenu() {
   const navigate = useNavigate();
   const { openDropDownDialog } = useDropDownDialog();
   const { openSellerReqDialog } = useSellerReqDialog();
+  const { openEditProfileDialog } = useEditProfileDialog();
 
   const handleLogOut = async () => {
     await auth.logout();
@@ -33,7 +36,6 @@ export default function DropDownMenu() {
       <DropdownMenu.Portal>
         <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
           {/* Log In Button */}
-
           <DropdownMenu.Item
             className="DropdownMenuItem"
             disabled={auth.isLoggedIn} // Disable if logged in
@@ -53,7 +55,17 @@ export default function DropDownMenu() {
               </DropdownMenu.Item>
             </>
           )}
-
+          <DropdownMenu.Separator className="DropdownMenuSeparator" />
+          <DropdownMenu.Item
+            className="DropdownMenuItem"
+            disabled={!auth.isLoggedIn}
+            onSelect={() => {
+              console.log("Opening dialog");
+              openEditProfileDialog();
+            }}
+          >
+            Edit Profile
+          </DropdownMenu.Item>
           <DropdownMenu.Separator className="DropdownMenuSeparator" />
           {/* Contact Us and About Us */}
           <DropdownMenu.Item className="DropdownMenuItem">
@@ -81,6 +93,7 @@ export default function DropDownMenu() {
       <DropDownDialog />
       {/* Request to be a seller Dialog */}
       <SellerReqDialog />
+      <EditProfileDialog />
     </DropdownMenu.Root>
   );
 }
