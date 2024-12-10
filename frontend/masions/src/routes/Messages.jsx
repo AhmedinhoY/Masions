@@ -2,19 +2,77 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { formatTime } from "../shared/util/extract-time";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 export const Messages = () => {
-  const auth = useContext(AuthContext);
-  const [users, setUsers] = useState(null);
+  const { AgentId } = useParams();
   const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState(null);
   const [messages, setMessages] = useState([]);
-
   const [message, setMessage] = useState("");
-
   const messagesEndRef = useRef(null);
+  const auth = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  // Fetch the selected user details based on AgentId from URL params
+  useEffect(() => {
+    const fetchSelectedUser = async () => {
+      if (AgentId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/api/users/getUser/${AgentId}`,
+            { withCredentials: true }
+          );
+          setSelectedUser(response.data);
+        } catch (error) {
+          console.error("Error fetching the user:", error);
+        }
+      } else {
+        setSelectedUser(null);
+      }
+    };
+
+    fetchSelectedUser();
+  }, [AgentId]);
+
+  // Fetch the users for messaging
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/users/getUsersForMessages",
+          { withCredentials: true }
+        );
+        setUsers(response.data);
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, [auth?.user.id, messages]);
+
+  // Fetch messages for the selected user
+  const fetchMessages = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/messages/${userId}`,
+        { withCredentials: true }
+      );
+      setMessages(response.data);
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+    }
+  };
+
+  // Handle user click to select and load messages
+  const handleUserClick = (user) => {
+    setSelectedUser(user);
+    fetchMessages(user._id);
+  };
+
+  // Handle sending a message
+  const handleSendMessage = async (e) => {
     e.preventDefault();
 
     try {
@@ -30,39 +88,7 @@ export const Messages = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/api/users/getUsersForMessages",
-          { withCredentials: true }
-        );
-        setUsers(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchUsers();
-  }, [auth?.user?.id]);
-
-  const fetchMessages = async (userId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/messages/${userId}`,
-        { withCredentials: true }
-      );
-      setMessages(response.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-    fetchMessages(user._id);
-  };
-
+  // Scroll to the bottom of the messages container
   useEffect(() => {
     const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -181,7 +207,10 @@ export const Messages = () => {
                     )}
                   </div>
                 </div>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <form
+                  onSubmit={handleSendMessage}
+                  className="flex flex-col gap-4"
+                >
                   <div className="flex flex-row justify-between items-center">
                     <input
                       value={message}

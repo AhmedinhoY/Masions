@@ -205,7 +205,7 @@ export const NavBar = () => {
                   <Link
                     className={styles.IconButton}
                     aria-label="Customise options"
-                    to={`/messages/${auth.user.id}`}
+                    to={`/messages/`}
                   >
                     <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
                   </Link>
@@ -266,6 +266,24 @@ export const NavBar = () => {
                         <HeartIcon className="h-5 w-5 mr-2" />
                         Wishlist
                       </DropdownMenu.Item>
+                    )}
+                    {/* Messages link */}
+                    {auth.user ? (
+                      <Link
+                        className={styles.IconButton}
+                        aria-label="Customise options"
+                        to={`/messages/`}
+                      >
+                        <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
+                      </Link>
+                    ) : (
+                      <button
+                        className={styles.IconButton}
+                        aria-label="Customise options"
+                        onClick={() => openLogInAlert()}
+                      >
+                        <EnvelopeIcon className="h-6 w-6 lg:h-7 lg:w-7 " />
+                      </button>
                     )}
                     <DropdownMenu.Arrow className="DropdownMenuArrow" />
                   </DropdownMenu.Content>

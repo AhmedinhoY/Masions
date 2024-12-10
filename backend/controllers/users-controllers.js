@@ -2,10 +2,28 @@ const HttpError = require("../models/http-error");
 const uuid = require("uuid").v4;
 const { validationResult } = require("express-validator");
 const User = require("../models/users");
+const Conversation = require("../models/conversation");
 const bcrypt = require("bcryptjs");
 const { createToken } = require("../util/secretToken");
 const { handleError } = require("../util/utils");
 const { capitalize } = require("../util/utils.js");
+
+exports.getUser = async (req, res) => {
+  try {
+    const AgentId = req.params.AgentId;
+
+    // Correcting the condition to check if AgentId is falsy
+    if (!AgentId) {
+      return res.status(400).send({ error: "AgentId is required" });
+    }
+
+    const user = await User.findById(AgentId);
+    console.log(user);
+    res.json(user);
+  } catch (err) {
+    res.status(400).send({ error: "Invalid user ID" });
+  }
+};
 
 // get all users controller
 exports.getAllUsers = async (req, res, next) => {
@@ -23,11 +41,49 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.getAllUsersForMessages = async (req, res, next) => {
   const LoggedInUser = req.user.id;
-  console.log(LoggedInUser);
-  const Users = await User.find({ _id: { $ne: LoggedInUser } }).select(
-    "-password"
-  );
-  res.status(200).json(Users);
+
+  try {
+    // Step 1: Fetch conversations involving the logged-in user to make them first
+    const conversations = await Conversation.find({
+      participants: LoggedInUser,
+    })
+      .populate("participants", "-password")
+      .sort({ updatedAt: -1 });
+
+    // Step 2: Extract sellers with conversations
+    const sellersWithConversations = conversations
+      .map((conversation) =>
+        conversation.participants.find(
+          (user) => user._id.toString() !== LoggedInUser
+        )
+      )
+      .filter((user) => user && user.roles === "seller"); // Only include sellers
+
+    // Step 3: Fetch all sellers (including those with no conversations)
+    const allSellers = await User.find({
+      roles: "seller",
+      _id: { $ne: LoggedInUser },
+    }).select("-password");
+
+    // Step 4: Identify sellers without conversations
+    const sellersWithConversationIds = new Set(
+      sellersWithConversations.map((seller) => seller._id.toString())
+    );
+    const sellersWithoutConversations = allSellers.filter(
+      (seller) => !sellersWithConversationIds.has(seller._id.toString())
+    );
+
+    // Step 5: Combine lists (prioritizing those with conversations)
+    const sortedUsers = [
+      ...sellersWithConversations,
+      ...sellersWithoutConversations,
+    ];
+
+    // Step 6: Return the sorted list
+    res.status(200).json(sortedUsers);
+  } catch (err) {
+    next(err); // Handle errors properly
+  }
 };
 
 // Sign up controller

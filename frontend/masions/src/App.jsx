@@ -100,7 +100,7 @@ const router = createBrowserRouter([
       },
       { path: "/add-post", element: <AddPost />, action: formAction },
       { path: "/wishlist/:id", element: <WishList /> },
-      { path: "/messages/:id", element: <Messages /> },
+      { path: "/messages/:AgentId?", element: <Messages /> },
       { path: "/agents", element: <AgentsList /> },
       { path: "/explore", element: <Explore /> },
       { path: "/auth", element: <AuthenticationForm /> },

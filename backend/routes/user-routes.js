@@ -4,6 +4,7 @@ const {
   signUp,
   login,
   logout,
+  getUser,
   getAllUsers,
   updateToSeller,
   getAllUsersForMessages,
@@ -13,6 +14,7 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const fileUpload = require("../middlewares/file-upload");
 
 router.get("/", getAllUsers);
+router.get("/getUser/:AgentId", isLoggedIn, getUser);
 router.get("/getUsersForMessages", isLoggedIn, getAllUsersForMessages);
 
 router.post("/signup", signUp);
