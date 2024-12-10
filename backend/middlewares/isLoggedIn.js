@@ -1,7 +1,7 @@
 const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-
+secretkey = 'thefirstinfallibleimam'
 module.exports = async (req, res, next) => {
   try {
     // Check for token in cookies
@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
     // Decode and verify token
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+      decoded = jwt.verify(token, secretkey);
     } catch (err) {
       return res.status(401).json({ isLoggedIn: false, user: null });
     }

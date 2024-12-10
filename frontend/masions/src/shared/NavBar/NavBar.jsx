@@ -38,7 +38,7 @@ export const NavBar = () => {
       onConfirm: () => {
         openDropDownDialog(); // open login dialog
       },
-      onCancel: () => {},
+      onCancel: () => { },
     });
   };
 
@@ -133,6 +133,7 @@ export const NavBar = () => {
                 </NavigationMenu.Item>
               )}
 
+
               <NavigationMenu.Item>
                 <NavigationMenu.Link
                   asChild
@@ -158,7 +159,7 @@ export const NavBar = () => {
                       data science technologies, helping you make confident
                       investments decisions!
                     </ListItem>
-                    <ListItem to="#" title="Al-Muthammen">
+                    <ListItem to="ai/house-price-prediction" title="Al-Muthammen" >
                       Know the true value! <br /> Instantly get accurate,
                       AI-driven property price estimates based on real-time
                       market data.
