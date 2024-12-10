@@ -118,7 +118,7 @@ export const Input = ({
         onBlur={touchHandler}
         value={inputState.value}
       >
-        <option value=""> Select Type </option>
+        <option value=""> Select Value </option>
         {options &&
           options.map((op) => {
             return (
