@@ -115,11 +115,17 @@ export const Messages = () => {
                     onClick={() => handleUserClick(u)}
                   >
                     <div className="flex min-w-0 gap-x-4">
-                      <img
-                        alt="Ahmed image"
-                        src={`http://localhost:3000/uploads/images/${u.image}`}
-                        className="size-12 flex-none rounded-full bg-gray-50"
-                      />
+                      {u.image ? (
+                        <img
+                          alt="Ahmed image"
+                          src={`http://localhost:3000/uploads/images/${u.image}`}
+                          className="size-12 flex-none rounded-full bg-gray-50"
+                        />
+                      ) : (
+                        <div className="flex justify-center items-center size-12 rounded-full bg-gray-500">
+                          {u.name.charAt(0)}
+                        </div>
+                      )}
                       <div className="min-w-0 flex flex-col justify-around">
                         <h2 className="text-sm/6 font-semibold !m-0">
                           {u.name} - {u.agency}
@@ -155,11 +161,18 @@ export const Messages = () => {
                           >
                             {msg.senderId === selectedUser._id ? (
                               <div className="flex flex-row justify-start items-end">
-                                <img
-                                  alt="Ahmed image"
-                                  src={`http://localhost:3000/uploads/images/${selectedUser.image}`}
-                                  className="size-10 rounded-full mr-4 mb-0.5"
-                                />
+                                {selectedUser.image ? (
+                                  <img
+                                    alt="Ahmed image"
+                                    src={`http://localhost:3000/uploads/images/${selectedUser.image}`}
+                                    className="size-10 rounded-full mr-4 mb-0.5"
+                                  />
+                                ) : (
+                                  <div className="flex justify-center items-center size-10 rounded-full mr-4 mb-0.5 bg-gray-500">
+                                    {selectedUser.name.charAt(0)}
+                                  </div>
+                                )}
+
                                 <p
                                   className="flex flex-col text-sm p-2 !m-0"
                                   style={{

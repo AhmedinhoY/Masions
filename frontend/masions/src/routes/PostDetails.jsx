@@ -301,7 +301,9 @@ export default function PostDetails() {
                       buttons={[
                         {
                           label: "Call",
-                          onClick: () => alert("Call agent"),
+                          onClick: () => {
+                            window.location.href = `tel:${chosenHouse.creator.phoneNumber}`;
+                          },
                         },
                       ]}
                       Links={[

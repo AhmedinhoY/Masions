@@ -9,7 +9,7 @@ import { ImageUpload } from "../../shared/ImageUpload";
 import "../AuthenticationForms/AuthenticationForm.css";
 
 export const EditPost = () => {
-  const property = useLoaderData(); // Fetch existing property data
+  const property = useLoaderData();
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { showToast } = useToast();
@@ -144,9 +144,6 @@ export const EditPost = () => {
         </Form.Control>
       </Form.Field>
 
-      {console.log(type)}
-      {console.log(status)}
-      {console.log(type)}
       <Form.Field className="FormField" name="availability">
         <div className="flex align-baseline justify-between">
           <Form.Label>Property Availability</Form.Label>

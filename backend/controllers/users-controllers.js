@@ -39,44 +39,65 @@ exports.getAllUsers = async (req, res, next) => {
     .json({ users: users.map((u) => u.toObject({ getters: true })) });
 };
 
+// Get all sellers controller
+exports.getAllSellers = async (req, res, next) => {
+  let sellers;
+  try {
+    sellers = await User.find({ roles: "seller" }, "-password");
+  } catch (err) {
+    handleError("Fetching sellers failed, please try again", 500, next);
+  }
+
+  res.status(200).json({
+    sellers: sellers.map((seller) => seller.toObject({ getters: true })),
+  });
+};
+
 exports.getAllUsersForMessages = async (req, res, next) => {
-  const LoggedInUser = req.user.id;
+  const loggedInUserId = req.user.id;
 
   try {
-    // Step 1: Fetch conversations involving the logged-in user to make them first
+    // Fetch the logged-in user's role
+    const loggedInUser = await User.findById(loggedInUserId).select("roles");
+    const userRole = loggedInUser.roles;
+
+    // Determine the target role based on the logged-in user's role
+    const targetRole = userRole === "buyer" ? "seller" : "buyer";
+
+    // Step 1: Fetch conversations involving the logged-in user
     const conversations = await Conversation.find({
-      participants: LoggedInUser,
+      participants: loggedInUserId,
     })
       .populate("participants", "-password")
       .sort({ updatedAt: -1 });
 
-    // Step 2: Extract sellers with conversations
-    const sellersWithConversations = conversations
+    // Step 2: Extract users with conversations (opposite role)
+    const usersWithConversations = conversations
       .map((conversation) =>
         conversation.participants.find(
-          (user) => user._id.toString() !== LoggedInUser
+          (user) => user._id.toString() !== loggedInUserId
         )
       )
-      .filter((user) => user && user.roles === "seller"); // Only include sellers
+      .filter((user) => user && user.roles === targetRole); // Only include target role
 
-    // Step 3: Fetch all sellers (including those with no conversations)
-    const allSellers = await User.find({
-      roles: "seller",
-      _id: { $ne: LoggedInUser },
+    // Step 3: Fetch all users with the target role (excluding the logged-in user)
+    const allUsers = await User.find({
+      roles: targetRole,
+      _id: { $ne: loggedInUserId },
     }).select("-password");
 
-    // Step 4: Identify sellers without conversations
-    const sellersWithConversationIds = new Set(
-      sellersWithConversations.map((seller) => seller._id.toString())
+    // Step 4: Identify users without conversations
+    const usersWithConversationIds = new Set(
+      usersWithConversations.map((user) => user._id.toString())
     );
-    const sellersWithoutConversations = allSellers.filter(
-      (seller) => !sellersWithConversationIds.has(seller._id.toString())
+    const usersWithoutConversations = allUsers.filter(
+      (user) => !usersWithConversationIds.has(user._id.toString())
     );
 
     // Step 5: Combine lists (prioritizing those with conversations)
     const sortedUsers = [
-      ...sellersWithConversations,
-      ...sellersWithoutConversations,
+      ...usersWithConversations,
+      ...usersWithoutConversations,
     ];
 
     // Step 6: Return the sorted list

@@ -4,7 +4,7 @@
   box-shadow: var(--box-shadow);
   padding: 0 1.5rem;
   height: auto;
-  max-height: max-content;
+  max-height: fit-content;
   @apply mx-auto max-w-2xl sm:py-12 sm:justify-center lg:max-w-7xl  lg:py-8;
 }
 
