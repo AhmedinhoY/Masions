@@ -103,7 +103,7 @@ const PredictionForm = () => {
     try {
 
       // predict house prices
-      const responseData = await sendRequest('http://127.0.0.1:5000/predict',
+      const responseData = await sendRequest('http://localhost:3000/api/ai/predict',
         'POST',
         JSON.stringify(data),
         {
@@ -294,7 +294,7 @@ export const HousePricePrediction = () => {
     <>
       <div className="w-[1024px] h-full mx-auto px-16 py-4 my-8 flex flex-col gap-0 ">
         <h1 className="text-2xl text-purple-800 my-2">Ensemble of Ai</h1>
-        <p> This is a <span className=" text-green-500"> Price esitmator  </span> it combines <span className=" font-extrabold text-green-800 text-2xl">  Machine Learning  and Deep Learning Approaches  </span>,
+        <p> This is a <span className=" text-green-500"> Price esitmator  </span> it combines <span className=" font-extrabold text-green-800 text-2xl" >  Machine Learning  and Deep Learning Approaches  </span>,
           designed to estimate house prices in the US. </p>
 
         <p>

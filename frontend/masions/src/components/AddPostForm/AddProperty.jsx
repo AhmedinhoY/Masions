@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import * as Form from "@radix-ui/react-form";
 import "../AuthenticationForms/AuthenticationForm.css";
 import { AuthContext } from "../../shared/context/auth-context";
@@ -108,11 +108,21 @@ export const AddProperty = () => {
     }
   };
 
+  if (!auth.token) {
+    return <Navigate to="/" replace />;
+  }
+
+  if(auth.user.roles != 'seller'){
+    console.log('you are a buyer ha ha ha');
+  }
+
+
   return (
     <Form.Root className="FormRoot" onSubmit={handleSubmission}>
       {/* {console.log(auth.token)}
       {console.log(auth.user)}
       {console.log(auth.isLoggedIn)} */}
+      
       {/* Type */}
       <Form.Field className="FormField" name="type">
         <div className="flex align-baseline justify-between">

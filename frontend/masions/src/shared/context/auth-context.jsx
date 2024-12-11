@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { HttpError } from "../../util/route-error";
 
 export const AuthContext = createContext({
   isLoggedIn: false,
@@ -39,6 +40,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log(error.response.data.message);
       console.error("Sign up failed", error);
+      const err = new HttpError("login failed",500,{details:'this is the details'});
+      throw err
     }
   };
 
@@ -64,6 +67,8 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Login failed", error);
+      const err = new HttpError("login failed",500,{details:'this is the details'});
+      throw err
     }
   };
 

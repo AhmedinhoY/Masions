@@ -118,6 +118,10 @@ export const NavBar = () => {
                       to="apartments/for-rent"
                       title="Apartments for rent"
                     ></ListItem>
+                    <ListItem
+                      to="lands/for-rent"
+                      title="Lands for rent"
+                    />
                   </ul>
                 </NavigationMenu.Content>
               </NavigationMenu.Item>

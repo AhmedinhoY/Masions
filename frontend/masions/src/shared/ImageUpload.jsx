@@ -93,7 +93,7 @@ export const ImageUpload = ({
               <img
                 src={previewUrl}
                 alt="Preview"
-                className="rounded w-full h-full object-cover"
+                className="rounded h-full object-contain"
               />
             ) : (
               <div className=" w-full h-full flex items-center justify-center text-center text-gray-400">

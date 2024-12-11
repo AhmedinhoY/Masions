@@ -30,6 +30,13 @@ export const SaleLands = () => {
       (area ? property.area >= parseFloat(area) : true)
     );
   });
+  console.log("land sale",properties[0].type)
+  let propertyLands_sale;
+  if (properties) {
+    propertyLands_sale = properties.filter((property) => {
+      return property.type.toLowerCase() == "land" && property.status.toLowerCase() == "sale";
+    });
+  }
 
   return (
     <>

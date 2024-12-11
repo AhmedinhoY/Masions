@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { defer, redirect } from "react-router-dom";
 import { getToken } from "../util/getToken";
 import { HttpError } from "../util/route-error";
@@ -63,29 +64,36 @@ export async function loadBoth({ params }) {
 // very nice application and a oppourtiunity of learn ...
 export async function deleteProperty({ request, params }) {
   const id = params.id;
-  const storedData = getToken();
-  if (!storedData) {
-    const error = new HttpError(
-      "unauthorized action, please login or signup",
-      403,
-      { details: "this is the details of the error" }
-    );
-    throw error;
-  }
+  
+  // const storedData = getToken();
+  // if (!storedData) {
+  //   const error = new HttpError(
+  //     "unauthorized action, please login or signup",
+  //     403,
+  //     { details: "this is the details of the error" }
+  //   );
+  //   throw error;
+  // }
 
-  const response = await fetch("http://localhost:3000/api/places/" + id, {
-    method: request.method,
-    headers: {
-      Authorization: "Bearer " + storedData.token,
-    },
-  });
+  try {
+    const response = await fetch("http://localhost:3000/api/places/delete-property" + id, {
+      method: request.method,
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      const error = new HttpError("the place could not be Deleted", 500, {
+        details: "this is the details of the error",
+      });
+      throw error;
+    }
+
+  } catch (err) {
     const error = new HttpError("the place could not be Deleted", 500, {
       details: "this is the details of the error",
     });
     throw error;
   }
+
 
   return redirect("/");
 }

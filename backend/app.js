@@ -12,6 +12,7 @@ const placesRoutes = require("./routes/places-routes");
 const userRoutes = require("./routes/user-routes");
 const wishlistRoutes = require("./routes/wishlist-routes");
 const messageRoutes = require("./routes/message-routes");
+const aiRoutes = require('./routes/ai-routes')
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -42,6 +43,8 @@ app.use("/api/places", placesRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/ai", aiRoutes);
+
 
 // Middleware to catch-all for unsupported routes
 app.use((req, res, next) => {
@@ -77,7 +80,7 @@ app.use((error, req, res, next) => {
 
 // Database connection and server start
 const DB_CONNECTION =
-  "mongodb+srv://alishaikhhusain14:1412Imam@cluster0.fvze0.mongodb.net/Ahmed?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://alishaikhhusain14:1412Imam@cluster0.fvze0.mongodb.net/Ali?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose
   .connect(DB_CONNECTION)
@@ -89,3 +92,5 @@ mongoose
   .catch((err) => {
     console.error("Database connection failed:", err);
   });
+
+

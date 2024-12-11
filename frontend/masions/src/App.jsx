@@ -41,6 +41,7 @@ import { ToastProvider } from "./shared/context/Toast-context";
 import { Messages } from "./routes/Messages";
 import { HousePricePrediction } from "./routes/HousePricePrediction";
 import { StableDiff } from "./routes/StableDiff";
+import { RentLands } from "./routes/RentLands";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -82,6 +83,8 @@ const router = createBrowserRouter([
         path: "lands",
         children: [
           { path: "for-sale", element: <SaleLands />, loader: loadProperties },
+          { path: "for-rent", element: <RentLands />, loader: loadProperties },
+
         ],
       },
       {
