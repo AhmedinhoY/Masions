@@ -12,7 +12,8 @@ export const Button =
       disabled,
       inverse,
       danger,
-      blue
+      blue,
+      primary
 
     }
   ) => {
@@ -21,13 +22,12 @@ export const Button =
     if (href) {
       return (
         <a
-          className={`px-6 py-2 rounded-md  
+          className={`px-6 py-2 rounded-md 
+          ${primary && `  hover:bg-[#113264] ${disabled ? 'bg-[#1852a8] text-white' : `bg-[#113264] text-white`}`} 
           ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
           ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-200 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
           ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}
            ${blue && `  hover:bg-blue-600 ${disabled ? 'bg-blue-200 text-gray-800' : `bg-blue-800 text-white`}`} 
-
-
           `}
           href={href}
         >
@@ -45,6 +45,7 @@ export const Button =
           to={to}
           className={`px-6 py-2 rounded-md  
             ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
+            ${primary && `  hover:bg-[#113264] ${disabled ? 'bg-[#113264] text-white' : `bg-[#113264] text-white`}`} 
             ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-200 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
             ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}
            ${blue && `  hover:bg-blue-600 ${disabled ? 'bg-blue-200 text-gray-800' : `bg-blue-800 text-white`}`} 
@@ -63,6 +64,8 @@ export const Button =
       // renders a button
       <button
         className={`px-6 py-2 rounded-md  
+                    ${primary && `  hover:bg-[#113264] ${disabled ? 'bg-[#113264] text-white' : `bg-[#113264] text-white`}`} 
+
            ${inverse && `  hover:bg-yellow-600 ${disabled ? 'bg-yellow-200 text-gray-400' : `bg-yellow-800 text-white`}`} 
            ${danger && ` hover:bg-red-600 ${disabled ? 'bg-red-300 text-red-700 hover:text-white' : `bg-red-800 text-white`}`}
            ${!inverse && !danger && (` hover:bg-gray-400 ${disabled ? ' text-gray-400 hover:text-white' : ` text-gray-900`}`)}

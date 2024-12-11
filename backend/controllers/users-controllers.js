@@ -231,19 +231,11 @@ exports.EditProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (req.file) {
-      const oldImagePath = path.join(
-        __dirname,
-        "../uploads/images",
-        user.image
-      );
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath); // Delete the old image
-      }
-      user.image = req.file.filename; // Set the new image filename
-    } else {
-      user.image = image || user.image; // Use the old image if no new one is uploaded
-    }
+    console.log("req file:", req.file);
+    console.log("req filename:", req.file.filename);
+    user.image = req.file
+    ? req.file.filename
+    : user.image;
 
     user.agency = agency;
     user.name = name;

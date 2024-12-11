@@ -208,7 +208,7 @@ export default function PostDetails() {
                     ref={modal}
                     className={' w-1/2 min-h-[15rem] drop-shadow-2xl rounded-md p-8'}
                     title={'Are you Sure? '}
-                    titleClass={' font-bold font-serif w-full my-3 '}
+                    titleClass={' font-bold  w-full my-3 '}
                     contentClass={' w-full h-[5rem]  mb-2 flex items-center justify-center '}
                     footerClass={' flex items-center justify-end gap-3'}
                     footer={
@@ -227,8 +227,8 @@ export default function PostDetails() {
                     }
 
                   >
-                    <p className=" capitalize font-serif font-semibold">
-                      if you confirm the post is <span className=" uppercase text-red-900"> deleted </span> forever.
+                    <p className=" capitalize font-semibold">
+                      If you confirm this post will be <span className=" uppercase text-red-900"> deleted </span> forever.
                     </p>
                   </Modal>
 
@@ -237,14 +237,14 @@ export default function PostDetails() {
                     ref={mapsModal}
                     className={' min-w-[1024px] min-h-[30rem] drop-shadow-2xl rounded-md p-8'}
                     // title={'Are you Sure? '}
-                    titleClass={' font-bold font-serif w-full my-3 '}
+                    titleClass={' font-bold w-full my-3 '}
                     contentClass={' w-full h-[30rem]  mb-2 flex items-center justify-center '}
                     footerClass={' flex items-center justify-end gap-3'}
                     footer={
                       <>
                         <Button
                           type={'submit'}
-                          blue
+                          primary
                         > Done </Button>
                       </>
                     }
@@ -266,17 +266,9 @@ export default function PostDetails() {
                           className="danger-btn h-8"
                           onClick={handleDelete}
                         >
-                          {" "}
                           Delete
                         </button>
 
-                        <Button
-                          inverse
-                          type={'button'}
-                          onClick={() => { mapsModal.current.open(); }}
-                        >
-                          Map
-                        </Button>
                       </div>
                     </div>
                   ) : auth.isLoggedIn ? (
@@ -291,13 +283,7 @@ export default function PostDetails() {
                             : "Add to Wishlist"}
                         </button>
 
-                        <Button
-                          inverse
-                          type={'button'}
-                          onClick={() => { mapsModal.current.open(); }}
-                        >
-                          Map
-                        </Button>
+                        
                       </div>
                     </div>
                   ) : (
@@ -311,13 +297,6 @@ export default function PostDetails() {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
-                        <Button
-                          inverse
-                          type={'button'}
-                          onClick={() => { mapsModal.current.open(); }}
-                        >
-                          Map
-                        </Button>
                       </div>
                     </div>
                   )}
@@ -370,6 +349,17 @@ export default function PostDetails() {
                         </div>
                       </div>
                     )}
+
+                        <div className="mt-6">
+
+                        <Button
+                          primary
+                          type={'button'}
+                          onClick={() => { mapsModal.current.open(); }}
+                          >
+                          Open on Google Maps
+                        </Button>
+                          </div>
 
                     <div className="mt-6">
                       <h2 className="">Similar Properties</h2>

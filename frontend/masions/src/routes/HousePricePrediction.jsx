@@ -17,10 +17,10 @@ import { Input } from "../shared/Input.jsx";
 const STATES = ['Puerto Rico', 'Virgin Islands', 'Massachusetts', 'Connecticut', 'New Jersey', 'New Hampshire', 'Vermont', 'New York', 'Rhode Island', 'Wyoming', 'Virginia', 'Maine', 'Georgia',
   'Pennsylvania', 'Delaware', 'West Virginia', 'Ohio', 'Maryland', 'District of Columbia', 'Wisconsin', 'North Carolina', 'South Carolina', 'Kentucky', 'Tennessee', 'Mississippi', 'Alabama',
   'Florida', 'Missouri', 'Arkansas', 'Louisiana', 'Indiana', 'Illinois', 'Michigan', 'Iowa', 'Minnesota', 'South Dakota', 'Nebraska', 'Texas', 'North Dakota', 'Montana', 'Idaho', 'Kansas',
-  'Oklahoma', 'Colorado', 'New Mexico', 'Utah', 'Nevada', 'Washington', 'Oregon', 'Arizona', 'California', 'Hawaii', 'Guam', 'Alaska'];
+  'Oklahoma', 'Colorado', 'New Mexico', 'Utah', 'Nevada', 'Washington', 'Oregon', 'Arizona', 'California', 'Hawaii', 'Guam', 'Alaska', 'New York'];
 
 const CITIES = ['Mayaguez', 'Moca', 'San Sebastian', 'Agawam', 'Amherst', 'Buckland',
-  'Montague', 'Blytheville', 'Gosnell', 'West Memphis', 'Marion', 'Horseshoe Lake']
+  'Montague', 'Blytheville', 'Gosnell', 'West Memphis', 'Marion', 'Horseshoe Lake', 'New York City']
 
 
 const PredictionForm = () => {
@@ -258,7 +258,7 @@ const PredictionForm = () => {
           <Button
             type={'submit'}
             disabled={!formState.isValid}
-            inverse
+            primary
           >
             Predict Price
           </Button>
@@ -266,6 +266,15 @@ const PredictionForm = () => {
         </div>
 
       </form>
+      <div className=" flex flex-col my-8">
+        {
+          prediction &&
+          <>
+            <h1 className="text-[#113264]"> Estimated Price: </h1>
+            <h2 className="mx-8"> {Math.round(prediction)} $</h2>
+          </>
+        }
+      </div>
       <ul className="list-decimal list-inside text-gray-500 space-y-2 my-7">
         <p className=" text-gray-400"> to get the lowest price try these: </p>
         <li>For Sale</li>
@@ -274,15 +283,6 @@ const PredictionForm = () => {
         <li>  Zip code = 676 , state = Puerto Rico, city = moca </li>
       </ul>
 
-      <div className=" flex flex-col my-8">
-        {
-          prediction &&
-          <>
-            <h1 className="text-yellow-800"> Estimated Price: </h1>
-            <h2 className="mx-8"> {Math.round(prediction)} $</h2>
-          </>
-        }
-      </div>
     </>
   );
 }
@@ -293,17 +293,17 @@ export const HousePricePrediction = () => {
   return (
     <>
       <div className="w-[1024px] h-full mx-auto px-16 py-4 my-8 flex flex-col gap-0 ">
-        <h1 className="text-2xl text-purple-800 my-2">Ensemble of Ai</h1>
-        <p> This is a <span className=" text-green-500"> Price esitmator  </span> it combines <span className=" font-extrabold text-green-800 text-2xl" >  Machine Learning  and Deep Learning Approaches  </span>,
+        <h1 className="text-2xl text-[#113264] my-2">Ensemble of Ai</h1>
+        <p> This is a <span className=" "> Price esitmator  </span> it combines <span className=" font-extrabold" >  Machine Learning  and Deep Learning Approaches  </span>,
           designed to estimate house prices in the US. </p>
 
         <p>
-          The 3 ML & DL models are trained on a range of <span className="text-green-600 text-xl"> $162,755 - $806,130 </span>
+          The 3 ML & DL models are trained on a range of <span className="text-lg"> $162,755 - $806,130 </span>
           please note that, the closer the price to $162,755 the more it is prune to the error of ± $75,000.
         </p>
 
 
-        <p className="text-center "> <span className=" text-xl text-yellow-800"> Again </span> House price estimates have a ± $75,000 error margin. </p>
+        <p className="text-center "> <span className=" text-[#113264]"> Again </span> House price estimates have a ± $75,000 error margin. </p>
 
       </div>
       <div className=" mx-2 px-[17rem] py-2">

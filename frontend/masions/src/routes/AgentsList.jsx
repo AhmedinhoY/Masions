@@ -41,6 +41,7 @@ export const AgentsList = () => {
           {agents.map((agent) => (
             <Card
               key={agent.id} // Use a unique key
+              agent={""}
               title={agent.name}
               subtitle={agent.agency || "Unknown Location"} // Replace with actual location field if available
               imageUrl={`http://localhost:3000/uploads/images/${agent.image}`}

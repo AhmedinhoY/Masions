@@ -10,11 +10,14 @@ import { useEditProfileDialog } from "../../shared/context/dropdowndialog-contex
 import { useToast } from "../../shared/context/Toast-context";
 import { ImageUpload } from "../../shared/ImageUpload";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const EditProfileForm = () => {
   const auth = useContext(AuthContext);
   const { closeEditProfileDialog } = useEditProfileDialog();
   const { showToast } = useToast();
+  const navigate = useNavigate()
+
 
   // State for user data, freelancer status, and agency input
   const [user, setUser] = useState({});
@@ -81,9 +84,10 @@ const EditProfileForm = () => {
     data.append("agency", event.target.agency.value);
     data.append("phoneNumber", event.target.phoneNumber.value);
 
+    console.log(event.target.image.files[0]); // this is the image file - send it to the backend
     // Only append image if a new file is selected
-    if (image && image.name) {
-      data.append("image", image);
+    if (event.target.image.files[0]) {
+      data.append("image", event.target.image.files[0]);
     } else if (user.image) {
       // Keep the old image if no new file is selected
       data.append("image", user.image);
@@ -102,11 +106,14 @@ const EditProfileForm = () => {
             "Content-Type": "multipart/form-data",
           },
         }
+
       );
+
 
       console.log("Response:", response);
       closeEditProfileDialog();
       showToast("success", "Your info has been updated successfully");
+      navigate("/")
     } catch (err) {
       console.error("Error:", err);
       showToast("error", "Failed. Please try again later.");

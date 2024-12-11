@@ -2,11 +2,12 @@
 import "./Card.css";
 import { Link } from "react-router-dom";
 
-const Card = ({ imageUrl, title, subtitle, text, buttons, Links }) => {
+const Card = ({ imageUrl, title, subtitle, text, buttons, Links, agent }) => {
   return (
     <div className="card">
       <div className="card-body">
         {imageUrl && <img alt="" src={imageUrl} className="card-img" />}
+        {agent && imageUrl && <img alt="" src={imageUrl} className="card-img size-4" />}
         <div>
           {title && <h2 className="card-title">{title}</h2>}
           {subtitle && <h3 className="card-subtitle">{subtitle}</h3>}

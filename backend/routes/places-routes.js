@@ -53,7 +53,7 @@ router.patch(
     check("bedrooms").isNumeric(),
     check("bathrooms").isNumeric(),
     check("area").isNumeric(),
-    check("description").isLength({ min: 5 }),
+    check("description"),
   ],
   placesController.updatePlaceById
 );

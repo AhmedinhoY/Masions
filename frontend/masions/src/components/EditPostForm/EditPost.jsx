@@ -123,6 +123,7 @@ export const EditPost = () => {
           <select
             className="Input"
             onChange={(e) => setType(e.target.value)}
+            defaultValue={property.type}
             required
           >
             <option value="">Select type</option>
@@ -145,6 +146,8 @@ export const EditPost = () => {
           <select
             className="Input"
             onChange={(e) => setStatus(e.target.value)}
+            defaultValue={property.status}
+
             required
           >
             <option value="">Select status</option>
@@ -166,7 +169,7 @@ export const EditPost = () => {
           <select
             className="Input"
             onChange={(e) => setAvailability(e.target.value)}
-            defaultValue={availability}
+            defaultValue={property.availability}
             required
           >
             <option value="">Select status</option>
