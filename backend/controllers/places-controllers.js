@@ -6,6 +6,7 @@ const User = require("../models/users");
 const getCoordinates = require("../util/location");
 const { capitalize } = require("../util/utils.js");
 const { validationResult } = require("express-validator");
+const path = require('path');
 
 // Get all places controller
 exports.getAllPlaces = async (req, res, next) => {
@@ -166,6 +167,15 @@ exports.updatePlaceById = async (req, res, next) => {
     );
   }
 
+  // debugging purposes
+  
+  // if (true) {
+  //   console.log(errors);
+  //   return next(
+  //     new HttpError("error is thrown on purpose", 422)
+  //   );
+  // }
+
   const pid = req.params.pid;
 
   const {
@@ -296,16 +306,25 @@ exports.deletePlaceById = async (req, res, next) => {
     return next(error);
   }
 
-  place.img.forEach((image) => {
-    const imagePath = path.join(__dirname, "uploads", "images", image.imgSrc);
-    fs.unlink(imagePath, (err) => {
-      if (err) {
-        console.error(`Error deleting file ${imagePath}:`, err.message);
-      } else {
-        console.log(`Successfully deleted file: ${imagePath}`);
-      }
-    });
-  });
+  // place.img.forEach((image) => {
+  //   const imagePath = path.join(__dirname, "uploads", "images", image.imgSrc);
+  //   fs.unlink(imagePath, (err) => {
+  //     if (err) {
+  //       console.error(`Error deleting file ${imagePath}:`, err.message);
+  //     } else {
+  //       console.log(`Successfully deleted file: ${imagePath}`);
+  //     }
+  //   });
+  // });
+
+  let image1 = place.img[0].imgSrc
+  console.log(image1);
+  const imagePath = path.join("backend", "controllers", "uploads", "images", image1);
+  console.log(imagePath)
+  fs.unlink(imagePath, err => {
+    console.log('image deletion error: ', err)
+  })
+
 
   res.status(200).json({ message: " Deleted Place" });
 };

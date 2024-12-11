@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState, useRef } from "react";
 import * as Form from "@radix-ui/react-form";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useToast } from "../../shared/context/Toast-context";
@@ -9,6 +9,7 @@ import { ImageUpload } from "../../shared/ImageUpload";
 import "../AuthenticationForms/AuthenticationForm.css";
 
 export const EditPost = () => {
+
   const property = useLoaderData(); // Fetch existing property data
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
@@ -21,7 +22,7 @@ export const EditPost = () => {
     )
   );
   const [features, setFeatures] = useState(property.features || [""]);
-  const [type, setType] = useState(property.type || "");
+  const [type, setType] = useState(property.type || " ");
   const [status, setStatus] = useState(property.status || "");
   const [availability, setAvailability] = useState(property.availability || "");
 
@@ -51,6 +52,8 @@ export const EditPost = () => {
 
   const handleSubmission = async (event) => {
     event.preventDefault();
+
+
 
     const data = new FormData();
     data.append("type", event.target.type.value);
@@ -95,6 +98,17 @@ export const EditPost = () => {
     }
   };
 
+  if (!auth.token) {
+    return <Navigate to="/" replace />;
+  }
+
+
+  // any user that did not create this post is not allowed to edit it
+  if (property.creator.id != auth.user.id) {
+    navigate('/');
+  }
+
+
   return (
     <Form.Root className="FormRoot" onSubmit={handleSubmission}>
       {/* Type */}
@@ -108,15 +122,14 @@ export const EditPost = () => {
         <Form.Control asChild>
           <select
             className="Input"
-            value={type}
             onChange={(e) => setType(e.target.value)}
             defaultValue={property.type}
             required
           >
             <option value="">Select type</option>
-            <option value="house">House</option>
-            <option value="apartment">Apartment</option>
-            <option value="land">Land</option>
+            <option value="House">House</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Land">Land</option>
           </select>
         </Form.Control>
       </Form.Field>
@@ -132,21 +145,18 @@ export const EditPost = () => {
         <Form.Control asChild>
           <select
             className="Input"
-            value={status}
             onChange={(e) => setStatus(e.target.value)}
             defaultValue={property.status}
             required
           >
             <option value="">Select status</option>
-            <option value="sale">For sale</option>
-            <option value="rent">For rent</option>
+            <option value="Sale">For sale</option>
+            <option value="Rent">For rent</option>
           </select>
         </Form.Control>
       </Form.Field>
 
-      {console.log(type)}
-      {console.log(status)}
-      {console.log(type)}
+      {/* Avaliability */}
       <Form.Field className="FormField" name="availability">
         <div className="flex align-baseline justify-between">
           <Form.Label>Property Availability</Form.Label>
@@ -157,15 +167,14 @@ export const EditPost = () => {
         <Form.Control asChild>
           <select
             className="Input"
-            value={availability}
             onChange={(e) => setAvailability(e.target.value)}
-            defaultValue={property.availability}
+            defaultValue={availability}
             required
           >
             <option value="">Select status</option>
-            <option value="available">Available</option>
-            <option value="sold">Sold</option>
-            <option value="rented">Rented</option>
+            <option value="Available">Available</option>
+            <option value="Sold">Sold</option>
+            <option value="Rented">Rented</option>
           </select>
         </Form.Control>
       </Form.Field>

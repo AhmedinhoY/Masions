@@ -1,13 +1,13 @@
 import { useLoaderData } from "react-router-dom";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 
-export const SaleLands = () => {
+export const RentLands = () => {
   const properties = useLoaderData();
   console.log("land sale",properties[0].type)
   let propertyLands_sale;
   if (properties) {
     propertyLands_sale = properties.filter((property) => {
-      return property.type.toLowerCase() == "land" && property.status.toLowerCase() == "sale";
+      return property.type.toLowerCase() == "land" && property.status.toLowerCase() == "rent";
     });
   }
 
@@ -25,7 +25,7 @@ export const SaleLands = () => {
       {propertyLands_sale.length > 0 && (
         <div className="container">
           <section>
-            <h1 className="container-header">Lands For Sale</h1>
+            <h1 className="container-header">Lands For Rent</h1>
             <PropertiesList propertyType={propertyLands_sale} />
           </section>
         </div>

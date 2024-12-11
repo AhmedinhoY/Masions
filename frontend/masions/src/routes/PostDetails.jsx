@@ -19,6 +19,8 @@ import { useDropDownDialog } from "../shared/context/dropdowndialog-context";
 import DropDownDialog from "../shared/DropDownDialog";
 import Alert from "../shared/Alert";
 import { ImageSlider } from "../components/ImageSlider/ImageSlider";
+import { Modal } from "../shared/Modal";
+import { Map } from "../shared/UI-Elements/Map";
 
 export default function PostDetails() {
   const { property, properties } = useLoaderData();
@@ -26,7 +28,7 @@ export default function PostDetails() {
   const auth = useContext(AuthContext);
   const { openDialog } = useDialog();
   const { openDropDownDialog } = useDropDownDialog();
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const openLogInAlert = () => {
     openDialog({
@@ -37,7 +39,7 @@ export default function PostDetails() {
       onConfirm: () => {
         openDropDownDialog();
       },
-      onCancel: () => {},
+      onCancel: () => { },
     });
   };
 
@@ -101,6 +103,16 @@ export default function PostDetails() {
   };
 
   const handleDelete = async () => {
+
+    modal.current.open();
+
+  };
+
+  const modal = useRef();
+  const mapsModal = useRef();
+  const deleteConfirmation = async () => {
+    // submit(null, { method: 'DELETE' });
+
     try {
       await axios.delete(
         `http://localhost:3000/api/places/delete-property/${propertyId}`,
@@ -109,7 +121,15 @@ export default function PostDetails() {
     } catch (error) {
       console.error("Error deleting property:", error);
     }
-  };
+
+
+    console.log('deleted!');
+    navigate('/');
+  }
+
+  let location = {
+    'lat': +property.location.lat, 'lng': +property.location.lng
+  }
 
   return (
     <div className="pt-6">
@@ -182,6 +202,57 @@ export default function PostDetails() {
                       {chosenHouse.address}
                     </h3>
                   </div>
+
+                  {/* Use Modal here */}
+                  <Modal
+                    ref={modal}
+                    className={' w-1/2 min-h-[15rem] drop-shadow-2xl rounded-md p-8'}
+                    title={'Are you Sure? '}
+                    titleClass={' font-bold font-serif w-full my-3 '}
+                    contentClass={' w-full h-[5rem]  mb-2 flex items-center justify-center '}
+                    footerClass={' flex items-center justify-end gap-3'}
+                    footer={
+                      <>
+                        <Button
+                          type={'submit'}
+                        > Cancel </Button>
+                        <Button
+                          danger
+                          type={'submit'}
+                          onClick={deleteConfirmation}
+                        >
+                          Confirm
+                        </Button>
+                      </>
+                    }
+
+                  >
+                    <p className=" capitalize font-serif font-semibold">
+                      if you confirm the post is <span className=" uppercase text-red-900"> deleted </span> forever.
+                    </p>
+                  </Modal>
+
+                  {/* Google Maps Modal */}
+                  <Modal
+                    ref={mapsModal}
+                    className={' min-w-[1024px] min-h-[30rem] drop-shadow-2xl rounded-md p-8'}
+                    // title={'Are you Sure? '}
+                    titleClass={' font-bold font-serif w-full my-3 '}
+                    contentClass={' w-full h-[30rem]  mb-2 flex items-center justify-center '}
+                    footerClass={' flex items-center justify-end gap-3'}
+                    footer={
+                      <>
+                        <Button
+                          type={'submit'}
+                          blue
+                        > Done </Button>
+                      </>
+                    }
+
+                  >
+                    <Map center={location} zoom={16} />
+                  </Modal>
+
                   {auth.isLoggedIn && auth.user.id == chosenHouse.creator.id ? (
                     <div className="w-full">
                       <div className="mb-4 mt-4 lg:mt-0 mx-auto w-full flex items-center justify-between">
@@ -198,6 +269,14 @@ export default function PostDetails() {
                           {" "}
                           Delete
                         </button>
+
+                        <Button
+                          inverse
+                          type={'button'}
+                          onClick={() => { mapsModal.current.open(); }}
+                        >
+                          Map
+                        </Button>
                       </div>
                     </div>
                   ) : auth.isLoggedIn ? (
@@ -211,6 +290,14 @@ export default function PostDetails() {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
+
+                        <Button
+                          inverse
+                          type={'button'}
+                          onClick={() => { mapsModal.current.open(); }}
+                        >
+                          Map
+                        </Button>
                       </div>
                     </div>
                   ) : (
@@ -224,6 +311,13 @@ export default function PostDetails() {
                             ? "Remove from Wishlist"
                             : "Add to Wishlist"}
                         </button>
+                        <Button
+                          inverse
+                          type={'button'}
+                          onClick={() => { mapsModal.current.open(); }}
+                        >
+                          Map
+                        </Button>
                       </div>
                     </div>
                   )}
