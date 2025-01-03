@@ -1,4 +1,4 @@
-# Maisons - Real Estate Listing System Implementing Various AI Technologies   
+# Masions - Real Estate Listing System Implementing Various AI Technologies   
 A modern, AI-powered platform that revolutionizes real estate marketplace by enhancing transparency, accessibility, and decision-making for buyers and sellers.
 
 ## About the Project  
