@@ -4,7 +4,6 @@ A modern, AI-powered platform that revolutionizes real estate marketplace by enh
 ## About the Project  
 This platform, developed as a graduation project, consolidates real estate listings from freelancers and companies while incorporating advanced AI and personalized features. Key highlights include an AI-powered price prediction model, a wishlist for saving favorite properties, real-time chat functionality, and 24/7 access to property details, minimizing the need for physical visits.
 
----
 
 ## Features  
 - Consolidated listings from freelancers and companies.  
@@ -13,7 +12,6 @@ This platform, developed as a graduation project, consolidates real estate listi
 - Personalized wishlist for saving favorite properties.  
 - 24/7 access to property details to minimize physical visits.
 
----
 
 ## Technologies Used  
 - **Frontend:** React (MERN Stack)  
@@ -21,5 +19,4 @@ This platform, developed as a graduation project, consolidates real estate listi
 - **Database:** MongoDB  
 - **AI & Data Science:** Flask, FastAI, scikit-learn, Pandas, NumPy  
 
----
 
