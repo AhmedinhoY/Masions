@@ -19,4 +19,32 @@ This platform, developed as a graduation project, consolidates real estate listi
 - **Database:** MongoDB  
 - **AI & Data Science:** Flask, FastAI, scikit-learn, Pandas, NumPy  
 
+## Usage
+### Install dependencies:
+#### Frontend
+```
+cd frontend/masions
+npm install 
+```
+#### Backend
+```
+cd backend
+npm install 
+```
+### Set up your environment variables:
+#### Create a .env file in both the frontend and backend folders.
+#### Add necessary variables (e.g., database URL, TOKEN_SECRET).
+
+### Start the development servers:
+#### Frontend
+```
+cd frontend/masions
+npm run dev
+```
+#### Backend
+```
+cd backend
+npm start
+```
+
 
