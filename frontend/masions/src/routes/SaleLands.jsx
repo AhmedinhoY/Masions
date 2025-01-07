@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import PropertiesList from "../components/PropertiesList/PropertiesList";
 import { useState } from "react";
 
-export const SaleLands = () => {
+export const SaleLands = ({ limit }) => {
   const properties = useLoaderData();
   const [city, setCity] = useState("");
   const [minPrice, setMinPrice] = useState("");
@@ -30,11 +30,14 @@ export const SaleLands = () => {
       (area ? property.area >= parseFloat(area) : true)
     );
   });
-  
+
   let propertyLands_sale;
   if (properties) {
     propertyLands_sale = properties.filter((property) => {
-      return property.type.toLowerCase() == "land" && property.status.toLowerCase() == "sale";
+      return (
+        property.type.toLowerCase() == "land" &&
+        property.status.toLowerCase() == "sale"
+      );
     });
   }
 
@@ -43,49 +46,55 @@ export const SaleLands = () => {
       <div className="container">
         <section>
           {/* Filter Section */}
-          <div className="filters-container  mb-4 flex flex-col lg:flex-row justify-between items-stretch lg:items-center w-[95%] gap-4">
-            {/* Input Group */}
-            <div className="w-full lg:w-[90%] flex flex-wrap gap-4">
-              <input
-                type="text"
-                placeholder="City"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="Input flex-1 min-w-[120px]"
-              />
-              <input
-                type="number"
-                placeholder="Min Price"
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                className="Input flex-1 min-w-[120px]"
-              />
-              <input
-                type="number"
-                placeholder="Max Price"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                className="Input flex-1 min-w-[120px]"
-              />
-              <input
-                type="number"
-                placeholder="Min Area"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-                className="Input flex-1 min-w-[120px]"
-              />
+          {!limit ? (
+            <div className="filters-container  mb-4 flex flex-col lg:flex-row justify-between items-stretch lg:items-center w-[95%] gap-4">
+              {/* Input Group */}
+              <div className="w-full lg:w-[90%] flex flex-wrap gap-4">
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="Input flex-1 min-w-[120px]"
+                />
+                <input
+                  type="number"
+                  placeholder="Min Price"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                  className="Input flex-1 min-w-[120px]"
+                />
+                <input
+                  type="number"
+                  placeholder="Max Price"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                  className="Input flex-1 min-w-[120px]"
+                />
+                <input
+                  type="number"
+                  placeholder="Min Area"
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  className="Input flex-1 min-w-[120px]"
+                />
+              </div>
+
+              {/* Clear Button */}
+              <button
+                className="primary-btn !w-[90%] lg:!w-[10%] !py-1.5 !mx-auto"
+                onClick={clearFilters}
+              >
+                Clear Filters
+              </button>
             </div>
+          ) : null}
 
-            {/* Clear Button */}
-            <button
-              className="primary-btn !w-[90%] lg:!w-[10%] !py-1.5 !mx-auto"
-              onClick={clearFilters}
-            >
-              Clear Filters
-            </button>
-          </div>
-
-          <h1 className="container-header">Lands For Sale</h1>
+          {limit ? (
+            <h1 className="container-header">Trending Lands For Sale</h1>
+          ) : (
+            <h1 className="container-header">Lands For Sale</h1>
+          )}
           {filteredProperties.length === 0 ? (
             <h3 className="capitalize drop-shadow-xl flex justify-center">
               No properties found

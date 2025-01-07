@@ -38,7 +38,7 @@ export const NavBar = () => {
       onConfirm: () => {
         openDropDownDialog(); // open login dialog
       },
-      onCancel: () => { },
+      onCancel: () => {},
     });
   };
 
@@ -118,10 +118,7 @@ export const NavBar = () => {
                       to="apartments/for-rent"
                       title="Apartments for rent"
                     ></ListItem>
-                    <ListItem
-                      to="lands/for-rent"
-                      title="Lands for rent"
-                    />
+                    <ListItem to="lands/for-rent" title="Lands for rent" />
                   </ul>
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
@@ -136,7 +133,6 @@ export const NavBar = () => {
                   </NavigationMenu.Link>
                 </NavigationMenu.Item>
               )}
-
 
               <NavigationMenu.Item>
                 <NavigationMenu.Link
@@ -158,21 +154,24 @@ export const NavBar = () => {
                   className={styles.NavigationMenuContent}
                 >
                   <ul className={`${styles.List} ${styles.three} block`}>
-                    <ListItem to="#" title="Analysis">
+                    {/* <ListItem to="#" title="Analysis">
                       No more guess games! <br /> Gain real-time insights with
                       data science technologies, helping you make confident
                       investments decisions!
-                    </ListItem>
-                    <ListItem to="ai/house-price-prediction" title="Al-Muthammen" >
+                    </ListItem> */}
+                    <ListItem
+                      to="ai/house-price-prediction"
+                      title="Al-Muthammen"
+                    >
                       Know the true value! <br /> Instantly get accurate,
                       AI-driven property price estimates based on real-time
                       market data.
                     </ListItem>
-                    <ListItem to="#" title="Al-Mustashar">
+                    {/* <ListItem to="#" title="Al-Mustashar">
                       Your 24/7 AI assistant! <br />
                       Get instant answers, personalized property suggestions,
                       and seamless support, anytime you need it!
-                    </ListItem>
+                    </ListItem> */}
                   </ul>
                 </NavigationMenu.Content>
               </NavigationMenu.Item>
