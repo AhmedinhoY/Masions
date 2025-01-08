@@ -16,7 +16,7 @@ export default function HomePage() {
             <h1 className="text-4xl font-bold mb-4">
               Discover Your Property's <br /> True Value
             </h1>
-            <h3 className="text-lg mb-6 leading-relaxed relative z-10">
+            <h3 className="text-lg mb-6 leading-relaxed relative ">
               Al-Muthammen!! <br />
               Use our AI-powered price prediction tool to instantly get <br />
               accurate, AI-driven property price estimates based on <br />
@@ -24,7 +24,7 @@ export default function HomePage() {
             </h3>
             <Link
               to="ai/house-price-prediction"
-              className="primary-btn px-3 py-3 lg:!w-[80%] shadow-lg relative z-10"
+              className="primary-btn px-3 py-3 lg:!w-[80%] shadow-lg relative"
             >
               Try It Now
             </Link>
@@ -45,8 +45,8 @@ export default function HomePage() {
       <RentHouses limit={4} />
       <SaleApartments limit={4} />
       <RentApartments limit={4} />
-      <SaleLands limit={4} />
-      <RentLands limit={4} />
+      {/* <SaleLands limit={4} /> */}
+      {/* <RentLands limit={4} /> */}
     </>
   );
 }
